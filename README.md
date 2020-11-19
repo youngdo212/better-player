@@ -1,9 +1,11 @@
 # BetterPlayer.js
+
 확장 가능한 웹 비디오 플레이어
 
 ## Table of Contents
-* [Quick Start](#Quick-Start)
-* [API Documents](#API)
+
+- [Quick Start](#Quick-Start)
+- [API Documents](#API)
 
 ## Quick Start
 
@@ -19,11 +21,11 @@
 
 ### CSS
 
-기본 스타일을 적용하기 위해서 패키지의 `/dist/main.css` 파일을 다음과 같이 head 태그에 추가합니다.
+기본 스타일을 적용하기 위해서 패키지의 `/dist/better-player.css` 파일을 다음과 같이 head 태그에 추가합니다.
 
 ```html
 <head>
-	<link rel="stylesheet" href="path/to/main.css" />
+  <link rel="stylesheet" href="path/to/better-player.css" />
 </head>
 ```
 
@@ -31,7 +33,10 @@
 
 ```html
 <head>
-	<link rel="stylesheet" href="https://unpkg.com/@mando212/better-player/dist/main.css">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@mando212/better-player/dist/better-player.css"
+  />
 </head>
 ```
 
@@ -43,8 +48,8 @@
 import BetterPlayer from '@mando212/better-player';
 
 const player = new BetterPlayer.Player({
-	source: "http://your.video/here.mp4",
-	parentId: "player"
+  source: 'http://your.video/here.mp4',
+  parentId: 'player',
 });
 ```
 
@@ -60,8 +65,8 @@ const player = new BetterPlayer.Player({
 
 ```jsx
 const options = {
-	source: 'http://path.to/video.mp4',
-	parentId: 'player'
+  source: 'http://path.to/video.mp4',
+  parentId: 'player',
 };
 
 const player = new BetterPlayer.Player(options);
@@ -118,7 +123,7 @@ player.pause();
 
 ```jsx
 player.on('play', () => {
-	// do something ...
+  // do something ...
 });
 ```
 
@@ -142,7 +147,7 @@ player.off('play', addedHandler);
 
 ```jsx
 player.once('play', () => {
-	// do something ...
+  // do something ...
 });
 ```
 
@@ -159,8 +164,8 @@ player.destroy();
 비디오 플레이어는 다양한 이벤트를 발생합니다. 이벤트 핸들러를 등록하고 싶다면 다음과 같이 작성할 수 있습니다.
 
 ```jsx
-player.on('play', (event) => {
-	handlePlay(event);
+player.on('play', event => {
+  handlePlay(event);
 });
 ```
 
