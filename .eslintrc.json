@@ -13,5 +13,15 @@
         "sourceType": "module"
     },
     "rules": {
-    }
+    },
+    "overrides": [
+        {
+          "files": [
+            "**/*.test.js"
+          ],
+          "env": {
+            "jest": true
+          }
+        }
+    ]
 }
