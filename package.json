@@ -4,7 +4,9 @@
   "description": "Extensible video player for web",
   "main": "dist/better-player.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "files": [
     "/dist"
@@ -22,6 +24,10 @@
   "devDependencies": {
     "@babel/core": "^7.12.3",
     "@babel/preset-env": "^7.12.1",
+    "@storybook/addon-actions": "^6.1.0",
+    "@storybook/addon-essentials": "^6.1.0",
+    "@storybook/addon-links": "^6.1.0",
+    "@storybook/html": "^6.1.0",
     "babel-loader": "^8.2.1",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.1.5",
@@ -35,7 +41,7 @@
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
-    "webpack": "^5.6.0",
+    "webpack": "^4.44.2",
     "webpack-cli": "^4.2.0",
     "webpack-merge": "^5.4.0"
   },
