@@ -1,0 +1,19 @@
+{
+  "name": "@mando212/better-player",
+  "version": "0.1.0",
+  "description": "Extensible video player for web",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/youngdo212/better-player.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/youngdo212/better-player/issues"
+  },
+  "homepage": "https://github.com/youngdo212/better-player#readme"
+}
