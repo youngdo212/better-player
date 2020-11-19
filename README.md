@@ -2,8 +2,8 @@
 확장 가능한 웹 비디오 플레이어
 
 ## Table of Contents
-* [Quick Start](##Quick-Start)
-* [API Documents](##API)
+* [Quick Start](#Quick-Start)
+* [API Documents](#API)
 
 ## Quick Start
 
