@@ -29,6 +29,7 @@
     "@storybook/addon-essentials": "^6.1.0",
     "@storybook/addon-links": "^6.1.0",
     "@storybook/html": "^6.1.0",
+    "@types/jest": "^26.0.15",
     "babel-loader": "^8.2.1",
     "css-loader": "^5.0.1",
     "css-minimizer-webpack-plugin": "^1.1.5",
