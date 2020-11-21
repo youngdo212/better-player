@@ -56,3 +56,12 @@ export function removeEventListener(element, eventName, listener, options) {
   element.removeEventListener(eventName, listener, options);
   return element;
 }
+
+/**
+ * 자식 엘리먼트를 마지막 위치에 추가한다
+ * @param {HTMLElement} parent
+ * @param {HTMLElement} child
+ */
+export function appendChild(parent, child) {
+  parent.appendChild(child);
+}

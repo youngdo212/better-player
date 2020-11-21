@@ -1,5 +1,6 @@
 import {
   addEventListener,
+  appendChild,
   createElement,
   removeElement,
   removeEventListener,
@@ -92,5 +93,16 @@ describe('removeEventListener', () => {
     el.dispatchEvent(event);
 
     expect(listener).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('appendChild', () => {
+  it('자식 엘리먼트를 추가한다', () => {
+    const parent = document.createElement('div');
+    const child = document.createElement('div');
+
+    appendChild(parent, child);
+
+    expect(parent.children.length).toBe(1);
   });
 });
