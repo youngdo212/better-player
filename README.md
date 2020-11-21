@@ -80,7 +80,7 @@ const player = new BetterPlayer.Player(options);
 
 **parentId: string**
 
-비디오 플레이어가 생성될 DOM 엘리먼트의 id 속성을 설정합니다.
+비디오 플레이어가 생성될 DOM 엘리먼트의 id 속성을 설정합니다. parent와 parentId 속성이 동시에 제공될 경우 parentId를 우선합니다.
 
 **source: string**
 
