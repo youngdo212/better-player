@@ -2,6 +2,7 @@ import {
   addEventListener,
   appendChild,
   createElement,
+  innerHTML,
   removeElement,
   removeEventListener,
 } from './element';
@@ -104,5 +105,22 @@ describe('appendChild', () => {
     appendChild(parent, child);
 
     expect(parent.children.length).toBe(1);
+  });
+});
+
+describe('innerHTML', () => {
+  it('엘리먼트의 내부 html을 변경한다', () => {
+    const element = document.createElement('div');
+    const disappear = document.createElement('span');
+    const html = '<div>hello world</div>';
+
+    // 없어질 엘리먼트 등록
+    element.appendChild(disappear);
+    expect(element.firstElementChild).toBe(disappear);
+
+    innerHTML(element, html);
+
+    expect(element.firstElementChild).not.toBe(disappear);
+    expect(element.innerHTML).toBe(html);
   });
 });
