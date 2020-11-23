@@ -1,5 +1,5 @@
 import NoVideo from './NoVideo';
-import config from '../../config';
+import config from '../../config/defaults';
 
 export default {
   title: 'NoVideo',
