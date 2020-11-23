@@ -68,3 +68,23 @@ export default class Events {
     this.on(eventName, wrapper);
   }
 }
+
+// VIDEO 이벤트 목록
+/**
+ * 비디오를 재생했을 때 발생하는 이벤트.
+ * 이 이벤트의 발생은 비디오가 실제로 재생되고 있음을 보장하지 않는다.
+ * 단지 play() 메소드 등으로 비디오를 재생시키려는 시도를 했을 때 발생한다.
+ * 비디오 재생 중 여부를 확인하려면 `playing` 이벤트를 이용하자.
+ *
+ * @event VIDEO_PLAY
+ * @param {Event} event
+ */
+Events.VIDEO_PLAY = 'video:play';
+
+/**
+ * 비디오를 일시 정지했을 때 발생하는 이벤트.
+ *
+ * @event VIDEO_PAUSE
+ * @param {Event} event
+ */
+Events.VIDEO_PAUSE = 'video:pause';

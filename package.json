@@ -58,6 +58,7 @@
     "*.{js,css,md}": "prettier --write"
   },
   "dependencies": {
-    "core-js": "^3.7.0"
+    "core-js": "^3.7.0",
+    "lodash": "^4.17.20"
   }
 }

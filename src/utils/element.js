@@ -9,7 +9,7 @@
  *
  * @param {string=} tagName
  * @param {object=} attributes
- * @returns {HTMLElement}
+ * @returns {any}
  */
 export function createElement(tagName = 'div', attributes = {}) {
   const el = document.createElement(tagName);
@@ -64,4 +64,13 @@ export function removeEventListener(element, eventName, listener, options) {
  */
 export function appendChild(parent, child) {
   parent.appendChild(child);
+}
+
+/**
+ * 엘리먼트의 내부 html을 변경한다
+ * @param {HTMLElement} element
+ * @param {string} htmlTemplate
+ */
+export function innerHTML(element, htmlTemplate) {
+  element.innerHTML = htmlTemplate;
 }
