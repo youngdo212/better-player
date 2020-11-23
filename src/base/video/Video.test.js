@@ -1,10 +1,10 @@
 import Video from './Video';
 
-it('options이라는 이름의 환경 설정 속성을 가진다', () => {
-  const options = {};
-  const video = new Video(options);
+it('config이라는 이름의 환경 설정 속성을 가진다', () => {
+  const config = {};
+  const video = new Video(config);
 
-  expect(video.options).toBe(options);
+  expect(video.config).toBe(config);
 });
 
 it('isPaused() 메소드가 기본 값을 가진다', () => {

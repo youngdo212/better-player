@@ -12,21 +12,21 @@ import { appendChild } from '../../utils/element';
  */
 export default class Core extends UIObject {
   /**
-   * 옵션 객체를 이용해 인스턴스를 생성한다.
-   * @param {object} options
-   * @param {HTMLElement=} options.parentElement
+   * 환경 설정 객체를 이용해 인스턴스를 생성한다.
+   * @param {object} config
+   * @param {HTMLElement=} config.parentElement
    */
-  constructor(options) {
+  constructor(config) {
     super();
-    this.options = options;
+    this.config = config;
   }
 
   /**
    * 부모 엘리먼트에 core 엘리먼트를 추가한다.
    */
   render() {
-    if (this.options.parentElement) {
-      appendChild(this.options.parentElement, this.el);
+    if (this.config.parentElement) {
+      appendChild(this.config.parentElement, this.el);
     }
     return this;
   }

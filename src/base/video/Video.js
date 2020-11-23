@@ -11,17 +11,17 @@ export default class Video extends UIObject {
    * 비디오의 환경 설정 객체
    * @return object
    */
-  get options() {
-    return this._options;
+  get config() {
+    return this._config;
   }
 
   /**
    * 환경 설정을 저장하고 인스턴스를 생성한다.
-   * @param {object} options
+   * @param {object} config
    */
-  constructor(options) {
+  constructor(config) {
     super();
-    this._options = options;
+    this._config = config;
   }
 
   /**
