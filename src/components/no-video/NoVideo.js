@@ -17,11 +17,11 @@ export default class NoVideo extends Video {
 
   /**
    * 인스턴스를 생성한다
-   * @param {object} options
-   * @param {object} options.i18n
+   * @param {object} config
+   * @param {object} config.i18n
    */
-  constructor(options) {
-    super(options);
+  constructor(config) {
+    super(config);
   }
 
   /**
