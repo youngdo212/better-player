@@ -74,3 +74,13 @@ export function appendChild(parent, child) {
 export function innerHTML(element, htmlTemplate) {
   element.innerHTML = htmlTemplate;
 }
+
+/**
+ * 비디오 타입이 현재 브라우저에 재생이 가능한지 확인한다.
+ * @param {string} videoType MIME Type
+ */
+export function canPlayVideoType(videoType) {
+  const video = document.createElement('video');
+
+  return !!video.canPlayType(videoType);
+}
