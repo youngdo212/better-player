@@ -2,7 +2,7 @@
 
 import UIObject from '../../base/ui-object';
 import { appendChild } from '../../utils/element';
-import VideoFactory from '../video-factory/VideoFactory';
+import VideoFactory from '../video-factory';
 
 /**
  * 비디오 플레이어의 핵심 클래스
@@ -29,6 +29,8 @@ export default class Core extends UIObject {
 
   /**
    * 하위 엘리먼트를 렌더링하고 부모 엘리먼트에 core 엘리먼트를 추가한다.
+   *
+   * @returns {Core}
    */
   render() {
     appendChild(this.el, this.video.render().el);
@@ -37,6 +39,18 @@ export default class Core extends UIObject {
       appendChild(this.config.parentElement, this.el);
     }
 
+    return this;
+  }
+
+  /**
+   * 자신 및 하위 엘리먼트를 전부 파괴한다.
+   *
+   * @returns {Core}
+   */
+  destroy() {
+    super.destroy();
+    this.videoFactory.off();
+    this.video.destroy();
     return this;
   }
 }

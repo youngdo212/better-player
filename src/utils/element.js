@@ -84,3 +84,12 @@ export function canPlayVideoType(videoType) {
 
   return !!video.canPlayType(videoType);
 }
+
+/**
+ * id 속성을 이용해서 엘리먼트를 찾는다.
+ * @param {string} id
+ * @returns {HTMLElement}
+ */
+export function getElementById(id) {
+  return document.getElementById(id);
+}
