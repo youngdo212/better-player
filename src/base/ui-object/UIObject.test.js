@@ -1,5 +1,9 @@
 import UIObject from './UIObject';
 
+beforeEach(() => {
+  document.body.innerHTML = '';
+});
+
 it('div 엘리먼트가 디폴트로 만들어진다', () => {
   const div = new UIObject();
   expect(div.el.tagName).toBe('DIV');
