@@ -2,7 +2,7 @@
 
 import UIObject from '../../base/ui-object';
 import { appendChild } from '../../utils/element';
-import VideoFactory from '../video-factory/VideoFactory';
+import VideoFactory from '../video-factory';
 
 /**
  * 비디오 플레이어의 핵심 클래스
