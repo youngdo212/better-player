@@ -88,3 +88,22 @@ Events.VIDEO_PLAY = 'video:play';
  * @param {Event} event
  */
 Events.VIDEO_PAUSE = 'video:pause';
+
+// PLAYER 이벤트 목록
+/**
+ * 비디오 플레이어를 재생했을 때 발생하는 이벤트.
+ * 이 이벤트는 play() 등으로 비디오 플레이의 재생을 시도했을 때 발생한다.
+ * 따라서 이벤트가 발생해도 비디오가 실제로 재생 중이 아닐 수 있다.
+ *
+ * @event PLAYER_PLAY
+ * @param {Event} event
+ */
+Events.PLAYER_PLAY = 'play';
+
+/**
+ * 비디오 플레이어를 일시 정지했을 때 발생하는 이벤트
+ *
+ * @event PLAYER_PAUSE
+ * @param {Event} event
+ */
+Events.PLAYER_PAUSE = 'pause';

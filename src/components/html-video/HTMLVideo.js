@@ -78,6 +78,19 @@ export default class HTMLVideo extends Video {
   }
 
   /**
+   * DOM에서 엘리먼트를 제거하고 이벤트 리스너를 전부 삭제한다.
+   * 또한 비디오 엘리먼트 src 속성을 초기화한다.
+   *
+   * @returns {HTMLVideo}
+   */
+  destroy() {
+    super.destroy();
+    this.el.removeAttribute('src');
+    this.el.load(); // 진행중인 비디오 리소스의 다운로드를 중지한 후 초기화한 src를 재적용
+    return this;
+  }
+
+  /**
    * 리소스가 이 인스턴스에서 재생 가능한 포맷인지 검사한다.
    *
    * @param {object} source

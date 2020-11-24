@@ -2,10 +2,15 @@ import {
   addEventListener,
   appendChild,
   createElement,
+  getElementById,
   innerHTML,
   removeElement,
   removeEventListener,
 } from './element';
+
+beforeEach(() => {
+  document.body.innerHTML = '';
+});
 
 describe('createElement', () => {
   it('인자 없이 호출하면 기본 엘리먼트가 생성된다', () => {
@@ -122,5 +127,26 @@ describe('innerHTML', () => {
 
     expect(element.firstElementChild).not.toBe(disappear);
     expect(element.innerHTML).toBe(html);
+  });
+});
+
+describe('getElementById', () => {
+  it('id를 이용해서 엘리먼트를 찾는다', () => {
+    const body = document.body;
+    const target = document.createElement('div');
+    target.id = 'target';
+
+    body.appendChild(target);
+
+    expect(getElementById('target')).toBe(target);
+  });
+
+  it('id를 이용해서 엘리먼트를 못찾으면 null을 반환한다', () => {
+    const body = document.body;
+    const target = document.createElement('div');
+
+    body.appendChild(target);
+
+    expect(getElementById('target')).toBe(null);
   });
 });
