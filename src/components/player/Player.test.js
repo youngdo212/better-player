@@ -52,26 +52,29 @@ it('parent나 parentId 속성이 없으면 DOM에 엘리먼트를 추가하지 �
   expect(body.children.length).toBe(0);
 });
 
-// TODO: Jest 환경에서 HTMLVideo를 렌더링할 수 있는 방법 찾기(HTMLMediaElement.canPlayType 메소드 문제)
-// it('비디오 재생 이벤트 리스너를 호출한다', () => {
-//   const player = new Player();
-//   const callback = jest.fn();
+it('비디오 재생 이벤트 리스너를 호출한다', () => {
+  HTMLMediaElement.prototype.canPlayType = () => 'maybe';
 
-//   player.on('play', callback);
-//   player.core.video.el.dispatchEvent(new Event('play'));
+  const player = new Player();
+  const callback = jest.fn();
 
-//   expect(callback).toHaveBeenCalledTimes(1);
-// });
+  player.on('play', callback);
+  player.core.video.el.dispatchEvent(new Event('play'));
 
-// it('비디오 일시 정시 이벤트 리스너를 호출한다', () => {
-//   const player = new Player();
-//   const callback = jest.fn();
+  expect(callback).toHaveBeenCalledTimes(1);
+});
 
-//   player.on('pause', callback);
-//   player.core.video.el.dispatchEvent(new Event('pause'));
+it('비디오 일시 정시 이벤트 리스너를 호출한다', () => {
+  HTMLMediaElement.prototype.canPlayType = () => 'maybe';
 
-//   expect(callback).toHaveBeenCalledTimes(1);
-// });
+  const player = new Player();
+  const callback = jest.fn();
+
+  player.on('pause', callback);
+  player.core.video.el.dispatchEvent(new Event('pause'));
+
+  expect(callback).toHaveBeenCalledTimes(1);
+});
 
 it('비디오 플레이어의 isPaused() 메소드는 기본으로 true다', () => {
   const player = new Player();
@@ -80,6 +83,8 @@ it('비디오 플레이어의 isPaused() 메소드는 기본으로 true다', () 
 });
 
 it('비디오 플레이어를 DOM에서 제거한다', () => {
+  HTMLMediaElement.prototype.load = () => {};
+
   const body = document.body;
   const parent = document.createElement('div');
   parent.id = 'parent';
@@ -96,19 +101,45 @@ it('비디오 플레이어를 DOM에서 제거한다', () => {
   expect(parent.children.length).toBe(0);
 });
 
-// TODO: Jest 환경에서 HTMLVideo를 렌더링할 수 있는 방법 찾기(HTMLMediaElement.canPlayType 메소드 문제)
-// it('비디오 플레이어에 등록된 커스텀 이벤트 리스너가 삭제된다', () => {
-//   const player = new Player();
-//   const callback = jest.fn();
+it('비디오 플레이어에 등록된 커스텀 이벤트 리스너가 삭제된다', () => {
+  HTMLMediaElement.prototype.canPlayType = () => 'maybe';
+  HTMLMediaElement.prototype.load = () => {};
 
-//   player.on('play', callback);
-//   player.core.video.el.dispatchEvent(new Event('play'));
+  const player = new Player();
+  const callback = jest.fn();
 
-//   expect(callback).toHaveBeenCalledTimes(1);
+  player.on('play', callback);
+  player.core.video.el.dispatchEvent(new Event('play'));
 
-//   player.destroy();
-//   player.core.video.el.dispatchEvent(new Event('play'));
-//   player.core.video.el.dispatchEvent(new Event('play'));
+  expect(callback).toHaveBeenCalledTimes(1);
 
-//   expect(callback).toHaveBeenCalledTimes(1);
-// });
+  player.destroy();
+  player.core.video.el.dispatchEvent(new Event('play'));
+  player.core.video.el.dispatchEvent(new Event('play'));
+
+  expect(callback).toHaveBeenCalledTimes(1);
+});
+
+it('source 옵션에 아무것도 입력하지 않는다', () => {
+  HTMLMediaElement.prototype.canPlayType = mimeType => {
+    if (mimeType === 'video/mp4') return 'maybe';
+    return '';
+  };
+
+  const player = new Player();
+
+  expect(player.core.video.el.className).toBe('better-player__no-video');
+});
+
+it('source 옵션에 문자열을 입력한다', () => {
+  HTMLMediaElement.prototype.canPlayType = mimeType => {
+    if (mimeType === 'video/mp4') return 'maybe';
+    return '';
+  };
+
+  const player = new Player({
+    source: 'http://localhost/test.mp4',
+  });
+
+  expect(player.core.video.el.src).toBe('http://localhost/test.mp4');
+});

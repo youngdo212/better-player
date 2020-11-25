@@ -3,6 +3,7 @@
 import Events from '../../base/events';
 import defaultConfig from '../../config/defaults';
 import { getElementById } from '../../utils/element';
+import { isObject } from '../../utils/type';
 import Core from '../core';
 
 /**
@@ -34,12 +35,16 @@ export default class Player extends Events {
    * source를 규정된 객체 형식으로 변환합니다
    *
    * @param {object} config
+   * @param {object|string|undefined} config.source
    * @returns {{src, type?}}
    */
-  normalizeSource(config) {
-    const src = config.source || '';
+  normalizeSource({ source }) {
+    if (isObject(source)) {
+      source.src = source.src || '';
+      return source;
+    }
 
-    return { src };
+    return { src: source || '' };
   }
 
   /**
