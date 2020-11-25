@@ -5,5 +5,5 @@
  * @returns {string}
  */
 export default function template({ notSupportVideoFormat }) {
-  return `<span class="no-video__message">${notSupportVideoFormat}</span>`;
+  return `<span class="better-player__no-video-message">${notSupportVideoFormat}</span>`;
 }

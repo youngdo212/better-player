@@ -1,5 +1,6 @@
 /** @module components/html-video */
 
+import './HTMLVideo.scss';
 import Events from '../../base/events';
 import Video from '../../base/video';
 import mime from 'mime-types';
@@ -13,6 +14,12 @@ import { canPlayVideoType } from '../../utils/element';
 export default class HTMLVideo extends Video {
   get tagName() {
     return 'video';
+  }
+
+  get attributes() {
+    return {
+      class: 'better-player__html-video',
+    };
   }
 
   get events() {

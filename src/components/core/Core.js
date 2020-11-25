@@ -1,5 +1,6 @@
 /** @module components/core */
 
+import './Core.scss';
 import UIObject from '../../base/ui-object';
 import { appendChild } from '../../utils/element';
 import VideoFactory from '../video-factory';
@@ -12,6 +13,12 @@ import VideoFactory from '../video-factory';
  * @extends UIObject
  */
 export default class Core extends UIObject {
+  get attributes() {
+    return {
+      class: 'better-player',
+    };
+  }
+
   /**
    * 환경 설정 객체를 이용해 인스턴스를 생성한다.
    *

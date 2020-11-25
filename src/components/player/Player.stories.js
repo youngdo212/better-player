@@ -6,6 +6,9 @@ export default {
 
 const Template = ({ source }) => {
   const parent = document.createElement('div');
+  parent.style.width = '640px';
+  parent.style.height = '360px';
+
   new Player({
     source,
     parent,

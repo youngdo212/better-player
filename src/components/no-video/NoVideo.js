@@ -12,7 +12,7 @@ import template from './template';
  */
 export default class NoVideo extends Video {
   get attributes() {
-    return { class: 'no-video' };
+    return { class: 'better-player__no-video' };
   }
 
   /**
