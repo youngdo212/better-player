@@ -86,6 +86,14 @@ const player = new BetterPlayer.Player(options);
 
 비디오 소스의 URL을 설정합니다.
 
+**width: number**
+
+비디오 엘리먼트의 너비를 px 단위로 설정합니다. width가 제공되지 않을 경우 부모 엘리먼트의 너비를 따릅니다.
+
+**height: number**
+
+비디오 엘리먼트의 높이를 px 단위로 설정합니다. height가 제공되지 않을 경우 부모 엘리먼트의 높이를 따릅니다.
+
 ## API
 
 ### Methods
@@ -96,6 +104,46 @@ const player = new BetterPlayer.Player(options);
 
 ```javascript
 const isPaused = player.isPaused();
+```
+
+**getCurrentTime(): number**
+
+초 단위의 현재 시간을 반환합니다.
+
+```jsx
+const currentTime = player.getCurrentTime();
+```
+
+**getDuration(): number**
+
+영상의 총 길이를 초 단위로 반환합니다. 비디오의 메타데이터가 로드되기 전에 호출하면 제대로 된 값을 불러올 수 없으니, durationchange 이벤트가 발생한 이후에 사용할 것을 추천합니다.
+
+```jsx
+const duration = player.getDuration();
+```
+
+**getVolume(): number**
+
+0 이상 1 이하의 값으로 영상의 볼륨을 반환합니다.
+
+```jsx
+const volume = player.getVolume();
+```
+
+**isMuted()**: boolean
+
+영상의 음소거 여부를 반환합니다. 볼륨이 0일때도 true를 반환합니다.
+
+```jsx
+const isMuted = player.isMuted();
+```
+
+**isFullscreen(): boolean**
+
+비디오 플레이어의 전체화면 여부를 반환합니다.
+
+```jsx
+const isFullscreen = player.isFullscreen();
 ```
 
 **play(): void**
@@ -112,6 +160,68 @@ player.play();
 
 ```javascript
 player.pause();
+```
+
+**seek(time): void**
+
+- time: number - 초 단위의 값
+
+초 단위로 영상을 탐색합니다. 영상의 총 길이(duration)보다 큰 값을 사용할 경우 자동으로 duration으로 설정됩니다. duration을 설정하는 경우 영상이 멈추며 ended 이벤트가 발생합니다. 0 이하의 값을 입력하면 영상을 처음으로 되돌립니다.
+
+```jsx
+player.seek(1200);
+```
+
+**seekPercentage(percentage): void**
+
+- percentage: number - 0 이상 100 이하의 값
+
+퍼센트 표현법으로 영상을 탐색합니다. 100 이상의 값을 설정하면 영상이 멈추며 ended 이벤트가 발생합니다. 0 이하의 값을 입력하면 영상을 처음으로 되돌립니다.
+
+```jsx
+player.seekPercentage(50);
+```
+
+**setVolume(volume): void**
+
+- volume: number - 0 이상 1 이하의 값
+
+비디오 플레이어의 볼륨을 조절합니다.
+
+```jsx
+player.setVolume(0.4);
+```
+
+**mute(): void**
+
+비디오 플레이어를 음소거 합니다.
+
+```jsx
+player.mute();
+```
+
+**unmute(): void**
+
+비디오 플레이어의 음소거를 해제합니다.
+
+```jsx
+player.unmute();
+```
+
+**requestFullscreen(): void**
+
+비디오 플레이어를 전체 화면으로 전환합니다.
+
+```jsx
+player.requestFullscreen();
+```
+
+**exitFullscreen(): void**
+
+비디오 플레이어를 전체화면에서 나오게 합니다.
+
+```jsx
+player.exitFullscreen();
 ```
 
 **on(event, handler): void**
@@ -172,4 +282,23 @@ player.on('play', event => {
 이벤트 목록은 아래와 같습니다.
 
 - pause: 일시 정지할 때 발생. 리소스 부족으로 영상이 잠시 멈췄을 때는 발생하지 않는다(이는 waiting 이벤트 참고).
+
 - play: 재생할 때 발생. 구체적으로는 재생 버튼을 눌렀을 때나 play() 메소드를 호출했을 때 발생한다.
+
+- durationchange: 영상의 전체 시간이 변경됐을 때 발생.
+
+- volumechange: 볼륨이 변경됐을 때 발생
+
+- timeupdate: 영상의 현재 시간(getCurrentTime)이 변경됐을 때 발생
+
+- ended: 끝까지 도달해서 영상이 멈췄을 때 발생.
+
+- seeked: 탐색 작업이 완료됐을 때 발생
+
+- seeking: 탐색 작업이 시작됐을 때 발생
+
+- requestfullscreen: 전체화면으로 변경됐을 때 발생
+
+- exitfullscreen: 전체화면에서 탈출했을 때 발생
+
+- destroy: 비디오 플레이어가 파괴됐을 때 발생
