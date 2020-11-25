@@ -6,7 +6,7 @@ it('올바른 엘리먼트를 생성한다', () => {
   });
 
   expect(noVideo.el.tagName).toBe('DIV');
-  expect(noVideo.el.className).toBe('no-video');
+  expect(noVideo.el.className).toBe('better-player__no-video');
 });
 
 it('하위 엘리먼트를 렌더링한다', () => {
