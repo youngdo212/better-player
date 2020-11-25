@@ -94,3 +94,30 @@ it('자신 및 하위 엘리먼트의 이벤트 리스너를 전부 제거한다
   expect(videoListener).toHaveBeenCalledTimes(1);
   // expect(videoElListener).toHaveBeenCalledTimes(1);
 });
+
+it('width와 height가 주어지는 경우 엘리먼트에 적용한다', () => {
+  const core = new Core({
+    ...config,
+    source: { src: 'test.mp4' },
+    width: 200,
+    height: 100,
+  });
+
+  core.render();
+
+  expect(core.el.style.width).toBe('200px');
+  expect(core.el.style.height).toBe('100px');
+});
+
+it('width 또는 height가 주어지지 않는 경우 엘리먼트에 기본 크기를 적용한다', () => {
+  const core = new Core({
+    ...config,
+    source: { src: 'test.mp4' },
+    width: 200, // width만 설정
+  });
+
+  core.render();
+
+  expect(core.el.style.width).toBe('200px');
+  expect(core.el.style.height).toBe('');
+});

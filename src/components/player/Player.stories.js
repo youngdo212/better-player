@@ -4,14 +4,14 @@ export default {
   title: 'Player',
 };
 
-const Template = ({ source }) => {
+const Template = ({ source, width, height }) => {
   const parent = document.createElement('div');
-  parent.style.width = '640px';
-  parent.style.height = '360px';
 
   new Player({
     source,
     parent,
+    width,
+    height,
   });
 
   return parent;
@@ -29,4 +29,12 @@ WithoutSource.args = {};
 export const NotSupportVideoFormat = Template.bind({});
 NotSupportVideoFormat.args = {
   source: 'http:/not-support.video/format.jpg',
+};
+
+export const WithSize = Template.bind({});
+WithSize.args = {
+  source:
+    'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+  width: 640,
+  height: 360,
 };

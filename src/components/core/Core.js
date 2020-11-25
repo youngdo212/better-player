@@ -26,6 +26,8 @@ export default class Core extends UIObject {
    * @param {HTMLElement=} config.parentElement
    * @param {object} config.source
    * @param {object} config.i18n
+   * @param {number=} config.width
+   * @param {number=} config.height
    */
   constructor(config) {
     super();
@@ -35,11 +37,20 @@ export default class Core extends UIObject {
   }
 
   /**
+   * 환경 설정에 따라 엘리먼트의 사이즈를 변경한다
+   */
+  updateSize() {
+    this.el.style.width = this.config.width ? `${this.config.width}px` : '';
+    this.el.style.height = this.config.height ? `${this.config.height}px` : '';
+  }
+
+  /**
    * 하위 엘리먼트를 렌더링하고 부모 엘리먼트에 core 엘리먼트를 추가한다.
    *
    * @returns {Core}
    */
   render() {
+    this.updateSize();
     appendChild(this.el, this.video.render().el);
 
     if (this.config.parentElement) {
