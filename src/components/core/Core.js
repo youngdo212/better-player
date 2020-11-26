@@ -4,6 +4,9 @@ import './Core.scss';
 import UIObject from '../../base/ui-object';
 import { appendChild } from '../../utils/element';
 import VideoFactory from '../video-factory';
+import Controller from '../../plugins/controller';
+
+const plugins = [Controller];
 
 /**
  * 비디오 플레이어의 핵심 클래스
@@ -34,6 +37,7 @@ export default class Core extends UIObject {
     this.config = config;
     this.videoFactory = new VideoFactory(this.config);
     this.video = this.videoFactory.create();
+    this.plugins = plugins.map(plugin => new plugin(this));
   }
 
   /**

@@ -4,6 +4,7 @@ import {
   createElement,
   getElementById,
   innerHTML,
+  getElementByClassName,
   removeElement,
   removeEventListener,
 } from './element';
@@ -148,5 +149,16 @@ describe('getElementById', () => {
     body.appendChild(target);
 
     expect(getElementById('target')).toBe(null);
+  });
+});
+
+describe('getElementByClassName', () => {
+  it('class 이름을 이용해서 엘리먼트를 찾는다', () => {
+    const body = document.body;
+    const target = document.createElement('div');
+    target.className = 'target_class';
+    body.appendChild(target);
+
+    expect(getElementByClassName(body, 'target_class')).toBe(target);
   });
 });
