@@ -8,6 +8,7 @@ import {
   innerHTML,
 } from '../../utils/element';
 import template from './template';
+import Events from '../../base/events';
 
 /**
  * 비디오 플레이어를 조작하는 UI 플러그인
@@ -22,18 +23,59 @@ export default class Controller extends UIPlugin {
   }
 
   get events() {
-    return {};
+    return {
+      'click .better-player__play-toggle-button': 'togglePlay',
+    };
   }
 
-  addEventListeners() {}
+  /**
+   * 컴포넌트에 이벤트 리스너를 등록한다.
+   */
+  addEventListeners() {
+    this.video.on(Events.VIDEO_PLAY, this.updatePlayToggleButton.bind(this));
+    this.video.on(Events.VIDEO_PAUSE, this.updatePlayToggleButton.bind(this));
+  }
+
+  /**
+   * 비디오가 정지된 상태일 경우 비디오를 재생시키고, 재생 중인 경우 일시 정지시킨다.
+   */
+  togglePlay() {
+    this.video.isPaused() ? this.play() : this.pause();
+  }
+
+  /**
+   * 비디오를 재생시킨다.
+   */
+  play() {
+    this.video.play();
+  }
+
+  /**
+   * 비디오를 일시 정지시킨다.
+   */
+  pause() {
+    this.video.pause();
+  }
+
+  updatePlayToggleButton() {
+    if (this.video.isPaused()) {
+      this.$playToggleButton.classList.remove(
+        'better-player__toggle-button--pressed'
+      );
+    } else {
+      this.$playToggleButton.classList.add(
+        'better-player__toggle-button--pressed'
+      );
+    }
+  }
 
   /**
    * 생성된 하위 엘리먼트들을 캐싱한다
    */
   cacheElements() {
-    this.$playButton = getElementByClassName(
+    this.$playToggleButton = getElementByClassName(
       this.el,
-      'better-player__play-button'
+      'better-player__play-toggle-button'
     );
   }
 
@@ -44,7 +86,7 @@ export default class Controller extends UIPlugin {
    */
   render() {
     // 비디오 엘리먼트의 비디오가 재생 가능한 상태가 아닐 경우(NoVideo 경우 등) 자신을 렌더링하지 않는다.
-    if (!this.core.video.canPlay) return;
+    if (!this.video.canPlay) return;
 
     innerHTML(this.el, template());
     this.cacheElements();

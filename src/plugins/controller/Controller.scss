@@ -181,3 +181,11 @@
 .better-player__icon--hide {
   display: none;
 }
+
+.better-player__toggle-button:not(.better-player__toggle-button--pressed) .better-player__toggle-icon--pressed {
+  display: none;
+}
+
+.better-player__toggle-button.better-player__toggle-button--pressed .better-player__toggle-icon--not-pressed{
+  display: none;
+}

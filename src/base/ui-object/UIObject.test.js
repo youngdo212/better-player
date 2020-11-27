@@ -156,3 +156,63 @@ it('객체에 등록한 이벤트 리스너를 전부 제거한다', () => {
 
   expect(listener).toHaveBeenCalledTimes(1);
 });
+
+it('events 객체에 selector를 이용해 이벤트 리스너를 등록한다', () => {
+  const callback = jest.fn();
+  class Wrapper extends UIObject {
+    get events() {
+      return {
+        'click .first': 'onClick',
+      };
+    }
+    onClick() {
+      callback();
+    }
+    render() {
+      this.el.innerHTML = '<div class="first"></div><div class="second"></div>';
+      return this;
+    }
+  }
+  const wrapper = new Wrapper();
+  wrapper.render();
+  const firstEl = wrapper.el.querySelector('.first');
+  const secondEl = wrapper.el.querySelector('.second');
+
+  wrapper.el.dispatchEvent(new Event('click', { bubbles: true }));
+  expect(callback).not.toHaveBeenCalled();
+
+  secondEl.dispatchEvent(new Event('click', { bubbles: true }));
+  expect(callback).not.toHaveBeenCalled();
+
+  firstEl.dispatchEvent(new Event('click', { bubbles: true }));
+  expect(callback).toHaveBeenCalled();
+});
+
+it('events 객체에 selector를 이용해 등록한 이벤트 리스너를 제거한다', () => {
+  const callback = jest.fn();
+  class Wrapper extends UIObject {
+    get events() {
+      return {
+        'click .first': 'onClick',
+      };
+    }
+    onClick() {
+      callback();
+    }
+    render() {
+      this.el.innerHTML = '<div class="first"></div><div class="second"></div>';
+      return this;
+    }
+  }
+  const wrapper = new Wrapper();
+  wrapper.render();
+  const firstEl = wrapper.el.querySelector('.first');
+  const secondEl = wrapper.el.querySelector('.second');
+  wrapper.destroy();
+
+  wrapper.el.dispatchEvent(new Event('click', { bubbles: true }));
+  secondEl.dispatchEvent(new Event('click', { bubbles: true }));
+  firstEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(callback).not.toHaveBeenCalled();
+});

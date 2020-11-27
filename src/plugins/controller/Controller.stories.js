@@ -1,5 +1,8 @@
 import loadSprite from '../../utils/load-sprite';
 import Controller from './Controller';
+import config from '../../config/defaults';
+import HTMLVideo from '../../components/html-video';
+import Core from '../../components/core';
 
 export default {
   title: 'Controller',
@@ -11,23 +14,18 @@ export default {
  */
 
 const Template = () => {
-  const mockCoreEl = document.createElement('div');
-  mockCoreEl.style.position = 'relative';
-  mockCoreEl.style.width = '640px';
-  mockCoreEl.style.height = '360px';
-  mockCoreEl.style.background = '#ccc';
-  const mockCore = {
-    el: mockCoreEl,
-    video: {
-      canPlay: () => true,
-    },
-  };
-  const controller = new Controller(mockCore);
+  const core = new Core(config);
+  core.el.style.position = 'relative';
+  core.el.style.width = '640px';
+  core.el.style.height = '360px';
+  core.el.style.background = '#ccc';
+  core.video = new HTMLVideo(config);
+  const controller = new Controller(core);
 
   controller.render();
   loadSprite('better-player.svg');
 
-  return mockCoreEl;
+  return core.el;
 };
 
 export const Default = Template.bind({});

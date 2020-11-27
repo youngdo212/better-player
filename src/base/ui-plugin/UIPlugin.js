@@ -18,6 +18,15 @@ export default class UIPlugin extends UIObject {
   }
 
   /**
+   * core를 통해서 video에 접근할 수 있다.
+   *
+   * @returns {module:base/video}
+   */
+  get video() {
+    return this._core.video;
+  }
+
+  /**
    * core를 설정하고 이벤트 리스너를 등록한다.
    * @param {module:components/core} core
    */
