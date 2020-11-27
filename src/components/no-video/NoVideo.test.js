@@ -23,9 +23,9 @@ it('하위 엘리먼트를 렌더링한다', () => {
   );
 });
 
-it('canPlay 메소드는 항상 true를 반환한다', () => {
+it('canPlayType 메소드는 항상 true를 반환한다', () => {
   const source = { src: 'test.mp4', type: 'video/mp4' };
 
-  expect(NoVideo.canPlay()).toBe(true);
-  expect(NoVideo.canPlay(source)).toBe(true);
+  expect(NoVideo.canPlayType()).toBe(true);
+  expect(NoVideo.canPlayType(source)).toBe(true);
 });

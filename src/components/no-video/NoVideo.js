@@ -15,6 +15,10 @@ export default class NoVideo extends Video {
     return { class: 'better-player__no-video' };
   }
 
+  get canPlay() {
+    return false;
+  }
+
   /**
    * 인스턴스를 생성한다
    * @param {object} config
@@ -40,7 +44,7 @@ export default class NoVideo extends Video {
    * @returns {true}
    */
   // eslint-disable-next-line no-unused-vars
-  static canPlay(source) {
+  static canPlayType(source) {
     return true;
   }
 }

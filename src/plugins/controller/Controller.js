@@ -43,6 +43,9 @@ export default class Controller extends UIPlugin {
    * @returns {Controller}
    */
   render() {
+    // 비디오 엘리먼트의 비디오가 재생 가능한 상태가 아닐 경우(NoVideo 경우 등) 자신을 렌더링하지 않는다.
+    if (!this.core.video.canPlay) return;
+
     innerHTML(this.el, template());
     this.cacheElements();
     appendChild(this.core.el, this.el);

@@ -16,6 +16,15 @@ export default class Video extends UIObject {
   }
 
   /**
+   * 재생 가능한 상태인지를 나타낸다.
+   * 이 속성을 이용해 플러그인들이 자신의 렌더링 여부를 결정한다(e.g. Controller).
+   * @returns {boolean}
+   */
+  get canPlay() {
+    return false;
+  }
+
+  /**
    * 환경 설정을 저장하고 인스턴스를 생성한다.
    * @param {object} config
    */

@@ -16,7 +16,12 @@ const Template = () => {
   mockCoreEl.style.width = '640px';
   mockCoreEl.style.height = '360px';
   mockCoreEl.style.background = '#ccc';
-  const mockCore = { el: mockCoreEl };
+  const mockCore = {
+    el: mockCoreEl,
+    video: {
+      canPlay: () => true,
+    },
+  };
   const controller = new Controller(mockCore);
 
   controller.render();

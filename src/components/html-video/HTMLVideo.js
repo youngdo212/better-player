@@ -29,6 +29,10 @@ export default class HTMLVideo extends Video {
     };
   }
 
+  get canPlay() {
+    return true;
+  }
+
   /**
    * 인스턴스를 생성하고 비디오 엘리먼트에 속성을 추가한다.
    *
@@ -104,7 +108,7 @@ export default class HTMLVideo extends Video {
    * @param {string} source.src
    * @param {string=} source.type
    */
-  static canPlay({ src, type }) {
+  static canPlayType({ src, type }) {
     let mimeType = type;
 
     if (!mimeType) {
