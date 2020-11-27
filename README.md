@@ -6,6 +6,7 @@
 
 - [Quick Start](#Quick-Start)
 - [API Documents](#API)
+- [Customizing](#Customizing)
 
 ## Quick Start
 
@@ -93,6 +94,10 @@ const player = new BetterPlayer.Player(options);
 **height: number**
 
 비디오 엘리먼트의 높이를 px 단위로 설정합니다. height가 제공되지 않을 경우 부모 엘리먼트의 높이를 따릅니다.
+
+**iconUrl: string**
+
+아이콘 svg sprite를 별도 제공하고 싶은 경우, sprite url을 직접 입력합니다. 자세한 내용은 [Customizing](#Customizing)을 참고 하세요.
 
 ## API
 
@@ -302,3 +307,34 @@ player.on('play', event => {
 - exitfullscreen: 전체화면에서 탈출했을 때 발생
 
 - destroy: 비디오 플레이어가 파괴됐을 때 발생
+
+## Customizing
+
+다양한 방식으로 비디오 플레이어의 스타일을 변경할 수 있습니다.
+
+### 아이콘 별도로 제공하기
+
+BetterPlayer는 svg 아이콘을 사용하고 있습니다. 만약 자신만의 멋진 아이콘들이 svg 파일로 준비되어 있다면 옵션 객체의 `iconUrl` 속성을 이용해서 내 아이콘을 비디오 플레이어에 적용할 수 있습니다.
+
+`iconUrl` 속성을 이용하고 싶다면 두 가지 사전 준비가 필요합니다.
+
+1. 아이콘들이 전부 하나의 파일(svg sprite)에 들어가 있어야 합니다. svg sprite를 만드는 방법은 [다음](https://css-tricks.com/svg-sprites-use-better-icon-fonts/)을 참고하세요.
+2. svg sprite에 들어있는 각 아이콘의 id 속성이 BetterPlayer의 아이콘 id와 일치해야 합니다.
+
+| 아이콘                    | id                           |
+| ------------------------- | ---------------------------- |
+| 컨트롤러 플레이 버튼      | better-player-play           |
+| 컨트롤러 일시 정지 버튼   | better-player-pause          |
+| 컨트롤러 음소거 버튼      | better-player-mute           |
+| 컨트롤러 음소거 취소 버튼 | better-player-volume         |
+| 전체화면 버튼             | better-player-fullscreen-in  |
+| 전체화면 취소 버튼        | better-player-fullscreen-out |
+
+svg sprite가 준비됐다면 아래와 같이 svg url을 입력할 수 있습니다.
+
+```jsx
+const player = new BetterPlayer.Player({
+	...,
+	iconUrl: 'path/to/svg-sprite.svg'
+});
+```
