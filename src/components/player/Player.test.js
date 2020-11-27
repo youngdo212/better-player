@@ -49,7 +49,7 @@ it('parent나 parentId 속성이 없으면 DOM에 엘리먼트를 추가하지 �
     source: 'test.mp4',
   });
 
-  expect(body.children.length).toBe(0);
+  expect(body.querySelector('.better-player')).toBe(null);
 });
 
 it('비디오 재생 이벤트 리스너를 호출한다', () => {

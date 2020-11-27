@@ -17,7 +17,9 @@ const Template = () => {
   mockCoreEl.style.height = '360px';
   mockCoreEl.style.background = '#ccc';
   const mockCore = { el: mockCoreEl };
-  const controller = new Controller(mockCore); // eslint-disable-line no-unused-vars
+  const controller = new Controller(mockCore);
+
+  controller.render();
   loadSprite('better-player.svg');
 
   return mockCoreEl;

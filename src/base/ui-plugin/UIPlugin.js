@@ -18,14 +18,13 @@ export default class UIPlugin extends UIObject {
   }
 
   /**
-   * 이벤트 리스너를 등록하고 렌더링을 수행한다.
+   * core를 설정하고 이벤트 리스너를 등록한다.
    * @param {module:components/core} core
    */
   constructor(core) {
     super();
     this._core = core;
     this.addEventListeners();
-    this.render();
   }
 
   /**

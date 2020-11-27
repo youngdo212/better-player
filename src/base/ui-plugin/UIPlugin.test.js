@@ -27,20 +27,3 @@ it('인스턴스를 생성할 때 addEventListener 메소드를 호출한다', (
 
   expect(fn).toHaveBeenCalled();
 });
-
-it('인스턴스를 생성할 때 render 메소드를 호출한다', () => {
-  const fn = jest.fn();
-  class MyPlugin extends UIPlugin {
-    render() {
-      fn();
-      return this;
-    }
-  }
-  const core = new Core({
-    ...config,
-    source: { src: '' },
-  });
-  const myPlugin = new MyPlugin(core); // eslint-disable-line no-unused-vars
-
-  expect(fn).toHaveBeenCalled();
-});

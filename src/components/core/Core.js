@@ -5,6 +5,7 @@ import UIObject from '../../base/ui-object';
 import { appendChild } from '../../utils/element';
 import VideoFactory from '../video-factory';
 import Controller from '../../plugins/controller';
+import loadSprite from '../../utils/load-sprite';
 
 const plugins = [Controller];
 
@@ -31,13 +32,14 @@ export default class Core extends UIObject {
    * @param {object} config.i18n
    * @param {number=} config.width
    * @param {number=} config.height
+   * @param {string} config.iconUrl
    */
   constructor(config) {
     super();
     this.config = config;
     this.videoFactory = new VideoFactory(this.config);
     this.video = this.videoFactory.create();
-    this.plugins = plugins.map(plugin => new plugin(this));
+    this.plugins = plugins.map(Plugin => new Plugin(this));
   }
 
   /**
@@ -56,6 +58,8 @@ export default class Core extends UIObject {
   render() {
     this.updateSize();
     appendChild(this.el, this.video.render().el);
+    this.plugins.forEach(plugin => plugin.render());
+    loadSprite(this.config.iconUrl);
 
     if (this.config.parentElement) {
       appendChild(this.config.parentElement, this.el);
@@ -73,6 +77,7 @@ export default class Core extends UIObject {
     super.destroy();
     this.videoFactory.off();
     this.video.destroy();
+    this.plugins.forEach(plugin => plugin.destroy());
     return this;
   }
 }
