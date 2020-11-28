@@ -117,6 +117,14 @@ export default class HTMLVideo extends Video {
   }
 
   /**
+   * 비디오를 탐색한다.
+   * @param {number} time
+   */
+  seek(time) {
+    this.el.currentTime = time;
+  }
+
+  /**
    * DOM에서 엘리먼트를 제거하고 이벤트 리스너를 전부 삭제한다.
    * 또한 비디오 엘리먼트 src 속성을 초기화한다.
    *

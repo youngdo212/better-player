@@ -158,15 +158,20 @@ it('객체에 등록한 이벤트 리스너를 전부 제거한다', () => {
 });
 
 it('events 객체에 selector를 이용해 이벤트 리스너를 등록한다', () => {
-  const callback = jest.fn();
+  const callback1 = jest.fn();
+  const callback2 = jest.fn();
   class Wrapper extends UIObject {
     get events() {
       return {
-        'click .first': 'onClick',
+        'click .first': 'onClickFirst',
+        'click .second': 'onClickSecond',
       };
     }
-    onClick() {
-      callback();
+    onClickFirst() {
+      callback1();
+    }
+    onClickSecond() {
+      callback2();
     }
     render() {
       this.el.innerHTML = '<div class="first"></div><div class="second"></div>';
@@ -179,25 +184,31 @@ it('events 객체에 selector를 이용해 이벤트 리스너를 등록한다',
   const secondEl = wrapper.el.querySelector('.second');
 
   wrapper.el.dispatchEvent(new Event('click', { bubbles: true }));
-  expect(callback).not.toHaveBeenCalled();
-
-  secondEl.dispatchEvent(new Event('click', { bubbles: true }));
-  expect(callback).not.toHaveBeenCalled();
+  expect(callback1).not.toHaveBeenCalled();
+  expect(callback2).not.toHaveBeenCalled();
 
   firstEl.dispatchEvent(new Event('click', { bubbles: true }));
-  expect(callback).toHaveBeenCalled();
+  expect(callback1).toHaveBeenCalled();
+
+  secondEl.dispatchEvent(new Event('click', { bubbles: true }));
+  expect(callback2).toHaveBeenCalled();
 });
 
 it('events 객체에 selector를 이용해 등록한 이벤트 리스너를 제거한다', () => {
-  const callback = jest.fn();
+  const callback1 = jest.fn();
+  const callback2 = jest.fn();
   class Wrapper extends UIObject {
     get events() {
       return {
-        'click .first': 'onClick',
+        'click .first': 'onClickFirst',
+        'click .second': 'onClickSecond',
       };
     }
-    onClick() {
-      callback();
+    onClickFirst() {
+      callback1();
+    }
+    onClickSecond() {
+      callback2();
     }
     render() {
       this.el.innerHTML = '<div class="first"></div><div class="second"></div>';
@@ -214,5 +225,6 @@ it('events 객체에 selector를 이용해 등록한 이벤트 리스너를 제�
   secondEl.dispatchEvent(new Event('click', { bubbles: true }));
   firstEl.dispatchEvent(new Event('click', { bubbles: true }));
 
-  expect(callback).not.toHaveBeenCalled();
+  expect(callback1).not.toHaveBeenCalled();
+  expect(callback2).not.toHaveBeenCalled();
 });

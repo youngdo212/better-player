@@ -84,7 +84,7 @@ export default class UIObject extends Events {
       const listener = this[listenerName];
 
       if (listener) {
-        const [eventName, selector] = event.split(' ');
+        const [, selector] = event.split(' ');
 
         if (selector) {
           const wrapper = e => {
@@ -93,9 +93,9 @@ export default class UIObject extends Events {
             listener.call(this, e);
           };
 
-          return { ...events, [eventName]: wrapper };
+          return { ...events, [event]: wrapper };
         } else {
-          return { ...events, [eventName]: listener.bind(this) };
+          return { ...events, [event]: listener.bind(this) };
         }
       } else {
         return events;
@@ -107,7 +107,8 @@ export default class UIObject extends Events {
    * 엘리먼트(el)에 이벤트 핸들러를 등록한다
    */
   delegateEvents() {
-    Object.entries(this._events).forEach(([eventName, listener]) => {
+    Object.entries(this._events).forEach(([event, listener]) => {
+      const [eventName] = event.split(' ');
       addEventListener(this.el, eventName, listener);
     });
   }
@@ -116,7 +117,8 @@ export default class UIObject extends Events {
    * 엘리먼트(el)에서 UIObject가 등록한 이벤트 핸들러들을 제거한다
    */
   undelegateEvents() {
-    Object.entries(this._events).forEach(([eventName, listener]) => {
+    Object.entries(this._events).forEach(([event, listener]) => {
+      const [eventName] = event.split(' ');
       removeEventListener(this.el, eventName, listener);
     });
   }

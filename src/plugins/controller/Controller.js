@@ -26,16 +26,28 @@ export default class Controller extends UIPlugin {
   get events() {
     return {
       'click .better-player__play-toggle-button': 'togglePlay',
+      'click .better-player__seek-bar': 'seek',
+      'mousedown .better-player__seek-bar': 'startSeekDrag',
     };
+  }
+
+  /**
+   * 인스턴스를 생성한다.
+   * @param {module:components/core} core
+   */
+  constructor(core) {
+    super(core);
+    this.isDraggingSeekBar = false; // seek bar를 드래그 중인지 나타내는 값
+    this.playOnSeeked = false; // seek 작업 수행 후 비디오를 플레이할 지를 나타내는 값
   }
 
   /**
    * 컴포넌트에 이벤트 리스너를 등록한다.
    */
   addEventListeners() {
-    this.video.on(Events.VIDEO_PLAY, this.updatePlayToggleButton.bind(this));
-    this.video.on(Events.VIDEO_PAUSE, this.updatePlayToggleButton.bind(this));
-    this.video.on(Events.VIDEO_TIMEUPDATE, this.updateSeekBar.bind(this));
+    this.video.on(Events.VIDEO_PLAY, this.updatePlayToggleButton, this);
+    this.video.on(Events.VIDEO_PAUSE, this.updatePlayToggleButton, this);
+    this.video.on(Events.VIDEO_TIMEUPDATE, this.updateSeekBar, this);
   }
 
   /**
@@ -59,6 +71,36 @@ export default class Controller extends UIPlugin {
     this.video.pause();
   }
 
+  /**
+   * seek bar의 드래그를 시작한다.
+   */
+  startSeekDrag() {
+    if (!this.video.isPaused()) {
+      this.video.pause();
+      this.playOnSeeked = true;
+    }
+    this.isDraggingSeekBar = true;
+  }
+
+  /**
+   * 비디오 시간을 seek bar를 바탕으로 변경한다.
+   */
+  seek() {
+    const duration = this.video.getDuration();
+    const time = Number(this.$seekBar.value) * duration;
+
+    this.video.seek(time);
+    this.isDraggingSeekBar = false;
+
+    if (this.playOnSeeked) {
+      this.video.play();
+      this.playOnSeeked = false;
+    }
+  }
+
+  /**
+   * 비디오의 재생 여부에 따라서 토글 버튼의 아이콘을 변경한다.
+   */
   updatePlayToggleButton() {
     if (this.video.isPaused()) {
       this.$playToggleButton.classList.remove(
@@ -71,7 +113,11 @@ export default class Controller extends UIPlugin {
     }
   }
 
+  /**
+   * 비디오의 현재 시간에 따라서 seek bar의 value를 변경한다.
+   */
   updateSeekBar() {
+    if (this.isDraggingSeekBar) return; // seek bar를 드래그 중인 경우 업데이트하지 않는다.
     const duration = this.video.getDuration();
     const currentTime = this.video.getCurrentTime();
     const value = currentTime / duration;

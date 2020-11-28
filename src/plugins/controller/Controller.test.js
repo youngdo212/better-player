@@ -124,3 +124,106 @@ it('비디오의 시간이 변경되면 seek bar의 value가 변경된다', () =
 
   expect(seekBarEl.value).toBe('0.5');
 });
+
+it('seek bar를 드래그를 시작할 경우 timeupdate로 인한 seek bar의 value는 변경되지 않는다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  const controller = new Controller(core);
+  controller.render();
+  const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
+
+  seekBarEl.dispatchEvent(new Event('mousedown', { bubbles: true }));
+  core.video.getCurrentTime = () => 5;
+  core.video.getDuration = () => 10;
+  core.video.emit(Events.VIDEO_TIMEUPDATE);
+
+  expect(seekBarEl.value).toBe('0');
+});
+
+it('seek bar의 드래그를 시작했을 때 영상이 재생중인 경우 영상의 재생을 일시 정지한다.', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.pause = jest.fn();
+  core.video.isPaused = () => false;
+  const controller = new Controller(core);
+  controller.render();
+  const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
+
+  seekBarEl.dispatchEvent(new Event('mousedown', { bubbles: true }));
+
+  expect(core.video.pause).toHaveBeenCalled();
+});
+
+it('seek bar의 드래그를 시작했을 때 영상이 일시 정지인 경우 영상은 여전히 일시 정지 중이다.', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.play = jest.fn();
+  const controller = new Controller(core);
+  controller.render();
+  const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
+
+  seekBarEl.dispatchEvent(new Event('mousedown', { bubbles: true }));
+
+  expect(core.video.play).not.toHaveBeenCalled();
+});
+
+it('seek bar 드래그가 끝나면 비디오의 시간을 탐색한다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.seek = jest.fn();
+  core.video.getDuration = () => 10;
+  const controller = new Controller(core);
+  controller.render();
+  const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
+  seekBarEl.value = '0.5';
+
+  seekBarEl.dispatchEvent(new Event('mousedown', { bubbles: true }));
+  seekBarEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.video.seek).toHaveBeenCalledWith(5);
+});
+
+it('seek bar 드래그가 끝나면 timeupdate로 인한 seek bar의 value가 변경이 된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.getCurrentTime = () => 5;
+  core.video.getDuration = () => 10;
+  const controller = new Controller(core);
+  controller.render();
+  const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
+
+  // 드래그 시작 및 timeupdate 이벤트 발생
+  seekBarEl.dispatchEvent(new Event('mousedown', { bubbles: true }));
+  core.video.emit(Events.VIDEO_TIMEUPDATE);
+
+  // 드래그를 시작하면 timeupdate 이벤트를 핸들리하지 않는다
+  expect(seekBarEl.value).toBe('0');
+
+  // 드래그 종료
+  seekBarEl.dispatchEvent(new Event('click', { bubbles: true }));
+  core.video.emit(Events.VIDEO_TIMEUPDATE);
+
+  expect(seekBarEl.value).toBe('0.5');
+});
+
+it('seek bar 드래그가 끝나면 재생 중이었던 경우 다시 재생한다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.pause = jest.fn();
+  core.video.play = jest.fn();
+  core.video.seek = jest.fn();
+  core.video.isPaused = () => false;
+  const controller = new Controller(core);
+  controller.render();
+  const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
+
+  seekBarEl.dispatchEvent(new Event('mousedown', { bubbles: true }));
+
+  expect(core.video.pause).toHaveBeenCalledTimes(1);
+  expect(core.video.play).toHaveBeenCalledTimes(0);
+
+  seekBarEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.video.pause).toHaveBeenCalledTimes(1);
+  expect(core.video.play).toHaveBeenCalledTimes(1);
+});

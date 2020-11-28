@@ -81,3 +81,11 @@ it('비디오의 현재 시간을 반환한다', () => {
 
   expect(video.getCurrentTime()).toBe(0);
 });
+
+it('비디오의 현재 시간을 변경한다', () => {
+  const video = new HTMLVideo(config);
+
+  video.seek(100);
+
+  expect(video.getCurrentTime()).toBe(100);
+});

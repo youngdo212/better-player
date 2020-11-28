@@ -36,3 +36,9 @@ it('getCurrentTime() 메소드를 가진다', () => {
 
   expect(video.getCurrentTime).toBeDefined();
 });
+
+it('seek() 메소드를 가진다', () => {
+  const video = new Video({});
+
+  expect(video.seek).toBeDefined();
+});

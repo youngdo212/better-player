@@ -66,4 +66,10 @@ export default class Video extends UIObject {
    * 비디오를 일시 정지한다.
    */
   pause() {}
+
+  /**
+   * 영상을 탐색한다
+   * @param {number} time
+   */
+  seek(time) {} // eslint-disable-line
 }
