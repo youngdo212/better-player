@@ -29,7 +29,7 @@ export default class Controller extends UIPlugin {
       'click .better-player__play-toggle-button': 'togglePlay',
       'click .better-player__seek-bar': 'seek',
       'mousedown .better-player__seek-bar': 'startSeekDrag',
-      'mousemove .better-player__seek-bar': 'moveSeekDrag',
+      'input .better-player__seek-bar': 'updateCurrentTime',
     };
   }
 
@@ -86,16 +86,6 @@ export default class Controller extends UIPlugin {
   }
 
   /**
-   * seek bar의 드래그의 움직인다.
-   * 움직임에 따라 컨트롤러의 현재 시간이 변경한다.
-   */
-  moveSeekDrag() {
-    const duration = this.video.getDuration();
-    const currentTime = Number(this.$seekBar.value) * duration;
-    this.$currentTime.textContent = formatTime(currentTime);
-  }
-
-  /**
    * 비디오 시간을 seek bar를 바탕으로 변경한다.
    */
   seek() {
@@ -146,10 +136,11 @@ export default class Controller extends UIPlugin {
   }
 
   /**
-   * 영상의 현재 시간을 바탕으로 컨트롤러의 현재 시간을 변경한다
+   * seek bar의 위치를 바탕으로 현재 시간을 변경한다
    */
   updateCurrentTime() {
-    const currentTime = this.video.getCurrentTime();
+    const duration = this.video.getDuration();
+    const currentTime = Number(this.$seekBar.value) * duration;
     this.$currentTime.textContent = formatTime(currentTime);
   }
 
