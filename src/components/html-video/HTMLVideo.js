@@ -26,6 +26,7 @@ export default class HTMLVideo extends Video {
     return {
       play: 'onPlay',
       pause: 'onPause',
+      timeupdate: 'onTimeupdate',
     };
   }
 
@@ -66,12 +67,39 @@ export default class HTMLVideo extends Video {
   }
 
   /**
+   * 시간 변경 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onTimeupdate(event) {
+    this.emit(Events.VIDEO_TIMEUPDATE, event);
+  }
+
+  /**
    * 비디오의 정지 여부를 반환한다.
    *
    * @returns {boolean}
    */
   isPaused() {
     return this.el.paused;
+  }
+
+  /**
+   * 비디오의 총 길이를 반환한다.
+   *
+   * @returns {number}
+   */
+  getDuration() {
+    return this.el.duration;
+  }
+
+  /**
+   * 비디오의 현재 시간을 반환한다.
+   *
+   * @returns {number}
+   */
+  getCurrentTime() {
+    return this.el.currentTime;
   }
 
   /**

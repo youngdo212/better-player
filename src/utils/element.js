@@ -98,7 +98,7 @@ export function getElementById(id) {
  * class 이름에 매칭되는 가장 첫 번째 엘리먼트를 탐색한다.
  * @param {HTMLElement} element
  * @param {string} className
- * @returns {HTMLElement|null}
+ * @returns {any}
  */
 export function getElementByClassName(element, className) {
   return element.querySelector(`.${className}`);

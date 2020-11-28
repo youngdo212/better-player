@@ -1,7 +1,7 @@
 export default function template() {
   return `
     <div class="better-player__controller-top-panel">
-      <input type="range" class="better-player__seek-bar">
+      <input type="range" class="better-player__seek-bar" min="0" max="1" value="0" step="any">
     </div>
     <div class="better-player__controller-bottom-panel">
       <div class="better-player__controller-left-panel">

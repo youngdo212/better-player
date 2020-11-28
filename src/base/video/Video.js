@@ -42,6 +42,22 @@ export default class Video extends UIObject {
   }
 
   /**
+   * 영상의 총 길이를 반환한다.
+   * @returns {number}
+   */
+  getDuration() {
+    return NaN;
+  }
+
+  /**
+   * 영상의 현재 시간을 반환한다
+   * @returns {number}
+   */
+  getCurrentTime() {
+    return 0;
+  }
+
+  /**
    * 비디오를 재생한다
    */
   play() {}

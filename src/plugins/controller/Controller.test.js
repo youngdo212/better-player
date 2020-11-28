@@ -106,3 +106,21 @@ it('비디오가 일시 정지되면 playToggleButton의 클래스를 삭제한�
     )
   ).toBe(false);
 });
+
+it('비디오의 시간이 변경되면 seek bar의 value가 변경된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  const controller = new Controller(core);
+  controller.render();
+  const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
+
+  core.video.emit(Events.VIDEO_TIMEUPDATE);
+
+  expect(seekBarEl.value).toBe('0');
+
+  core.video.getCurrentTime = () => 5;
+  core.video.getDuration = () => 10;
+  core.video.emit(Events.VIDEO_TIMEUPDATE);
+
+  expect(seekBarEl.value).toBe('0.5');
+});

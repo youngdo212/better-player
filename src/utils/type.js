@@ -31,3 +31,14 @@ export function isObject(value) {
 export function isString(value) {
   return getConstructor(value) === String;
 }
+
+/**
+ * Number 타입인지 확인한다.
+ * NaN의 경우 false를 반환한다.
+ *
+ * @param {any} value
+ * @returns {boolean}
+ */
+export function isNumber(value) {
+  return getConstructor(value) === Number && !Number.isNaN(value);
+}

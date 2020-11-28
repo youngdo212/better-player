@@ -1,4 +1,4 @@
-import { isObject, isString } from './type';
+import { isNumber, isObject, isString } from './type';
 
 describe('isObject', () => {
   it('객체 타입인지 확인한다', () => {
@@ -27,5 +27,21 @@ describe('isString', () => {
     expect(isString(undefined)).toBe(false);
     expect(isString(false)).toBe(false);
     expect(isString(Symbol('string'))).toBe(false);
+  });
+});
+
+describe('isNumber', () => {
+  it('Number 타입인지 확인한다', () => {
+    expect(isNumber(1)).toBe(true);
+    expect(isNumber(new Number('123'))).toBe(true);
+    expect(isNumber(NaN)).toBe(false);
+    expect(isNumber('')).toBe(false);
+    expect(isNumber({})).toBe(false);
+    expect(isNumber([])).toBe(false);
+    expect(isNumber(() => {})).toBe(false);
+    expect(isNumber(null)).toBe(false);
+    expect(isNumber(undefined)).toBe(false);
+    expect(isNumber(false)).toBe(false);
+    expect(isNumber(Symbol('Number'))).toBe(false);
   });
 });

@@ -24,3 +24,15 @@ it('pause() 메소드를 가진다', () => {
 
   expect(video.pause).toBeDefined();
 });
+
+it('getDuration() 메소드를 가진다', () => {
+  const video = new Video({});
+
+  expect(video.getDuration).toBeDefined();
+});
+
+it('getCurrentTime() 메소드를 가진다', () => {
+  const video = new Video({});
+
+  expect(video.getCurrentTime).toBeDefined();
+});

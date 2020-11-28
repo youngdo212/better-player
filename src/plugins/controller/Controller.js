@@ -9,6 +9,7 @@ import {
 } from '../../utils/element';
 import template from './template';
 import Events from '../../base/events';
+import { isNumber } from '../../utils/type';
 
 /**
  * 비디오 플레이어를 조작하는 UI 플러그인
@@ -34,6 +35,7 @@ export default class Controller extends UIPlugin {
   addEventListeners() {
     this.video.on(Events.VIDEO_PLAY, this.updatePlayToggleButton.bind(this));
     this.video.on(Events.VIDEO_PAUSE, this.updatePlayToggleButton.bind(this));
+    this.video.on(Events.VIDEO_TIMEUPDATE, this.updateSeekBar.bind(this));
   }
 
   /**
@@ -69,6 +71,13 @@ export default class Controller extends UIPlugin {
     }
   }
 
+  updateSeekBar() {
+    const duration = this.video.getDuration();
+    const currentTime = this.video.getCurrentTime();
+    const value = currentTime / duration;
+    this.$seekBar.value = isNumber(value) ? value : 0;
+  }
+
   /**
    * 생성된 하위 엘리먼트들을 캐싱한다
    */
@@ -77,6 +86,7 @@ export default class Controller extends UIPlugin {
       this.el,
       'better-player__play-toggle-button'
     );
+    this.$seekBar = getElementByClassName(this.el, 'better-player__seek-bar');
   }
 
   /**
