@@ -3,9 +3,11 @@
 import './Controller.scss';
 import UIPlugin from '../../base/ui-plugin';
 import {
+  addClass,
   appendChild,
   getElementByClassName,
   innerHTML,
+  removeClass,
 } from '../../utils/element';
 import template from './template';
 import Events from '../../base/events';
@@ -28,6 +30,7 @@ export default class Controller extends UIPlugin {
     return {
       'click .better-player__play-toggle-button': 'togglePlay',
       'click .better-player__seek-bar': 'seek',
+      'click .better-player__mute-toggle-button': 'toggleMute',
       'mousedown .better-player__seek-bar': 'startSeekDrag',
       'input .better-player__seek-bar': 'updateCurrentTime',
       'input .better-player__volume-bar': 'setVolume',
@@ -42,6 +45,7 @@ export default class Controller extends UIPlugin {
     super(core);
     this.isDraggingSeekBar = false; // seek bar를 드래그 중인지 나타내는 값
     this.playOnSeeked = false; // seek 작업 수행 후 비디오를 플레이할 지를 나타내는 값
+    this.lastVolume = 1; // 음소거를 풀었을 때 사용하기 위해 저장하는 볼륨
   }
 
   /**
@@ -52,7 +56,7 @@ export default class Controller extends UIPlugin {
     this.video.on(Events.VIDEO_PAUSE, this.updatePlayToggleButton, this);
     this.video.on(Events.VIDEO_TIMEUPDATE, this.onTimeupdate, this);
     this.video.on(Events.VIDEO_DURATIONCHANGE, this.updateDuration, this);
-    this.video.on(Events.VIDEO_VOLUMECHANGE, this.updateVolumeBar, this);
+    this.video.on(Events.VIDEO_VOLUMECHANGE, this.onVolumeChange, this);
   }
 
   /**
@@ -108,7 +112,29 @@ export default class Controller extends UIPlugin {
    */
   setVolume() {
     const volume = Number(this.$volumeBar.value);
+    this.lastVolume = volume;
     this.video.setVolume(volume);
+  }
+
+  /**
+   * 비디오의 볼륨이 없을 경우 음소거를 해제하고, 반대의 경우 음소거한다.
+   */
+  toggleMute() {
+    this.video.getVolume() ? this.mute() : this.unmute();
+  }
+
+  /**
+   * 비디오를 음소거한다.
+   */
+  mute() {
+    this.video.setVolume(0);
+  }
+
+  /**
+   * 비디오 음소거를 해제하고 이전 볼륨으로 되돌린다.
+   */
+  unmute() {
+    this.video.setVolume(this.lastVolume || 1);
   }
 
   /**
@@ -116,13 +142,12 @@ export default class Controller extends UIPlugin {
    */
   updatePlayToggleButton() {
     if (this.video.isPaused()) {
-      this.$playToggleButton.classList.remove(
+      removeClass(
+        this.$playToggleButton,
         'better-player__toggle-button--pressed'
       );
     } else {
-      this.$playToggleButton.classList.add(
-        'better-player__toggle-button--pressed'
-      );
+      addClass(this.$playToggleButton, 'better-player__toggle-button--pressed');
     }
   }
 
@@ -164,11 +189,31 @@ export default class Controller extends UIPlugin {
   }
 
   /**
+   * 비디오의 볼륨이 변경되었을 때 컨트롤러 볼륨 관련 UI를 변경한다.
+   */
+  onVolumeChange() {
+    this.updateVolumeBar();
+    this.updateMuteToggleButton();
+  }
+
+  /**
    * volume bar를 비디오의 볼륨을 바탕으로 변경한다.
    */
   updateVolumeBar() {
     const volume = this.video.getVolume();
     this.$volumeBar.value = volume;
+  }
+
+  updateMuteToggleButton() {
+    const volume = this.video.getVolume();
+    if (volume === 0) {
+      addClass(this.$muteToggleButton, 'better-player__toggle-button--pressed');
+    } else {
+      removeClass(
+        this.$muteToggleButton,
+        'better-player__toggle-button--pressed'
+      );
+    }
   }
 
   /**
@@ -188,6 +233,10 @@ export default class Controller extends UIPlugin {
     this.$volumeBar = getElementByClassName(
       this.el,
       'better-player__volume-bar'
+    );
+    this.$muteToggleButton = getElementByClassName(
+      this.el,
+      'better-player__mute-toggle-button'
     );
   }
 

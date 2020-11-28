@@ -103,3 +103,23 @@ export function getElementById(id) {
 export function getElementByClassName(element, className) {
   return element.querySelector(`.${className}`);
 }
+
+/**
+ * 엘리먼트에 class를 추가한다. 중복 추가는 하지 않는다.
+ *
+ * @param {HTMLElement} element
+ * @param {string} className
+ */
+export function addClass(element, className) {
+  element.classList.add(className);
+}
+
+/**
+ * 엘리먼트에서 class를 제거한다.
+ *
+ * @param {HTMLElement} element
+ * @param {string} className
+ */
+export function removeClass(element, className) {
+  element.classList.remove(className);
+}

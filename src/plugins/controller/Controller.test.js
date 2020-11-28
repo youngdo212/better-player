@@ -299,3 +299,107 @@ it('volumechange 이벤트가 비디오에서 발생하면 컨트롤러의 volum
 
   expect(volumeBarEl.value).toBe('0.212');
 });
+
+it('비디오의 볼륨이 0이 되면 음소거 토글 버튼이 업데이트 된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.getVolume = () => 0;
+  const controller = new Controller(core);
+  controller.render();
+  const muteToggleButtonEl = controller.el.querySelector(
+    '.better-player__mute-toggle-button'
+  );
+
+  core.video.el.dispatchEvent(new Event('volumechange', { bubbles: true }));
+
+  expect(
+    muteToggleButtonEl.classList.contains(
+      'better-player__toggle-button--pressed'
+    )
+  ).toBe(true);
+});
+
+it('비디오의 볼륨이 0이 아니게 되면 음소거 토글 버튼이 업데이트 된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.getVolume = () => 0;
+  const controller = new Controller(core);
+  controller.render();
+  const muteToggleButtonEl = controller.el.querySelector(
+    '.better-player__mute-toggle-button'
+  );
+
+  core.video.el.dispatchEvent(new Event('volumechange', { bubbles: true }));
+
+  expect(
+    muteToggleButtonEl.classList.contains(
+      'better-player__toggle-button--pressed'
+    )
+  ).toBe(true);
+
+  core.video.getVolume = () => 1;
+  core.video.el.dispatchEvent(new Event('volumechange', { bubbles: true }));
+
+  expect(
+    muteToggleButtonEl.classList.contains(
+      'better-player__toggle-button--pressed'
+    )
+  ).toBe(false);
+});
+
+it('음소거 토글 버튼을 눌러 음소거를 한다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  const controller = new Controller(core);
+  controller.render();
+  const muteToggleButtonEl = controller.el.querySelector(
+    '.better-player__mute-toggle-button'
+  );
+
+  muteToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.video.getVolume()).toBe(0);
+});
+
+it('음소거 토글 버튼을 눌러 음소거를 해제한다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  const controller = new Controller(core);
+  controller.render();
+  const muteToggleButtonEl = controller.el.querySelector(
+    '.better-player__mute-toggle-button'
+  );
+
+  // 음소거
+  muteToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.video.getVolume()).toBe(0);
+
+  // 음소거 해제
+  muteToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.video.getVolume()).toBe(1);
+});
+
+it('음소거 토글 버튼을 눌러 음소거를 해제할 경우 이전 볼륨값을 복원한다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  const controller = new Controller(core);
+  controller.render();
+  const muteToggleButtonEl = controller.el.querySelector(
+    '.better-player__mute-toggle-button'
+  );
+  const volumeBarEl = controller.el.querySelector('.better-player__volume-bar');
+  volumeBarEl.value = 0.7;
+  controller.setVolume();
+
+  // 음소거
+  muteToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.video.getVolume()).toBe(0);
+
+  // 음소거 해제
+  muteToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.video.getVolume()).toBe(0.7);
+});
