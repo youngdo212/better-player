@@ -30,6 +30,7 @@ export default class Controller extends UIPlugin {
       'click .better-player__seek-bar': 'seek',
       'mousedown .better-player__seek-bar': 'startSeekDrag',
       'input .better-player__seek-bar': 'updateCurrentTime',
+      'input .better-player__volume-bar': 'setVolume',
     };
   }
 
@@ -51,6 +52,7 @@ export default class Controller extends UIPlugin {
     this.video.on(Events.VIDEO_PAUSE, this.updatePlayToggleButton, this);
     this.video.on(Events.VIDEO_TIMEUPDATE, this.onTimeupdate, this);
     this.video.on(Events.VIDEO_DURATIONCHANGE, this.updateDuration, this);
+    this.video.on(Events.VIDEO_VOLUMECHANGE, this.updateVolumeBar, this);
   }
 
   /**
@@ -99,6 +101,14 @@ export default class Controller extends UIPlugin {
       this.video.play();
       this.playOnSeeked = false;
     }
+  }
+
+  /**
+   * volume-bar를 바탕으로 비디오의 볼륨을 조절한다
+   */
+  setVolume() {
+    const volume = Number(this.$volumeBar.value);
+    this.video.setVolume(volume);
   }
 
   /**
@@ -154,6 +164,14 @@ export default class Controller extends UIPlugin {
   }
 
   /**
+   * volume bar를 비디오의 볼륨을 바탕으로 변경한다.
+   */
+  updateVolumeBar() {
+    const volume = this.video.getVolume();
+    this.$volumeBar.value = volume;
+  }
+
+  /**
    * 생성된 하위 엘리먼트들을 캐싱한다
    */
   cacheElements() {
@@ -166,6 +184,10 @@ export default class Controller extends UIPlugin {
     this.$currentTime = getElementByClassName(
       this.el,
       'better-player__current-time'
+    );
+    this.$volumeBar = getElementByClassName(
+      this.el,
+      'better-player__volume-bar'
     );
   }
 

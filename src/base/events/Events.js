@@ -110,6 +110,14 @@ Events.VIDEO_TIMEUPDATE = 'video:timeupdate';
  */
 Events.VIDEO_DURATIONCHANGE = 'video:durationchange';
 
+/**
+ * 비디오의 볼륨이 변경 되었을 때 발생.
+ *
+ * @event VIDEO_VOLUMECHANGE
+ * @param {Event} event
+ */
+Events.VIDEO_VOLUMECHANGE = 'video:volumechange';
+
 // PLAYER 이벤트 목록
 /**
  * 비디오 플레이어를 재생했을 때 발생하는 이벤트.

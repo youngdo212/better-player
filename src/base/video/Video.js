@@ -58,6 +58,14 @@ export default class Video extends UIObject {
   }
 
   /**
+   * 영상의 볼륨을 반환한다
+   * @returns {number}
+   */
+  getVolume() {
+    return 0;
+  }
+
+  /**
    * 비디오를 재생한다
    */
   play() {}
@@ -72,4 +80,10 @@ export default class Video extends UIObject {
    * @param {number} time
    */
   seek(time) {} // eslint-disable-line
+
+  /**
+   * 볼륨을 조절한다
+   * @param {number} volume
+   */
+  setVolume(volume) {} // eslint-disable-line
 }

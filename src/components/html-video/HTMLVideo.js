@@ -28,6 +28,7 @@ export default class HTMLVideo extends Video {
       pause: 'onPause',
       timeupdate: 'onTimeupdate',
       durationchange: 'onDurationchange',
+      volumechange: 'onVolumechange',
     };
   }
 
@@ -86,6 +87,15 @@ export default class HTMLVideo extends Video {
   }
 
   /**
+   * 영상의 볼륨 변경 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onVolumechange(event) {
+    this.emit(Events.VIDEO_VOLUMECHANGE, event);
+  }
+
+  /**
    * 비디오의 정지 여부를 반환한다.
    *
    * @returns {boolean}
@@ -113,6 +123,15 @@ export default class HTMLVideo extends Video {
   }
 
   /**
+   * 비디오의 볼륨을 반환한다.
+   *
+   * @returns {number}
+   */
+  getVolume() {
+    return this.el.volume;
+  }
+
+  /**
    * 비디오 엘리먼트를 재생한다
    */
   play() {
@@ -132,6 +151,14 @@ export default class HTMLVideo extends Video {
    */
   seek(time) {
     this.el.currentTime = time;
+  }
+
+  /**
+   * 볼륨을 조절한다.
+   * @param {number} volume
+   */
+  setVolume(volume) {
+    this.el.volume = volume;
   }
 
   /**

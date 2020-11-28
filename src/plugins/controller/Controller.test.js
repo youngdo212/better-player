@@ -273,3 +273,29 @@ it('seek bar를 드래그하면 위치에 따라 current time이 변경된다', 
 
   expect(currentTimeEl.textContent).toBe('00:50');
 });
+
+it('volume bar에 input 이벤트가 발생하면 비디오의 볼륨이 변경된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  const controller = new Controller(core);
+  controller.render();
+  const volumeBarEl = controller.el.querySelector('.better-player__volume-bar');
+  volumeBarEl.value = 0.4;
+
+  volumeBarEl.dispatchEvent(new Event('input', { bubbles: true }));
+
+  expect(core.video.getVolume()).toBe(0.4);
+});
+
+it('volumechange 이벤트가 비디오에서 발생하면 컨트롤러의 volume bar가 업데이트 된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.getVolume = () => 0.212;
+  const controller = new Controller(core);
+  controller.render();
+  const volumeBarEl = controller.el.querySelector('.better-player__volume-bar');
+
+  core.video.el.dispatchEvent(new Event('volumechange', { bubbles: true }));
+
+  expect(volumeBarEl.value).toBe('0.212');
+});

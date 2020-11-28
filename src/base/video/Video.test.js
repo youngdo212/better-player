@@ -42,3 +42,15 @@ it('seek() 메소드를 가진다', () => {
 
   expect(video.seek).toBeDefined();
 });
+
+it('setVolume() 메소드를 가진다', () => {
+  const video = new Video({});
+
+  expect(video.setVolume).toBeDefined();
+});
+
+it('getVolume() 메소드를 가진다', () => {
+  const video = new Video({});
+
+  expect(video.getVolume).toBeDefined();
+});

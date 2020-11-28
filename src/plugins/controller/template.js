@@ -23,7 +23,7 @@ export default function template() {
             <use href="#better-player-mute"></use>
           </svg>
         </div>
-        <input type="range" class="better-player__volume-bar">
+        <input type="range" class="better-player__volume-bar" min="0" max="1" value="1" step="any">
       </div>
       <div class="better-player__controller-right-panel">
         <div class="better-player__toggle-button better-player__fullscreen-toggle-button">

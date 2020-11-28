@@ -99,3 +99,21 @@ it('비디오 엘리먼트의 durationchange 이벤트가 발생하면 VIDEO_DUR
 
   expect(callback).toHaveBeenCalled();
 });
+
+it('비디오의 볼륨을 조절한다', () => {
+  const video = new HTMLVideo(config);
+
+  video.setVolume(0.7);
+
+  expect(video.getVolume()).toBe(0.7);
+});
+
+it('비디오 엘리먼트의 volumechange 이벤트가 발생하면 VIDEO_VOLUMECHANGE 이벤트가 발생한다', () => {
+  const video = new HTMLVideo(config);
+  const callback = jest.fn();
+
+  video.on(Events.VIDEO_VOLUMECHANGE, callback);
+  video.el.dispatchEvent(new Event('volumechange'));
+
+  expect(callback).toHaveBeenCalled();
+});
