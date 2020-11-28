@@ -240,3 +240,35 @@ it('영상의 길이가 변경된다', () => {
 
   expect(durationEl.textContent).toBe('59:59');
 });
+
+it('비디오의 시간이 변경되면 현재 시간이 변경된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.getCurrentTime = () => 61;
+  const controller = new Controller(core);
+  controller.render();
+  const currentTimeEl = controller.el.querySelector(
+    '.better-player__current-time'
+  );
+
+  core.video.emit(Events.VIDEO_TIMEUPDATE);
+
+  expect(currentTimeEl.textContent).toBe('01:01');
+});
+
+it('seek bar를 드래그하면 위치에 따라 current time이 변경된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.getDuration = () => 100;
+  const controller = new Controller(core);
+  controller.render();
+  const currentTimeEl = controller.el.querySelector(
+    '.better-player__current-time'
+  );
+  const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
+
+  seekBarEl.value = '0.5';
+  seekBarEl.dispatchEvent(new Event('mousemove', { bubbles: true }));
+
+  expect(currentTimeEl.textContent).toBe('00:50');
+});

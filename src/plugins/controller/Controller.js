@@ -29,6 +29,7 @@ export default class Controller extends UIPlugin {
       'click .better-player__play-toggle-button': 'togglePlay',
       'click .better-player__seek-bar': 'seek',
       'mousedown .better-player__seek-bar': 'startSeekDrag',
+      'mousemove .better-player__seek-bar': 'moveSeekDrag',
     };
   }
 
@@ -48,7 +49,7 @@ export default class Controller extends UIPlugin {
   addEventListeners() {
     this.video.on(Events.VIDEO_PLAY, this.updatePlayToggleButton, this);
     this.video.on(Events.VIDEO_PAUSE, this.updatePlayToggleButton, this);
-    this.video.on(Events.VIDEO_TIMEUPDATE, this.updateSeekBar, this);
+    this.video.on(Events.VIDEO_TIMEUPDATE, this.onTimeupdate, this);
     this.video.on(Events.VIDEO_DURATIONCHANGE, this.updateDuration, this);
   }
 
@@ -82,6 +83,16 @@ export default class Controller extends UIPlugin {
       this.playOnSeeked = true;
     }
     this.isDraggingSeekBar = true;
+  }
+
+  /**
+   * seek bar의 드래그의 움직인다.
+   * 움직임에 따라 컨트롤러의 현재 시간이 변경한다.
+   */
+  moveSeekDrag() {
+    const duration = this.video.getDuration();
+    const currentTime = Number(this.$seekBar.value) * duration;
+    this.$currentTime.textContent = formatTime(currentTime);
   }
 
   /**
@@ -135,6 +146,23 @@ export default class Controller extends UIPlugin {
   }
 
   /**
+   * 영상의 현재 시간을 바탕으로 컨트롤러의 현재 시간을 변경한다
+   */
+  updateCurrentTime() {
+    const currentTime = this.video.getCurrentTime();
+    this.$currentTime.textContent = formatTime(currentTime);
+  }
+
+  /**
+   * 비디오의 시간 변경 이벤트를 처리한다.
+   * seek bar와 현재 시간을 업데이트한다.
+   */
+  onTimeupdate() {
+    this.updateSeekBar();
+    this.updateCurrentTime();
+  }
+
+  /**
    * 생성된 하위 엘리먼트들을 캐싱한다
    */
   cacheElements() {
@@ -144,6 +172,10 @@ export default class Controller extends UIPlugin {
     );
     this.$seekBar = getElementByClassName(this.el, 'better-player__seek-bar');
     this.$duration = getElementByClassName(this.el, 'better-player__duration');
+    this.$currentTime = getElementByClassName(
+      this.el,
+      'better-player__current-time'
+    );
   }
 
   /**
