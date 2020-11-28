@@ -89,3 +89,13 @@ it('비디오의 현재 시간을 변경한다', () => {
 
   expect(video.getCurrentTime()).toBe(100);
 });
+
+it('비디오 엘리먼트의 durationchange 이벤트가 발생하면 VIDEO_DURATIONCHANGE 이벤트가 발생한다', () => {
+  const video = new HTMLVideo(config);
+  const callback = jest.fn();
+
+  video.on(Events.VIDEO_DURATIONCHANGE, callback);
+  video.el.dispatchEvent(new Event('durationchange'));
+
+  expect(callback).toHaveBeenCalled();
+});

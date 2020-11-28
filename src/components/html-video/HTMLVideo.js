@@ -27,6 +27,7 @@ export default class HTMLVideo extends Video {
       play: 'onPlay',
       pause: 'onPause',
       timeupdate: 'onTimeupdate',
+      durationchange: 'onDurationchange',
     };
   }
 
@@ -73,6 +74,15 @@ export default class HTMLVideo extends Video {
    */
   onTimeupdate(event) {
     this.emit(Events.VIDEO_TIMEUPDATE, event);
+  }
+
+  /**
+   * 영상의 총 길이 변경 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onDurationchange(event) {
+    this.emit(Events.VIDEO_DURATIONCHANGE, event);
   }
 
   /**

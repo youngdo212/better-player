@@ -102,6 +102,14 @@ Events.VIDEO_PAUSE = 'video:pause';
  */
 Events.VIDEO_TIMEUPDATE = 'video:timeupdate';
 
+/**
+ * 비디오의 길이가 변경 되었을 때 발생.
+ *
+ * @event VIDEO_DURATIONCHANGE
+ * @param {Event} event
+ */
+Events.VIDEO_DURATIONCHANGE = 'video:durationchange';
+
 // PLAYER 이벤트 목록
 /**
  * 비디오 플레이어를 재생했을 때 발생하는 이벤트.

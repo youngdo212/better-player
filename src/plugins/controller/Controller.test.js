@@ -227,3 +227,16 @@ it('seek bar 드래그가 끝나면 재생 중이었던 경우 다시 재생한�
   expect(core.video.pause).toHaveBeenCalledTimes(1);
   expect(core.video.play).toHaveBeenCalledTimes(1);
 });
+
+it('영상의 길이가 변경된다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.video.getDuration = () => 3599.9999;
+  const controller = new Controller(core);
+  controller.render();
+  const durationEl = controller.el.querySelector('.better-player__duration');
+
+  core.video.emit(Events.VIDEO_DURATIONCHANGE);
+
+  expect(durationEl.textContent).toBe('59:59');
+});
