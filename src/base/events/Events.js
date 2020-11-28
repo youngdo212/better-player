@@ -14,28 +14,32 @@ export default class Events {
   /**
    * 이벤트 리스너를 등록한다.
    * @param {string} eventName
-   * @param {function} listener
+   * @param {function} callback
+   * @param {object|null=} context callback이 호출될 때 bind될 객체
    */
-  on(eventName, listener) {
+  on(eventName, callback, context = null) {
     if (!this.listeners[eventName]) {
       this.listeners[eventName] = [];
     }
-    this.listeners[eventName].push(listener);
+    this.listeners[eventName].push({
+      callback,
+      context,
+    });
   }
 
   /**
    * 등록된 이벤트 리스너를 제거한다.
    * @param {string=} eventName
-   * @param {function=} listener
+   * @param {function=} callback
    */
-  off(eventName, listener) {
+  off(eventName, callback) {
     if (!eventName) {
       this.listeners = {};
-    } else if (!listener) {
+    } else if (!callback) {
       delete this.listeners[eventName];
     } else if (this.listeners[eventName]) {
       this.listeners[eventName] = this.listeners[eventName].filter(
-        item => item !== listener
+        listener => listener.callback !== callback
       );
 
       this.listeners[eventName].length || delete this.listeners[eventName];
@@ -49,23 +53,24 @@ export default class Events {
    */
   emit(eventName, ...args) {
     if (!this.listeners[eventName]) return;
-    this.listeners[eventName].forEach(listener => {
-      listener(...args);
+    this.listeners[eventName].forEach(({ callback, context }) => {
+      callback.call(context, ...args);
     });
   }
 
   /**
    * 한 번만 호출되는 이벤트 리스너를 등록한다
    * @param {string} eventName
-   * @param {function} listener
+   * @param {function} callback
+   * @param {object|null=} context
    */
-  once(eventName, listener) {
+  once(eventName, callback, context = null) {
     const wrapper = (...args) => {
-      listener(...args);
+      callback.call(context, ...args);
       this.off(eventName, wrapper);
     };
 
-    this.on(eventName, wrapper);
+    this.on(eventName, wrapper, context);
   }
 }
 

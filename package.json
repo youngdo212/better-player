@@ -4,7 +4,7 @@
   "description": "Extensible video player for web",
   "main": "dist/better-player.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "build": "webpack --config webpack.prod.js && grunt",
     "storybook": "start-storybook -s ./dist -p 6006",
     "build-storybook": "build-storybook"
