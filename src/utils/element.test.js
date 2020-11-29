@@ -4,8 +4,11 @@ import {
   createElement,
   getElementById,
   innerHTML,
+  getElementByClassName,
   removeElement,
   removeEventListener,
+  addClass,
+  removeClass,
 } from './element';
 
 beforeEach(() => {
@@ -148,5 +151,83 @@ describe('getElementById', () => {
     body.appendChild(target);
 
     expect(getElementById('target')).toBe(null);
+  });
+});
+
+describe('getElementByClassName', () => {
+  it('class 이름을 이용해서 엘리먼트를 찾는다', () => {
+    const body = document.body;
+    const target = document.createElement('div');
+    target.className = 'target_class';
+    body.appendChild(target);
+
+    expect(getElementByClassName(body, 'target_class')).toBe(target);
+  });
+});
+
+describe('addClass', () => {
+  it('class를 엘리먼트에 추가한다', () => {
+    const el = document.createElement('div');
+
+    addClass(el, 'my-class');
+
+    expect(el.classList.contains('my-class')).toBe(true);
+  });
+
+  it('동일한 이름의 class가 이미 존재하는 효과가 없다', () => {
+    const el = document.createElement('div');
+    el.classList.add('my-class');
+
+    addClass(el, 'my-class');
+
+    expect(el.classList.length).toBe(1);
+  });
+
+  it('복수의 class가 존재하는 경우에도 클래스를 추가할 수 있다', () => {
+    const el = document.createElement('div');
+    el.classList.add('a-class');
+    el.classList.add('b-class');
+
+    addClass(el, 'c-class');
+    addClass(el, 'd-class');
+
+    expect(el.classList.length).toBe(4);
+    expect(el.classList.contains('a-class')).toBe(true);
+    expect(el.classList.contains('b-class')).toBe(true);
+    expect(el.classList.contains('c-class')).toBe(true);
+    expect(el.classList.contains('d-class')).toBe(true);
+  });
+});
+
+describe('removeClass', () => {
+  it('class를 엘리먼트에서 제거한다', () => {
+    const el = document.createElement('div');
+    el.classList.add('my-class');
+
+    removeClass(el, 'my-class');
+
+    expect(el.classList.contains('my-class')).toBe(false);
+  });
+
+  it('제거하려는 class가 존재하지 않는 경우 효과가 없다', () => {
+    const el = document.createElement('div');
+    el.classList.add('my-class');
+
+    removeClass(el, 'wrong-class');
+
+    expect(el.classList.length).toBe(1);
+  });
+
+  it('복수의 class가 존재하는 경우에도 클래스를 삭제할 수 있다', () => {
+    const el = document.createElement('div');
+    el.classList.add('a-class');
+    el.classList.add('b-class');
+    el.classList.add('c-class');
+
+    removeClass(el, 'a-class');
+    removeClass(el, 'c-class');
+
+    expect(el.classList.length).toBe(1);
+    expect(el.classList.contains('b-class')).toBe(true);
   });
 });

@@ -1,5 +1,6 @@
 /** @module components/html-video */
 
+import './HTMLVideo.scss';
 import Events from '../../base/events';
 import Video from '../../base/video';
 import mime from 'mime-types';
@@ -15,11 +16,27 @@ export default class HTMLVideo extends Video {
     return 'video';
   }
 
+  get attributes() {
+    return {
+      class: 'better-player__html-video',
+    };
+  }
+
   get events() {
     return {
       play: 'onPlay',
       pause: 'onPause',
+      timeupdate: 'onTimeupdate',
+      durationchange: 'onDurationchange',
+      volumechange: 'onVolumechange',
+      ended: 'onEnded',
+      seeking: 'onSeeking',
+      seeked: 'onSeeked',
     };
+  }
+
+  get canPlay() {
+    return true;
   }
 
   /**
@@ -34,6 +51,7 @@ export default class HTMLVideo extends Video {
     super(config);
     this.el.src = config.source.src;
     this.el.type = config.source.type || '';
+    this.lastVolume = this.el.volume; // 음소거를 해제했을 때 이전 볼륨으로 되돌리기 위한 속성
   }
 
   /**
@@ -55,12 +73,93 @@ export default class HTMLVideo extends Video {
   }
 
   /**
+   * 시간 변경 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onTimeupdate(event) {
+    this.emit(Events.VIDEO_TIMEUPDATE, event);
+  }
+
+  /**
+   * 영상의 총 길이 변경 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onDurationchange(event) {
+    this.emit(Events.VIDEO_DURATIONCHANGE, event);
+  }
+
+  /**
+   * 영상의 볼륨 변경 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onVolumechange(event) {
+    this.emit(Events.VIDEO_VOLUMECHANGE, event);
+  }
+
+  /**
+   * 영상 끝 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onEnded(event) {
+    this.emit(Events.VIDEO_ENDED, event);
+  }
+
+  /**
+   * 영상 탐색 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onSeeking(event) {
+    this.emit(Events.VIDEO_SEEKING, event);
+  }
+
+  /**
+   * 영상 탐색 완료 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onSeeked(event) {
+    this.emit(Events.VIDEO_SEEKED, event);
+  }
+
+  /**
    * 비디오의 정지 여부를 반환한다.
    *
    * @returns {boolean}
    */
   isPaused() {
     return this.el.paused;
+  }
+
+  /**
+   * 비디오의 총 길이를 반환한다.
+   *
+   * @returns {number}
+   */
+  getDuration() {
+    return this.el.duration;
+  }
+
+  /**
+   * 비디오의 현재 시간을 반환한다.
+   *
+   * @returns {number}
+   */
+  getCurrentTime() {
+    return this.el.currentTime;
+  }
+
+  /**
+   * 비디오의 볼륨을 반환한다.
+   *
+   * @returns {number}
+   */
+  getVolume() {
+    return this.el.volume;
   }
 
   /**
@@ -75,6 +174,38 @@ export default class HTMLVideo extends Video {
    */
   pause() {
     this.el.pause();
+  }
+
+  /**
+   * 비디오를 탐색한다.
+   * @param {number} time
+   */
+  seek(time) {
+    if (time < 0) time = 0;
+    this.el.currentTime = time;
+  }
+
+  /**
+   * 볼륨을 조절한다.
+   * @param {number} volume
+   */
+  setVolume(volume) {
+    this.lastVolume = volume;
+    this.el.volume = volume;
+  }
+
+  /**
+   * 비디오를 음소거한다.
+   */
+  mute() {
+    this.el.volume = 0;
+  }
+
+  /**
+   * 비디오 음소거를 해제하면서 음소거하기 전 볼륨으로 되돌린다.
+   */
+  unmute() {
+    this.el.volume = this.lastVolume || 1;
   }
 
   /**
@@ -97,7 +228,7 @@ export default class HTMLVideo extends Video {
    * @param {string} source.src
    * @param {string=} source.type
    */
-  static canPlay({ src, type }) {
+  static canPlayType({ src, type }) {
     let mimeType = type;
 
     if (!mimeType) {

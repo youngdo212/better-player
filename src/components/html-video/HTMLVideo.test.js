@@ -1,5 +1,6 @@
 import Events from '../../base/events';
 import HTMLVideo from './HTMLVideo';
+import config from '../../config/defaults';
 
 beforeEach(() => {
   document.body.innerHTML = '';
@@ -15,28 +16,56 @@ it('비디오 엘리먼트를 생성한다', () => {
   expect(video.el.type).toBe('video/mp4');
 });
 
-it('비디오 엘리먼트의 play 이벤트가 발생하면 VIDEO_PLAY 이벤트가 발생한다', () => {
-  const video = new HTMLVideo({
-    source: { src: '', type: '' },
+describe('비디오 이벤트 발생 관련', () => {
+  it('비디오 엘리먼트의 play 이벤트가 발생하면 VIDEO_PLAY 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
+
+    video.on(Events.VIDEO_PLAY, callback);
+    video.el.dispatchEvent(new Event('play'));
+
+    expect(callback).toHaveBeenCalled();
   });
-  const callback = jest.fn();
 
-  video.on(Events.VIDEO_PLAY, callback);
-  video.el.dispatchEvent(new Event('play'));
+  it('비디오 엘리먼트의 pause 이벤트가 발생하면 VIDEO_PAUSE 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
 
-  expect(callback).toHaveBeenCalled();
-});
+    video.on(Events.VIDEO_PAUSE, callback);
+    video.el.dispatchEvent(new Event('pause'));
 
-it('비디오 엘리먼트의 pause 이벤트가 발생하면 VIDEO_PAUSE 이벤트가 발생한다', () => {
-  const video = new HTMLVideo({
-    source: { src: '', type: '' },
+    expect(callback).toHaveBeenCalled();
   });
-  const callback = jest.fn();
 
-  video.on(Events.VIDEO_PAUSE, callback);
-  video.el.dispatchEvent(new Event('pause'));
+  it('비디오 엘리먼트의 ended 이벤트가 발생하면 VIDEO_ENDED 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
 
-  expect(callback).toHaveBeenCalled();
+    video.on(Events.VIDEO_ENDED, callback);
+    video.el.dispatchEvent(new Event('ended'));
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it('비디오 엘리먼트의 seeking 이벤트가 발생하면 VIDEO_SEEKING 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
+
+    video.on(Events.VIDEO_SEEKING, callback);
+    video.el.dispatchEvent(new Event('seeking'));
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it('비디오 엘리먼트의 seeked 이벤트가 발생하면 VIDEO_SEEKED 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
+
+    video.on(Events.VIDEO_SEEKED, callback);
+    video.el.dispatchEvent(new Event('seeked'));
+
+    expect(callback).toHaveBeenCalled();
+  });
 });
 
 it('비디오 엘리먼트를 DOM에서 제거하고 src attribute를 초기화한다', () => {
@@ -57,4 +86,104 @@ it('비디오 엘리먼트를 DOM에서 제거하고 src attribute를 초기화�
 
   expect(wrapper.children.length).toBe(0);
   expect(video.el.getAttribute('src')).toBe(null);
+});
+
+it('비디오 엘리먼트의 pause 이벤트가 발생하면 VIDEO_PAUSE 이벤트가 발생한다', () => {
+  const video = new HTMLVideo(config);
+  const callback = jest.fn();
+
+  video.on(Events.VIDEO_TIMEUPDATE, callback);
+  video.el.dispatchEvent(new Event('timeupdate'));
+
+  expect(callback).toHaveBeenCalled();
+});
+
+it('비디오의 총 길이를 반환한다', () => {
+  const video = new HTMLVideo(config);
+
+  expect(video.getDuration()).toBe(NaN);
+});
+
+it('비디오의 현재 시간을 반환한다', () => {
+  const video = new HTMLVideo(config);
+
+  expect(video.getCurrentTime()).toBe(0);
+});
+
+it('비디오의 현재 시간을 변경한다', () => {
+  const video = new HTMLVideo(config);
+
+  video.seek(100);
+
+  expect(video.getCurrentTime()).toBe(100);
+});
+
+it('비디오의 현재 시간을 음수로 변경하면 영상의 처음으로 돌아간다', () => {
+  const video = new HTMLVideo(config);
+
+  video.seek(-100);
+
+  expect(video.getCurrentTime()).toBe(0);
+});
+
+it('비디오 엘리먼트의 durationchange 이벤트가 발생하면 VIDEO_DURATIONCHANGE 이벤트가 발생한다', () => {
+  const video = new HTMLVideo(config);
+  const callback = jest.fn();
+
+  video.on(Events.VIDEO_DURATIONCHANGE, callback);
+  video.el.dispatchEvent(new Event('durationchange'));
+
+  expect(callback).toHaveBeenCalled();
+});
+
+it('비디오의 볼륨을 조절한다', () => {
+  const video = new HTMLVideo(config);
+
+  video.setVolume(0.7);
+
+  expect(video.getVolume()).toBe(0.7);
+});
+
+it('비디오 엘리먼트의 volumechange 이벤트가 발생하면 VIDEO_VOLUMECHANGE 이벤트가 발생한다', () => {
+  const video = new HTMLVideo(config);
+  const callback = jest.fn();
+
+  video.on(Events.VIDEO_VOLUMECHANGE, callback);
+  video.el.dispatchEvent(new Event('volumechange'));
+
+  expect(callback).toHaveBeenCalled();
+});
+
+it('음소거한다', () => {
+  const video = new HTMLVideo(config);
+
+  video.mute();
+
+  expect(video.getVolume()).toBe(0);
+});
+
+it('음소거를 해제했을 때 이전 볼륨으로 되돌린다', () => {
+  const video = new HTMLVideo(config);
+
+  video.setVolume(0.77);
+  video.mute();
+
+  expect(video.getVolume()).toBe(0);
+
+  video.unmute();
+
+  expect(video.getVolume()).toBe(0.77);
+});
+
+it('음소거를 해제했을 때 이전 볼륨이 0이라면 1로 되돌린다', () => {
+  const video = new HTMLVideo(config);
+
+  video.setVolume(0);
+  video.mute();
+
+  expect(video.getVolume()).toBe(0);
+
+  video.unmute();
+
+  expect(video.getVolume()).toBe(1);
 });

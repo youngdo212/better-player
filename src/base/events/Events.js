@@ -14,28 +14,32 @@ export default class Events {
   /**
    * 이벤트 리스너를 등록한다.
    * @param {string} eventName
-   * @param {function} listener
+   * @param {function} callback
+   * @param {object|null=} context callback이 호출될 때 bind될 객체
    */
-  on(eventName, listener) {
+  on(eventName, callback, context = null) {
     if (!this.listeners[eventName]) {
       this.listeners[eventName] = [];
     }
-    this.listeners[eventName].push(listener);
+    this.listeners[eventName].push({
+      callback,
+      context,
+    });
   }
 
   /**
    * 등록된 이벤트 리스너를 제거한다.
    * @param {string=} eventName
-   * @param {function=} listener
+   * @param {function=} callback
    */
-  off(eventName, listener) {
+  off(eventName, callback) {
     if (!eventName) {
       this.listeners = {};
-    } else if (!listener) {
+    } else if (!callback) {
       delete this.listeners[eventName];
     } else if (this.listeners[eventName]) {
       this.listeners[eventName] = this.listeners[eventName].filter(
-        item => item !== listener
+        listener => listener.callback !== callback
       );
 
       this.listeners[eventName].length || delete this.listeners[eventName];
@@ -49,23 +53,24 @@ export default class Events {
    */
   emit(eventName, ...args) {
     if (!this.listeners[eventName]) return;
-    this.listeners[eventName].forEach(listener => {
-      listener(...args);
+    this.listeners[eventName].forEach(({ callback, context }) => {
+      callback.call(context, ...args);
     });
   }
 
   /**
    * 한 번만 호출되는 이벤트 리스너를 등록한다
    * @param {string} eventName
-   * @param {function} listener
+   * @param {function} callback
+   * @param {object|null=} context
    */
-  once(eventName, listener) {
+  once(eventName, callback, context = null) {
     const wrapper = (...args) => {
-      listener(...args);
+      callback.call(context, ...args);
       this.off(eventName, wrapper);
     };
 
-    this.on(eventName, wrapper);
+    this.on(eventName, wrapper, context);
   }
 }
 
@@ -89,6 +94,70 @@ Events.VIDEO_PLAY = 'video:play';
  */
 Events.VIDEO_PAUSE = 'video:pause';
 
+/**
+ * 비디오 시간이 변경되었을 때 발생
+ *
+ * @event VIDEO_TIMEUPDATE
+ * @param {Event} event
+ */
+Events.VIDEO_TIMEUPDATE = 'video:timeupdate';
+
+/**
+ * 비디오의 길이가 변경 되었을 때 발생.
+ *
+ * @event VIDEO_DURATIONCHANGE
+ * @param {Event} event
+ */
+Events.VIDEO_DURATIONCHANGE = 'video:durationchange';
+
+/**
+ * 비디오의 볼륨이 변경 되었을 때 발생.
+ *
+ * @event VIDEO_VOLUMECHANGE
+ * @param {Event} event
+ */
+Events.VIDEO_VOLUMECHANGE = 'video:volumechange';
+
+/**
+ * 비디오가 끝났을 때 발생하는 이벤트
+ *
+ * @event VIDEO_ENDED
+ * @param {Event} event
+ */
+Events.VIDEO_ENDED = 'video:ended';
+
+/**
+ * 비디오 탐색을 시작했을 때 발생하는 이벤트
+ *
+ * @event VIDEO_SEEKING
+ * @param {Event} event
+ */
+Events.VIDEO_SEEKING = 'video:seeking';
+
+/**
+ * 비디오 탐색을 끝마쳤을 때 발생하는 이벤트
+ *
+ * @event VIDEO_SEEKED
+ * @param {Event} event
+ */
+Events.VIDEO_SEEKED = 'video:seeked';
+
+/**
+ * 비디오 플레이어의 전체 화면 여부가 변경되었을 때 발생.
+ *
+ * @event CORE_FULLSCREENCHANGE
+ * @param {Event} event
+ */
+Events.CORE_FULLSCREENCHANGE = 'core:fullsceenchange';
+
+/**
+ * 페이지의 전체 화면 여부가 변경되었을 때 발생.
+ *
+ * @event FULLSCREEN_CHANGE
+ * @param {Event} event
+ */
+Events.FULLSCREEN_CHANGE = 'fullscreen:change';
+
 // PLAYER 이벤트 목록
 /**
  * 비디오 플레이어를 재생했을 때 발생하는 이벤트.
@@ -107,3 +176,59 @@ Events.PLAYER_PLAY = 'play';
  * @param {Event} event
  */
 Events.PLAYER_PAUSE = 'pause';
+
+/**
+ * 비디오의 볼륨이 변경되었을 때 발생하는 이벤트
+ *
+ * @event PLAYER_VOLUMECHANGE
+ * @param {Event} event
+ */
+Events.PLAYER_VOLUMECHANGE = 'volumechange';
+
+/**
+ * 비디오 플레이어의 현재 시간이 변경될 때마다 발생하는 이벤트
+ *
+ * @event PLAYER_TIMEUPDATE
+ * @param {Event} event
+ */
+Events.PLAYER_TIMEUPDATE = 'timeupdate';
+
+/**
+ * 비디오 플레이어가 끝이났을 때 발생하는 이벤트
+ *
+ * @event PLAYER_ENDED
+ * @param {Event} event
+ */
+Events.PLAYER_ENDED = 'ended';
+
+/**
+ * 비디오 플레이어 탐색을 시작했을 때 발생하는 이벤트
+ *
+ * @event PLAYER_SEEKING
+ * @param {Event} event
+ */
+Events.PLAYER_SEEKING = 'seeking';
+
+/**
+ * 비디오 플레이어 탐색을 끝마쳤을 때 발생하는 이벤트
+ *
+ * @event PLAYER_SEEKED
+ * @param {Event} event
+ */
+Events.PLAYER_SEEKED = 'seeked';
+
+/**
+ * 비디오 플레이어가 전체화면이 되었을 때 발생하는 이벤트
+ *
+ * @event PLAYER_REQUESTFULLSCREEN
+ * @param {Event} event
+ */
+Events.PLAYER_REQUESTFULLSCREEN = 'requestfullscreen';
+
+/**
+ * 비디오 플레이어의 전체화면이 해제되었을 때 발생하는 이벤트
+ *
+ * @event PLAYER_EXITFULLSCREEN
+ * @param {Event} event
+ */
+Events.PLAYER_EXITFULLSCREEN = 'exitfullscreen';

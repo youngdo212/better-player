@@ -5,10 +5,12 @@ export default {
   title: 'Core',
 };
 
-const Template = ({ videoUrl }) => {
+const Template = ({ videoUrl, width, height }) => {
   const core = new Core({
     ...config,
     source: { src: videoUrl },
+    width,
+    height,
   });
   core.render();
   return core.el;
@@ -23,4 +25,12 @@ SupportVideoFormat.args = {
 export const NotSupportVideoFormat = Template.bind({});
 NotSupportVideoFormat.args = {
   videoUrl: 'https://not.support.video.format/image.jpg',
+};
+
+export const WithSize = Template.bind({});
+WithSize.args = {
+  videoUrl:
+    'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+  width: 640,
+  height: 360,
 };

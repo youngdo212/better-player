@@ -31,7 +31,9 @@ export default class VideoFactory extends Events {
    * @returns {module:base/video}
    */
   create() {
-    const [video] = videos.filter(video => video.canPlay(this.config.source));
+    const [video] = videos.filter(video =>
+      video.canPlayType(this.config.source)
+    );
 
     return new video(this.config);
   }

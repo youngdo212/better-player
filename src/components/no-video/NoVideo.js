@@ -12,7 +12,11 @@ import template from './template';
  */
 export default class NoVideo extends Video {
   get attributes() {
-    return { class: 'no-video' };
+    return { class: 'better-player__no-video' };
+  }
+
+  get canPlay() {
+    return false;
   }
 
   /**
@@ -40,7 +44,7 @@ export default class NoVideo extends Video {
    * @returns {true}
    */
   // eslint-disable-next-line no-unused-vars
-  static canPlay(source) {
+  static canPlayType(source) {
     return true;
   }
 }

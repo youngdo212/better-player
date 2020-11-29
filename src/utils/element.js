@@ -60,7 +60,7 @@ export function removeEventListener(element, eventName, listener, options) {
 /**
  * 자식 엘리먼트를 마지막 위치에 추가한다
  * @param {HTMLElement} parent
- * @param {HTMLElement} child
+ * @param {Element} child
  */
 export function appendChild(parent, child) {
   parent.appendChild(child);
@@ -92,4 +92,34 @@ export function canPlayVideoType(videoType) {
  */
 export function getElementById(id) {
   return document.getElementById(id);
+}
+
+/**
+ * class 이름에 매칭되는 가장 첫 번째 엘리먼트를 탐색한다.
+ * @param {HTMLElement} element
+ * @param {string} className
+ * @returns {any}
+ */
+export function getElementByClassName(element, className) {
+  return element.querySelector(`.${className}`);
+}
+
+/**
+ * 엘리먼트에 class를 추가한다. 중복 추가는 하지 않는다.
+ *
+ * @param {HTMLElement} element
+ * @param {string} className
+ */
+export function addClass(element, className) {
+  element.classList.add(className);
+}
+
+/**
+ * 엘리먼트에서 class를 제거한다.
+ *
+ * @param {HTMLElement} element
+ * @param {string} className
+ */
+export function removeClass(element, className) {
+  element.classList.remove(className);
 }
