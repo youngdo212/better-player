@@ -177,16 +177,6 @@ player.pause();
 player.seek(1200);
 ```
 
-**seekPercentage(percentage): void**
-
-- percentage: number - 0 이상 100 이하의 값
-
-퍼센트 표현법으로 영상을 탐색합니다. 100 이상의 값을 설정하면 영상이 멈추며 ended 이벤트가 발생합니다. 0 이하의 값을 입력하면 영상을 처음으로 되돌립니다.
-
-```jsx
-player.seekPercentage(50);
-```
-
 **setVolume(volume): void**
 
 - volume: number - 0 이상 1 이하의 값
