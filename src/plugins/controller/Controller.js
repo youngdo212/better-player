@@ -46,7 +46,6 @@ export default class Controller extends UIPlugin {
     super(core);
     this.isDraggingSeekBar = false; // seek bar를 드래그 중인지 나타내는 값
     this.playOnSeeked = false; // seek 작업 수행 후 비디오를 플레이할 지를 나타내는 값
-    this.lastVolume = 1; // 음소거를 풀었을 때 사용하기 위해 저장하는 볼륨
   }
 
   /**
@@ -118,7 +117,6 @@ export default class Controller extends UIPlugin {
    */
   setVolume() {
     const volume = Number(this.$volumeBar.value);
-    this.lastVolume = volume;
     this.video.setVolume(volume);
   }
 
@@ -133,14 +131,14 @@ export default class Controller extends UIPlugin {
    * 비디오를 음소거한다.
    */
   mute() {
-    this.video.setVolume(0);
+    this.video.mute();
   }
 
   /**
-   * 비디오 음소거를 해제하고 이전 볼륨으로 되돌린다.
+   * 비디오 음소거를 해제한다.
    */
   unmute() {
-    this.video.setVolume(this.lastVolume || 1);
+    this.video.unmute();
   }
 
   /**

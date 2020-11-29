@@ -62,7 +62,7 @@ export default class Video extends UIObject {
    * @returns {number}
    */
   getVolume() {
-    return 0;
+    return 1;
   }
 
   /**
@@ -86,4 +86,14 @@ export default class Video extends UIObject {
    * @param {number} volume
    */
   setVolume(volume) {} // eslint-disable-line
+
+  /**
+   * 음소거한다.
+   */
+  mute() {}
+
+  /**
+   * 음소거를 해제한다.
+   */
+  unmute() {}
 }

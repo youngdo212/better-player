@@ -48,6 +48,7 @@ export default class HTMLVideo extends Video {
     super(config);
     this.el.src = config.source.src;
     this.el.type = config.source.type || '';
+    this.lastVolume = this.el.volume; // 음소거를 해제했을 때 이전 볼륨으로 되돌리기 위한 속성
   }
 
   /**
@@ -150,6 +151,7 @@ export default class HTMLVideo extends Video {
    * @param {number} time
    */
   seek(time) {
+    if (time < 0) time = 0;
     this.el.currentTime = time;
   }
 
@@ -158,7 +160,22 @@ export default class HTMLVideo extends Video {
    * @param {number} volume
    */
   setVolume(volume) {
+    this.lastVolume = volume;
     this.el.volume = volume;
+  }
+
+  /**
+   * 비디오를 음소거한다.
+   */
+  mute() {
+    this.el.volume = 0;
+  }
+
+  /**
+   * 비디오 음소거를 해제하면서 음소거하기 전 볼륨으로 되돌린다.
+   */
+  unmute() {
+    this.el.volume = this.lastVolume || 1;
   }
 
   /**

@@ -90,6 +90,14 @@ it('비디오의 현재 시간을 변경한다', () => {
   expect(video.getCurrentTime()).toBe(100);
 });
 
+it('비디오의 현재 시간을 음수로 변경하면 영상의 처음으로 돌아간다', () => {
+  const video = new HTMLVideo(config);
+
+  video.seek(-100);
+
+  expect(video.getCurrentTime()).toBe(0);
+});
+
 it('비디오 엘리먼트의 durationchange 이벤트가 발생하면 VIDEO_DURATIONCHANGE 이벤트가 발생한다', () => {
   const video = new HTMLVideo(config);
   const callback = jest.fn();
@@ -116,4 +124,38 @@ it('비디오 엘리먼트의 volumechange 이벤트가 발생하면 VIDEO_VOLUM
   video.el.dispatchEvent(new Event('volumechange'));
 
   expect(callback).toHaveBeenCalled();
+});
+
+it('음소거한다', () => {
+  const video = new HTMLVideo(config);
+
+  video.mute();
+
+  expect(video.getVolume()).toBe(0);
+});
+
+it('음소거를 해제했을 때 이전 볼륨으로 되돌린다', () => {
+  const video = new HTMLVideo(config);
+
+  video.setVolume(0.77);
+  video.mute();
+
+  expect(video.getVolume()).toBe(0);
+
+  video.unmute();
+
+  expect(video.getVolume()).toBe(0.77);
+});
+
+it('음소거를 해제했을 때 이전 볼륨이 0이라면 1로 되돌린다', () => {
+  const video = new HTMLVideo(config);
+
+  video.setVolume(0);
+  video.mute();
+
+  expect(video.getVolume()).toBe(0);
+
+  video.unmute();
+
+  expect(video.getVolume()).toBe(1);
 });
