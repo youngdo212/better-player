@@ -31,6 +31,7 @@ export default class Controller extends UIPlugin {
       'click .better-player__play-toggle-button': 'togglePlay',
       'click .better-player__seek-bar': 'seek',
       'click .better-player__mute-toggle-button': 'toggleMute',
+      'click .better-player__fullscreen-toggle-button': 'toggleFullscreen',
       'mousedown .better-player__seek-bar': 'startSeekDrag',
       'input .better-player__seek-bar': 'updateCurrentTime',
       'input .better-player__volume-bar': 'setVolume',
@@ -57,6 +58,11 @@ export default class Controller extends UIPlugin {
     this.video.on(Events.VIDEO_TIMEUPDATE, this.onTimeupdate, this);
     this.video.on(Events.VIDEO_DURATIONCHANGE, this.updateDuration, this);
     this.video.on(Events.VIDEO_VOLUMECHANGE, this.onVolumeChange, this);
+    this.core.on(
+      Events.CORE_FULLSCREENCHANGE,
+      this.updateFullscreenToggleButton,
+      this
+    );
   }
 
   /**
@@ -138,6 +144,28 @@ export default class Controller extends UIPlugin {
   }
 
   /**
+   * 비디오 플레이어를 전체 화면으로 전환시키고, 이미 전체 화면인 경우
+   * 전체 화면에서 탈출시킨다
+   */
+  toggleFullscreen() {
+    this.core.isFullscreen() ? this.exitFullscreen() : this.requestFullscreen();
+  }
+
+  /**
+   * 비디오 플레이어를 전체 화면으로 전환한다.
+   */
+  requestFullscreen() {
+    this.core.requestFullscreen();
+  }
+
+  /**
+   * 비디오 플레이어의 전체 화면을 해제한다.
+   */
+  exitFullscreen() {
+    this.core.exitFullscreen();
+  }
+
+  /**
    * 비디오의 재생 여부에 따라서 토글 버튼의 아이콘을 변경한다.
    */
   updatePlayToggleButton() {
@@ -204,6 +232,9 @@ export default class Controller extends UIPlugin {
     this.$volumeBar.value = volume;
   }
 
+  /**
+   * 비디오의 볼륨이 0이면 음소거 버튼으로, 그렇지 않은 경우 비음소거 버튼으로 변경한다.
+   */
   updateMuteToggleButton() {
     const volume = this.video.getVolume();
     if (volume === 0) {
@@ -211,6 +242,23 @@ export default class Controller extends UIPlugin {
     } else {
       removeClass(
         this.$muteToggleButton,
+        'better-player__toggle-button--pressed'
+      );
+    }
+  }
+
+  /**
+   * 전체화면인 경우 전체 화면 탈출 버튼으로, 그렇지 않은 경우 전체 화면 버튼으로 변경한다.
+   */
+  updateFullscreenToggleButton() {
+    if (this.core.isFullscreen()) {
+      addClass(
+        this.$fullscreenToggleButton,
+        'better-player__toggle-button--pressed'
+      );
+    } else {
+      removeClass(
+        this.$fullscreenToggleButton,
         'better-player__toggle-button--pressed'
       );
     }
@@ -237,6 +285,10 @@ export default class Controller extends UIPlugin {
     this.$muteToggleButton = getElementByClassName(
       this.el,
       'better-player__mute-toggle-button'
+    );
+    this.$fullscreenToggleButton = getElementByClassName(
+      this.el,
+      'better-player__fullscreen-toggle-button'
     );
   }
 

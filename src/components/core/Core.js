@@ -6,6 +6,8 @@ import { appendChild } from '../../utils/element';
 import VideoFactory from '../video-factory';
 import Controller from '../../plugins/controller';
 import loadSprite from '../../utils/load-sprite';
+import Events from '../../base/events';
+import Fullscreen from '../fullscreen';
 
 const plugins = [Controller];
 
@@ -40,6 +42,46 @@ export default class Core extends UIObject {
     this.videoFactory = new VideoFactory(this.config);
     this.video = this.videoFactory.create();
     this.plugins = plugins.map(Plugin => new Plugin(this));
+    this.fullscreen = new Fullscreen();
+    this.addEventListeners();
+  }
+
+  /**
+   * 하위 컴포넌트에 이벤트 리스너를 등록한다.
+   */
+  addEventListeners() {
+    this.fullscreen.on(Events.FULLSCREEN_CHANGE, this.onFullscreenChange, this);
+  }
+
+  /**
+   *
+   * @param {Event} event
+   */
+  onFullscreenChange(event) {
+    this.emit(Events.CORE_FULLSCREENCHANGE, event);
+  }
+
+  /**
+   * 전체화면 여부를 반환한다.
+   *
+   * @returns {boolean}
+   */
+  isFullscreen() {
+    return this.fullscreen.element === this.el;
+  }
+
+  /**
+   * 비디오 플레이어를 전체 화면으로 전환한다.
+   */
+  requestFullscreen() {
+    this.fullscreen.request(this.el);
+  }
+
+  /**
+   * 비디오 플레이어를 전체 화면에서 나오게 한다.
+   */
+  exitFullscreen() {
+    this.fullscreen.exit();
   }
 
   /**
@@ -78,6 +120,7 @@ export default class Core extends UIObject {
     this.videoFactory.off();
     this.video.destroy();
     this.plugins.forEach(plugin => plugin.destroy());
+    this.fullscreen.destroy();
     return this;
   }
 }

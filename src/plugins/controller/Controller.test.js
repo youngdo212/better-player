@@ -403,3 +403,68 @@ it('음소거 토글 버튼을 눌러 음소거를 해제할 경우 이전 볼�
 
   expect(core.video.getVolume()).toBe(0.7);
 });
+
+it('비디오 플레이어를 전체 화면으로 전환한다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.isFullscreen = () => false;
+  core.requestFullscreen = jest.fn();
+  const controller = new Controller(core);
+  controller.render();
+  const fullscreenToggleButtonEl = controller.$fullscreenToggleButton;
+
+  fullscreenToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.requestFullscreen).toHaveBeenCalled();
+});
+
+it('비디오 플레이어의 전체 화면을 해제한다', () => {
+  const core = new Core(config);
+  core.video = new HTMLVideo(config);
+  core.isFullscreen = () => true;
+  core.exitFullscreen = jest.fn();
+  const controller = new Controller(core);
+  controller.render();
+  const fullscreenToggleButtonEl = controller.$fullscreenToggleButton;
+
+  fullscreenToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(core.exitFullscreen).toHaveBeenCalled();
+});
+
+// TODO: addClass에서 발생하는 에러 해결하기
+// describe('core에서 CORE_FULLSCREENCHANGE 이벤트가 발생했을 때', () => {
+//   it('전체 화면이면 fullscreenToggleButton에 클래스를 추가한다', () => {
+//     const core = new Core(config);
+//     core.video = new HTMLVideo(config);
+//     core.isFullscreen = () => true;
+//     const controller = new Controller(core);
+//     controller.render();
+//     const fullscreenToggleButtonEl = controller.$fullscreenToggleButton;
+
+//     core.emit(Events.CORE_FULLSCREENCHANGE);
+
+//     expect(
+//       fullscreenToggleButtonEl.classList.contains(
+//         'better-player__toggle-button--pressed'
+//       )
+//     ).toBe(true);
+//   });
+
+//   it('전체 화면이 아니면 fullscreenToggleButton에 클래스를 삭제한다', () => {
+//     const core = new Core(config);
+//     core.video = new HTMLVideo(config);
+//     core.isFullscreen = () => false;
+//     const controller = new Controller(core);
+//     controller.render();
+//     const fullscreenToggleButtonEl = controller.$fullscreenToggleButton;
+
+//     core.emit(Events.CORE_FULLSCREENCHANGE);
+
+//     expect(
+//       fullscreenToggleButtonEl.classList.contains(
+//         'better-player__toggle-button--pressed'
+//       )
+//     ).toBe(false);
+//   });
+// });

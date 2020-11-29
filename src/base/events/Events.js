@@ -118,6 +118,22 @@ Events.VIDEO_DURATIONCHANGE = 'video:durationchange';
  */
 Events.VIDEO_VOLUMECHANGE = 'video:volumechange';
 
+/**
+ * 비디오 플레이어의 전체 화면 여부가 변경되었을 때 발생.
+ *
+ * @event CORE_FULLSCREENCHANGE
+ * @param {Event} event
+ */
+Events.CORE_FULLSCREENCHANGE = 'core:fullsceenchange';
+
+/**
+ * 페이지의 전체 화면 여부가 변경되었을 때 발생.
+ *
+ * @event FULLSCREEN_CHANGE
+ * @param {Event} event
+ */
+Events.FULLSCREEN_CHANGE = 'fullscreen:change';
+
 // PLAYER 이벤트 목록
 /**
  * 비디오 플레이어를 재생했을 때 발생하는 이벤트.
