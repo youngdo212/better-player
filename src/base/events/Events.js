@@ -119,6 +119,30 @@ Events.VIDEO_DURATIONCHANGE = 'video:durationchange';
 Events.VIDEO_VOLUMECHANGE = 'video:volumechange';
 
 /**
+ * 비디오가 끝났을 때 발생하는 이벤트
+ *
+ * @event VIDEO_ENDED
+ * @param {Event} event
+ */
+Events.VIDEO_ENDED = 'video:ended';
+
+/**
+ * 비디오 탐색을 시작했을 때 발생하는 이벤트
+ *
+ * @event VIDEO_SEEKING
+ * @param {Event} event
+ */
+Events.VIDEO_SEEKING = 'video:seeking';
+
+/**
+ * 비디오 탐색을 끝마쳤을 때 발생하는 이벤트
+ *
+ * @event VIDEO_SEEKED
+ * @param {Event} event
+ */
+Events.VIDEO_SEEKED = 'video:seeked';
+
+/**
  * 비디오 플레이어의 전체 화면 여부가 변경되었을 때 발생.
  *
  * @event CORE_FULLSCREENCHANGE
@@ -152,3 +176,59 @@ Events.PLAYER_PLAY = 'play';
  * @param {Event} event
  */
 Events.PLAYER_PAUSE = 'pause';
+
+/**
+ * 비디오의 볼륨이 변경되었을 때 발생하는 이벤트
+ *
+ * @event PLAYER_VOLUMECHANGE
+ * @param {Event} event
+ */
+Events.PLAYER_VOLUMECHANGE = 'volumechange';
+
+/**
+ * 비디오 플레이어의 현재 시간이 변경될 때마다 발생하는 이벤트
+ *
+ * @event PLAYER_TIMEUPDATE
+ * @param {Event} event
+ */
+Events.PLAYER_TIMEUPDATE = 'timeupdate';
+
+/**
+ * 비디오 플레이어가 끝이났을 때 발생하는 이벤트
+ *
+ * @event PLAYER_ENDED
+ * @param {Event} event
+ */
+Events.PLAYER_ENDED = 'ended';
+
+/**
+ * 비디오 플레이어 탐색을 시작했을 때 발생하는 이벤트
+ *
+ * @event PLAYER_SEEKING
+ * @param {Event} event
+ */
+Events.PLAYER_SEEKING = 'seeking';
+
+/**
+ * 비디오 플레이어 탐색을 끝마쳤을 때 발생하는 이벤트
+ *
+ * @event PLAYER_SEEKED
+ * @param {Event} event
+ */
+Events.PLAYER_SEEKED = 'seeked';
+
+/**
+ * 비디오 플레이어가 전체화면이 되었을 때 발생하는 이벤트
+ *
+ * @event PLAYER_REQUESTFULLSCREEN
+ * @param {Event} event
+ */
+Events.PLAYER_REQUESTFULLSCREEN = 'requestfullscreen';
+
+/**
+ * 비디오 플레이어의 전체화면이 해제되었을 때 발생하는 이벤트
+ *
+ * @event PLAYER_EXITFULLSCREEN
+ * @param {Event} event
+ */
+Events.PLAYER_EXITFULLSCREEN = 'exitfullscreen';

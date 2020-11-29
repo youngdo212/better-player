@@ -2,6 +2,8 @@
 
 확장 가능한 웹 비디오 플레이어
 
+![screenshot](images/screenshot.png)
+
 ## Table of Contents
 
 - [Quick Start](#Quick-Start)
@@ -121,7 +123,7 @@ const currentTime = player.getCurrentTime();
 
 **getDuration(): number**
 
-영상의 총 길이를 초 단위로 반환합니다. 비디오의 메타데이터가 로드되기 전에 호출하면 제대로 된 값을 불러올 수 없으니, durationchange 이벤트가 발생한 이후에 사용할 것을 추천합니다.
+영상의 총 길이를 초 단위로 반환합니다. 비디오의 메타데이터가 로드되기 전에 호출하면 NaN을 반환합니다.
 
 ```jsx
 const duration = player.getDuration();
@@ -171,10 +173,10 @@ player.pause();
 
 - time: number - 초 단위의 값
 
-초 단위로 영상을 탐색합니다. 영상의 총 길이(duration)보다 큰 값을 사용할 경우 자동으로 duration으로 설정됩니다. duration을 설정하는 경우 영상이 멈추며 ended 이벤트가 발생합니다. 0 이하의 값을 입력하면 영상을 처음으로 되돌립니다.
+초 단위로 영상을 탐색합니다. 0 이하의 값을 입력하면 영상을 처음으로 되돌립니다.
 
 ```jsx
-player.seek(1200);
+player.seek(30);
 ```
 
 **setVolume(volume): void**
@@ -219,12 +221,13 @@ player.requestFullscreen();
 player.exitFullscreen();
 ```
 
-**on(event, handler): void**
+**on(event, handler[, context]): void**
 
 비디오 플레이어에 이벤트 핸들러를 등록합니다.
 
 - event: string - 이벤트 이름
 - handler: function - 이벤트 핸들러
+- (optional)context: object - 이벤트 핸들러 호출 시 this로 참조할 객체
 
 ```jsx
 player.on('play', () => {
@@ -280,23 +283,19 @@ player.on('play', event => {
 
 - play: 재생할 때 발생. 구체적으로는 재생 버튼을 눌렀을 때나 play() 메소드를 호출했을 때 발생한다.
 
-- durationchange: 영상의 전체 시간이 변경됐을 때 발생.
-
 - volumechange: 볼륨이 변경됐을 때 발생
 
 - timeupdate: 영상의 현재 시간(getCurrentTime)이 변경됐을 때 발생
 
 - ended: 끝까지 도달해서 영상이 멈췄을 때 발생.
 
-- seeked: 탐색 작업이 완료됐을 때 발생
-
 - seeking: 탐색 작업이 시작됐을 때 발생
+
+- seeked: 탐색 작업이 완료됐을 때 발생
 
 - requestfullscreen: 전체화면으로 변경됐을 때 발생
 
 - exitfullscreen: 전체화면에서 탈출했을 때 발생
-
-- destroy: 비디오 플레이어가 파괴됐을 때 발생
 
 ## Customizing
 

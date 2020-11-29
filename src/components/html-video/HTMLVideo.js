@@ -29,6 +29,9 @@ export default class HTMLVideo extends Video {
       timeupdate: 'onTimeupdate',
       durationchange: 'onDurationchange',
       volumechange: 'onVolumechange',
+      ended: 'onEnded',
+      seeking: 'onSeeking',
+      seeked: 'onSeeked',
     };
   }
 
@@ -94,6 +97,33 @@ export default class HTMLVideo extends Video {
    */
   onVolumechange(event) {
     this.emit(Events.VIDEO_VOLUMECHANGE, event);
+  }
+
+  /**
+   * 영상 끝 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onEnded(event) {
+    this.emit(Events.VIDEO_ENDED, event);
+  }
+
+  /**
+   * 영상 탐색 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onSeeking(event) {
+    this.emit(Events.VIDEO_SEEKING, event);
+  }
+
+  /**
+   * 영상 탐색 완료 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onSeeked(event) {
+    this.emit(Events.VIDEO_SEEKED, event);
   }
 
   /**

@@ -16,28 +16,56 @@ it('비디오 엘리먼트를 생성한다', () => {
   expect(video.el.type).toBe('video/mp4');
 });
 
-it('비디오 엘리먼트의 play 이벤트가 발생하면 VIDEO_PLAY 이벤트가 발생한다', () => {
-  const video = new HTMLVideo({
-    source: { src: '', type: '' },
+describe('비디오 이벤트 발생 관련', () => {
+  it('비디오 엘리먼트의 play 이벤트가 발생하면 VIDEO_PLAY 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
+
+    video.on(Events.VIDEO_PLAY, callback);
+    video.el.dispatchEvent(new Event('play'));
+
+    expect(callback).toHaveBeenCalled();
   });
-  const callback = jest.fn();
 
-  video.on(Events.VIDEO_PLAY, callback);
-  video.el.dispatchEvent(new Event('play'));
+  it('비디오 엘리먼트의 pause 이벤트가 발생하면 VIDEO_PAUSE 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
 
-  expect(callback).toHaveBeenCalled();
-});
+    video.on(Events.VIDEO_PAUSE, callback);
+    video.el.dispatchEvent(new Event('pause'));
 
-it('비디오 엘리먼트의 pause 이벤트가 발생하면 VIDEO_PAUSE 이벤트가 발생한다', () => {
-  const video = new HTMLVideo({
-    source: { src: '', type: '' },
+    expect(callback).toHaveBeenCalled();
   });
-  const callback = jest.fn();
 
-  video.on(Events.VIDEO_PAUSE, callback);
-  video.el.dispatchEvent(new Event('pause'));
+  it('비디오 엘리먼트의 ended 이벤트가 발생하면 VIDEO_ENDED 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
 
-  expect(callback).toHaveBeenCalled();
+    video.on(Events.VIDEO_ENDED, callback);
+    video.el.dispatchEvent(new Event('ended'));
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it('비디오 엘리먼트의 seeking 이벤트가 발생하면 VIDEO_SEEKING 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
+
+    video.on(Events.VIDEO_SEEKING, callback);
+    video.el.dispatchEvent(new Event('seeking'));
+
+    expect(callback).toHaveBeenCalled();
+  });
+
+  it('비디오 엘리먼트의 seeked 이벤트가 발생하면 VIDEO_SEEKED 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
+
+    video.on(Events.VIDEO_SEEKED, callback);
+    video.el.dispatchEvent(new Event('seeked'));
+
+    expect(callback).toHaveBeenCalled();
+  });
 });
 
 it('비디오 엘리먼트를 DOM에서 제거하고 src attribute를 초기화한다', () => {
