@@ -3,7 +3,7 @@
 import './HTMLVideo.scss';
 import Events from '../../base/events';
 import Video from '../../base/video';
-import mime from 'mime-types';
+import mime from 'mime/lite';
 import { canPlayVideoType } from '../../utils/element';
 
 /**
@@ -232,7 +232,7 @@ export default class HTMLVideo extends Video {
     let mimeType = type;
 
     if (!mimeType) {
-      mimeType = mime.lookup(src) || '';
+      mimeType = mime.getType(src) || '';
     }
 
     return canPlayVideoType(mimeType);

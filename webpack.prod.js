@@ -1,10 +1,11 @@
+const path = require('path');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
-module.exports = merge(common, {
+const prod = {
   mode: 'production',
   devtool: 'source-map',
   plugins: [
@@ -25,4 +26,25 @@ module.exports = merge(common, {
     minimize: true,
     minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
   },
-});
+};
+
+module.exports = [
+  merge(common, prod, {
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'better-player.js',
+      library: 'BetterPlayer',
+      libraryTarget: 'umd',
+      libraryExport: 'default',
+    },
+    externals: ['fscreen', 'mime-types', /^lodash\/.+$/, /^core-js\/.+&/],
+  }),
+  merge(common, prod, {
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'better-player.bundle.js',
+      library: 'BetterPlayer',
+      libraryExport: 'default',
+    },
+  }),
+];

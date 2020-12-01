@@ -1,14 +1,5 @@
-const path = require('path');
-
 module.exports = {
   entry: './src/index.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'better-player.js',
-    library: 'BetterPlayer',
-    libraryTarget: 'umd',
-    libraryExport: 'default',
-  },
   module: {
     rules: [
       {

@@ -12,6 +12,7 @@
   "files": [
     "/dist"
   ],
+  "publishConfig": { "access": "public", "branches": ["master"] },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/youngdo212/better-player.git"
@@ -44,6 +45,7 @@
     "prettier": "2.1.2",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
+    "semantic-release": "^17.3.0",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^4.2.3",
     "webpack": "^4.44.2",
@@ -63,6 +65,6 @@
     "core-js": "^3.7.0",
     "fscreen": "^1.1.0",
     "lodash": "^4.17.20",
-    "mime-types": "^2.1.27"
+    "mime": "^2.4.6"
   }
 }
