@@ -4,7 +4,7 @@
   "description": "Extensible video player for web",
   "main": "dist/better-player.js",
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest",
     "build": "webpack --config webpack.prod.js && grunt",
     "storybook": "start-storybook -s ./dist -p 6006",
     "build-storybook": "build-storybook"
@@ -12,7 +12,6 @@
   "files": [
     "/dist"
   ],
-  "publishConfig": { "access": "public", "branches": ["master"] },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/youngdo212/better-player.git"
@@ -45,7 +44,6 @@
     "prettier": "2.1.2",
     "sass": "^1.29.0",
     "sass-loader": "^10.1.0",
-    "semantic-release": "^17.3.0",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^4.2.3",
     "webpack": "^4.44.2",
