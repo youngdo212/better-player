@@ -6,9 +6,16 @@
 
 ## Table of Contents
 
+- [Install](#Install)
 - [Quick Start](#Quick-Start)
 - [API Documents](#API)
 - [Customizing](#Customizing)
+
+## Install
+
+```text
+$ npm install @mando212/better-player
+```
 
 ## Quick Start
 
@@ -59,7 +66,7 @@ const player = new BetterPlayer.Player({
 또는, CDN을 이용할 수도 있습니다. 이 경우 `BetterPlayer` 변수를 전역 환경에서 사용할 수 있습니다.
 
 ```html
-<script src="https://unpkg.com/@mando212/better-player"></script>
+<script src="https://unpkg.com/@mando212/better-player/dist/better-player.bundle.js"></script>
 ```
 
 ### 환경 설정
