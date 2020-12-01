@@ -1,6 +1,6 @@
 {
   "name": "@mando212/better-player",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Extensible video player for web",
   "main": "dist/better-player.js",
   "scripts": {
