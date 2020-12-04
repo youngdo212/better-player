@@ -9,6 +9,7 @@ export default class Events {
    */
   constructor() {
     this.listeners = {};
+    this.listeningTo = []; // listenTo 메소드를 이용해 이벤트 리스너를 추가한 대상
   }
 
   /**
@@ -31,19 +32,30 @@ export default class Events {
    * 등록된 이벤트 리스너를 제거한다.
    * @param {string=} eventName
    * @param {function=} callback
+   * @param {object=} context
    */
-  off(eventName, callback) {
-    if (!eventName) {
-      this.listeners = {};
-    } else if (!callback) {
-      delete this.listeners[eventName];
-    } else if (this.listeners[eventName]) {
-      this.listeners[eventName] = this.listeners[eventName].filter(
-        listener => listener.callback !== callback
-      );
+  off(eventName, callback, context) {
+    const eventNames = eventName ? [eventName] : Object.keys(this.listeners);
 
-      this.listeners[eventName].length || delete this.listeners[eventName];
-    }
+    eventNames.forEach(e => {
+      let listeners = this.listeners[e];
+
+      if (!listeners) return;
+
+      // 제거할 리스너를 제외시킨 배열을 만든다
+      listeners = listeners.filter(listener => {
+        const cb = listener.callback;
+        const ctx = listener.context;
+        const hasTargetCallback = !callback || cb === callback;
+        const hasTargetContext = !context || ctx === context;
+
+        return !hasTargetCallback || !hasTargetContext;
+      });
+
+      this.listeners[e] = listeners;
+
+      if (!listeners.length) delete this.listeners[e];
+    });
   }
 
   /**
@@ -71,6 +83,40 @@ export default class Events {
     };
 
     this.on(eventName, wrapper, context);
+  }
+
+  /**
+   * 해당 events 객체에 이벤트 리스너를 등록한다.
+   * on과 유사하지만, listenTo를 이용하면 리스닝하고 있는 events 객체를
+   * 속성으로 참조할 수 있다.
+   *
+   * @param {Events} events
+   * @param {string} eventName
+   * @param {function} callback
+   */
+  listenTo(events, eventName, callback) {
+    const isListeningTo = this.listeningTo.find(item => item === events);
+
+    if (!isListeningTo) this.listeningTo.push(events);
+
+    events.on(eventName, callback, this);
+  }
+
+  /**
+   * 대상 events 객체에 등록한 이벤트 리스너를 전부 제거한다
+   *
+   * @param {Events=} events
+   */
+  stopListening(events) {
+    const targets = events ? [events] : this.listeningTo;
+
+    targets.forEach(target => {
+      target.off(undefined, undefined, this);
+    });
+
+    this.listeningTo = events
+      ? this.listeningTo.filter(item => item !== events)
+      : [];
   }
 }
 
