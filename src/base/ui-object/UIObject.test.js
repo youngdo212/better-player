@@ -228,3 +228,31 @@ it('events 객체에 selector를 이용해 등록한 이벤트 리스너를 제�
   expect(callback1).not.toHaveBeenCalled();
   expect(callback2).not.toHaveBeenCalled();
 });
+
+it('파괴될 때 내가 등록한 이벤트 리스너를 전부 제거한다', () => {
+  class Button extends UIObject {
+    get tagName() {
+      return 'button';
+    }
+  }
+
+  const buttonKing = new Button();
+  const buttonA = new Button();
+  const buttonB = new Button();
+  const listener = jest.fn();
+  const eventName = 'test';
+
+  buttonKing.listenTo(buttonA, eventName, listener);
+  buttonKing.listenTo(buttonB, eventName, listener);
+
+  buttonA.emit(eventName);
+  buttonB.emit(eventName);
+
+  expect(listener).toHaveBeenCalledTimes(2);
+
+  buttonKing.destroy();
+  buttonA.emit(eventName);
+  buttonB.emit(eventName);
+
+  expect(listener).toHaveBeenCalledTimes(2);
+});
