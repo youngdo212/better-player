@@ -189,6 +189,14 @@ Events.VIDEO_SEEKING = 'video:seeking';
 Events.VIDEO_SEEKED = 'video:seeked';
 
 /**
+ * 비디오에 에러가 발생했을 때 발생하는 이벤트
+ *
+ * @event VIDEO_ERROR
+ * @param {Event} event
+ */
+Events.VIDEO_ERROR = 'video:error';
+
+/**
  * 비디오 플레이어의 전체 화면 여부가 변경되었을 때 발생.
  *
  * @event CORE_FULLSCREENCHANGE

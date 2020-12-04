@@ -32,6 +32,7 @@ export default class HTMLVideo extends Video {
       ended: 'onEnded',
       seeking: 'onSeeking',
       seeked: 'onSeeked',
+      error: 'onError',
     };
   }
 
@@ -124,6 +125,15 @@ export default class HTMLVideo extends Video {
    */
   onSeeked(event) {
     this.emit(Events.VIDEO_SEEKED, event);
+  }
+
+  /**
+   * 비디오의 에러 이벤트를 발생시킨다
+   *
+   * @param {Event} event
+   */
+  onError(event) {
+    this.emit(Events.VIDEO_ERROR, event);
   }
 
   /**

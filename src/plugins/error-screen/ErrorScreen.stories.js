@@ -29,6 +29,7 @@ export const Default = ({ text }) => {
   const errorScreen = new ErrorScreen(core);
 
   errorScreen.render();
+  errorScreen.show();
   loadSprite('better-player.svg');
 
   return core.el;

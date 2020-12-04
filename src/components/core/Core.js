@@ -8,8 +8,9 @@ import Controller from '../../plugins/controller';
 import loadSprite from '../../utils/load-sprite';
 import Events from '../../base/events';
 import Fullscreen from '../fullscreen';
+import ErrorScreen from '../../plugins/error-screen';
 
-const plugins = [Controller];
+const plugins = [Controller, ErrorScreen];
 
 /**
  * 비디오 플레이어의 핵심 클래스
