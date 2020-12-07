@@ -104,6 +104,10 @@ const player = new BetterPlayer.Player(options);
 
 비디오 엘리먼트의 높이를 px 단위로 설정합니다. height가 제공되지 않을 경우 부모 엘리먼트의 높이를 따릅니다.
 
+**i18n: object**
+
+텍스트의 국제화와 지역화를 위해 사용되는 객체입니다. 자세한 속성 값은 [defaults.js](https://github.com/youngdo212/better-player/blob/develop/src/config/defaults.js)를 참고하세요.
+
 **iconUrl: string**
 
 아이콘 svg sprite를 별도 제공하고 싶은 경우, sprite url을 직접 입력합니다. 자세한 내용은 [Customizing](#Customizing)을 참고 하세요.
