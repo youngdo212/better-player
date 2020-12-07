@@ -23,6 +23,12 @@ export default class ErrorScreen extends UIPlugin {
     };
   }
 
+  get events() {
+    return {
+      'click .better-player__reload-button': 'reload',
+    };
+  }
+
   /**
    * 인스턴스를 생성하고 초기 상태로 자신을 숨긴다.
    *
@@ -52,6 +58,14 @@ export default class ErrorScreen extends UIPlugin {
    */
   show() {
     removeClass(this.el, 'better-player__error-screen--hide');
+  }
+
+  /**
+   * 비디오 플레이어를 리로드 한다.
+   */
+  reload() {
+    this.hide();
+    this.core.reload();
   }
 
   /**

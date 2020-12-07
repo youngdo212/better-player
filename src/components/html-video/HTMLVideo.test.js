@@ -197,3 +197,15 @@ it('음소거를 해제했을 때 이전 볼륨이 0이라면 1로 되돌린다'
 
   expect(video.getVolume()).toBe(1);
 });
+
+it('비디오를 다시 로드하면 video 엘리먼트의 load 함수를 호출한다', () => {
+  const callback = jest.fn();
+  HTMLMediaElement.prototype.load = () => {
+    callback();
+  };
+  const video = new HTMLVideo(config);
+
+  video.reload();
+
+  expect(callback).toHaveBeenCalledTimes(1);
+});

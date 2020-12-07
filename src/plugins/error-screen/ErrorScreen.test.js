@@ -82,3 +82,24 @@ it('비디오에 에러 이벤트가 발생할 경우 에러 스크린을 드러
     'better-player__error-screen--hide'
   );
 });
+
+it('리로드 버튼을 클릭하면 모습을 감추고 core의 reload 함수를 호출한다', () => {
+  HTMLMediaElement.prototype.canPlayType = () => 'maybe';
+  HTMLMediaElement.prototype.load = () => {};
+  const core = new Core(config);
+  const reloadSpy = jest.spyOn(core, 'reload');
+  const errorScreen = core.plugins.find(
+    plugin => plugin instanceof ErrorScreen
+  );
+  errorScreen.render();
+  const reloadButtonEl = errorScreen.el.querySelector(
+    '.better-player__reload-button'
+  );
+
+  reloadButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
+
+  expect(errorScreen.el.classList).toContain(
+    'better-player__error-screen--hide'
+  );
+  expect(reloadSpy).toHaveBeenCalledTimes(1);
+});

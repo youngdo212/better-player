@@ -219,6 +219,13 @@ export default class HTMLVideo extends Video {
   }
 
   /**
+   * 비디오를 다시 로드한다.
+   */
+  reload() {
+    this.el.load();
+  }
+
+  /**
    * DOM에서 엘리먼트를 제거하고 이벤트 리스너를 전부 삭제한다.
    * 또한 비디오 엘리먼트 src 속성을 초기화한다.
    *

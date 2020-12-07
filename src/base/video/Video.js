@@ -96,4 +96,9 @@ export default class Video extends UIObject {
    * 음소거를 해제한다.
    */
   unmute() {}
+
+  /**
+   * 설정된 url로 비디오를 다시 로드한다.
+   */
+  reload() {}
 }

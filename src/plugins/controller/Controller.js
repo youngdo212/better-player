@@ -201,7 +201,7 @@ export default class Controller extends UIPlugin {
    * seek bar의 위치를 바탕으로 현재 시간을 변경한다
    */
   updateCurrentTime() {
-    const duration = this.video.getDuration();
+    const duration = this.video.getDuration() || 0;
     const currentTime = Number(this.$seekBar.value) * duration;
     this.$currentTime.textContent = formatTime(currentTime);
   }

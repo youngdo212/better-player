@@ -94,6 +94,15 @@ export default class Core extends UIObject {
   }
 
   /**
+   * 비디오 플레이어를 리로드한다.
+   * 비디오 엘리먼트의 src를 변경하지 않고 다시 로드하고 disable된 플러그인들을 enable 상태로 만든다.
+   */
+  reload() {
+    this.video.reload();
+    this.plugins.forEach(plugin => plugin.enable());
+  }
+
+  /**
    * 하위 엘리먼트를 렌더링하고 부모 엘리먼트에 core 엘리먼트를 추가한다.
    *
    * @returns {Core}
