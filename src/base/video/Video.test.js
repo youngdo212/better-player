@@ -60,8 +60,15 @@ it('mute() 메소드를 가진다', () => {
 
   expect(video.mute).toBeDefined();
 });
+
 it('unmute() 메소드를 가진다', () => {
   const video = new Video({});
 
   expect(video.unmute).toBeDefined();
+});
+
+it('reload() 메소드를 가진다', () => {
+  const video = new Video({});
+
+  expect(video.reload).toBeDefined();
 });

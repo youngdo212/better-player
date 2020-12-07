@@ -66,6 +66,16 @@ describe('비디오 이벤트 발생 관련', () => {
 
     expect(callback).toHaveBeenCalled();
   });
+
+  it('비디오 엘리먼트의 error 이벤트가 발생하면 VIDEO_ERROR 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
+
+    video.on(Events.VIDEO_ERROR, callback);
+    video.el.dispatchEvent(new Event('error'));
+
+    expect(callback).toHaveBeenCalled();
+  });
 });
 
 it('비디오 엘리먼트를 DOM에서 제거하고 src attribute를 초기화한다', () => {
@@ -186,4 +196,16 @@ it('음소거를 해제했을 때 이전 볼륨이 0이라면 1로 되돌린다'
   video.unmute();
 
   expect(video.getVolume()).toBe(1);
+});
+
+it('비디오를 다시 로드하면 video 엘리먼트의 load 함수를 호출한다', () => {
+  const callback = jest.fn();
+  HTMLMediaElement.prototype.load = () => {
+    callback();
+  };
+  const video = new HTMLVideo(config);
+
+  video.reload();
+
+  expect(callback).toHaveBeenCalledTimes(1);
 });

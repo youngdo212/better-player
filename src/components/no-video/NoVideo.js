@@ -33,7 +33,7 @@ export default class NoVideo extends Video {
    * @returns {NoVideo}
    */
   render() {
-    innerHTML(this.el, template(this.config.i18n));
+    innerHTML(this.el, template(this.config));
     return this;
   }
 

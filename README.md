@@ -104,6 +104,10 @@ const player = new BetterPlayer.Player(options);
 
 비디오 엘리먼트의 높이를 px 단위로 설정합니다. height가 제공되지 않을 경우 부모 엘리먼트의 높이를 따릅니다.
 
+**i18n: object**
+
+텍스트의 국제화와 지역화를 위해 사용되는 객체입니다. 자세한 속성 값은 [defaults.js](https://github.com/youngdo212/better-player/blob/develop/src/config/defaults.js)를 참고하세요.
+
 **iconUrl: string**
 
 아이콘 svg sprite를 별도 제공하고 싶은 경우, sprite url을 직접 입력합니다. 자세한 내용은 [Customizing](#Customizing)을 참고 하세요.
@@ -317,14 +321,15 @@ BetterPlayer는 svg 아이콘을 사용하고 있습니다. 만약 자신만의 
 1. 아이콘들이 전부 하나의 파일(svg sprite)에 들어가 있어야 합니다. svg sprite를 만드는 방법은 [다음](https://css-tricks.com/svg-sprites-use-better-icon-fonts/)을 참고하세요.
 2. svg sprite에 들어있는 각 아이콘의 id 속성이 BetterPlayer의 아이콘 id와 일치해야 합니다.
 
-| 아이콘                    | id                           |
-| ------------------------- | ---------------------------- |
-| 컨트롤러 플레이 버튼      | better-player-play           |
-| 컨트롤러 일시 정지 버튼   | better-player-pause          |
-| 컨트롤러 음소거 버튼      | better-player-mute           |
-| 컨트롤러 음소거 취소 버튼 | better-player-volume         |
-| 전체화면 버튼             | better-player-fullscreen-in  |
-| 전체화면 취소 버튼        | better-player-fullscreen-out |
+| 아이콘                       | id                           |
+| ---------------------------- | ---------------------------- |
+| 컨트롤러 플레이 버튼         | better-player-play           |
+| 컨트롤러 일시 정지 버튼      | better-player-pause          |
+| 컨트롤러 음소거 버튼         | better-player-mute           |
+| 컨트롤러 음소거 취소 버튼    | better-player-volume         |
+| 컨트롤러 전체화면 버튼       | better-player-fullscreen-in  |
+| 컨트롤러 전체화면 취소 버튼  | better-player-fullscreen-out |
+| 에러 화면 비디오 리로드 버튼 | better-player-reload         |
 
 svg sprite가 준비됐다면 아래와 같이 svg url을 입력할 수 있습니다.
 

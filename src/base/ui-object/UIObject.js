@@ -140,6 +140,7 @@ export default class UIObject extends Events {
     this.undelegateEvents();
     removeElement(this.el);
     this.off();
+    this.stopListening();
     return this;
   }
 }

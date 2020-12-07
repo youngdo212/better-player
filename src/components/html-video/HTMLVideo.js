@@ -32,6 +32,7 @@ export default class HTMLVideo extends Video {
       ended: 'onEnded',
       seeking: 'onSeeking',
       seeked: 'onSeeked',
+      error: 'onError',
     };
   }
 
@@ -127,6 +128,15 @@ export default class HTMLVideo extends Video {
   }
 
   /**
+   * 비디오의 에러 이벤트를 발생시킨다
+   *
+   * @param {Event} event
+   */
+  onError(event) {
+    this.emit(Events.VIDEO_ERROR, event);
+  }
+
+  /**
    * 비디오의 정지 여부를 반환한다.
    *
    * @returns {boolean}
@@ -206,6 +216,13 @@ export default class HTMLVideo extends Video {
    */
   unmute() {
     this.el.volume = this.lastVolume || 1;
+  }
+
+  /**
+   * 비디오를 다시 로드한다.
+   */
+  reload() {
+    this.el.load();
   }
 
   /**

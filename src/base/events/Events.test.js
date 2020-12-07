@@ -32,80 +32,298 @@ it('이미 존재하는 이벤트에 새로운 이벤트 리스너를 등록한�
   expect(events.listeners[eventName].length).toBe(2);
 });
 
-it('존재하지 않는 이벤트의 이벤트 리스너를 제거하면 아무 일도 일어나지 않는다', () => {
-  const eventName = 'test';
-  const callback = () => {};
-  const events = new Events();
-  const prevListeners = { ...events.listeners };
+describe('off', () => {
+  it('존재하지 않는 이벤트의 이벤트 리스너를 제거하면 아무 일도 일어나지 않는다', () => {
+    const eventName = 'test';
+    const callback = () => {};
+    const events = new Events();
+    const prevListeners = { ...events.listeners };
 
-  events.off(eventName, callback);
+    events.off(eventName, callback);
 
-  expect(events.listeners).toEqual(prevListeners);
-});
+    expect(events.listeners).toEqual(prevListeners);
+  });
 
-it('등록되어 있지 않은 이벤트 리스너를 제거하면 아무 일도 일어나지 않는다', () => {
-  const eventName = 'test';
-  const callback = () => {};
-  const notAddedCallback = () => {};
-  const events = new Events();
+  it('등록되어 있지 않은 이벤트 리스너를 제거하면 아무 일도 일어나지 않는다', () => {
+    const eventName = 'test';
+    const callback = () => {};
+    const notAddedCallback = () => {};
+    const events = new Events();
 
-  events.on(eventName, callback);
-  events.off(eventName, notAddedCallback);
+    events.on(eventName, callback);
+    events.off(eventName, notAddedCallback);
 
-  expect(
-    events.listeners[eventName].map(listener => listener.callback)
-  ).toContain(callback);
-  expect(events.listeners[eventName].length).toBe(1);
-});
+    expect(
+      events.listeners[eventName].map(listener => listener.callback)
+    ).toContain(callback);
+    expect(events.listeners[eventName].length).toBe(1);
+  });
 
-it('이벤트 리스너가 성공적으로 제거된다', () => {
-  const eventName = 'test';
-  const callback1 = () => {};
-  const callback2 = () => {};
-  const events = new Events();
+  it('등록되지 않은 context에 대해서 제거하려고 하면 아무일도 일어나지 않는다', () => {
+    const events = new Events();
+    const eventName = 'test';
+    const callback = function () {};
+    const context = {};
+    const wrongContext = {};
 
-  events.on(eventName, callback1);
-  events.on(eventName, callback2);
-  events.off(eventName, callback1);
+    events.on(eventName, callback, context);
+    events.off(eventName, callback, wrongContext);
 
-  let callbacks = events.listeners[eventName].map(
-    listener => listener.callback
-  );
-  expect(callbacks).not.toContain(callback1);
-  expect(callbacks).toContain(callback2);
-  expect(callbacks.length).toBe(1);
+    expect(
+      events.listeners[eventName].map(listener => listener.callback)
+    ).toContain(callback);
+    expect(events.listeners[eventName].length).toBe(1);
+  });
 
-  events.off(eventName, callback2);
+  it('모든 이벤트와 이벤트 리스너를 전부 성공적으로 제거한다', () => {
+    const events = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback1 = function () {};
+    const callback2 = function () {};
+    const context = {};
+    const initialListeners = { ...events.listeners };
 
-  expect(events.listeners[eventName]).toBeUndefined();
-});
+    events.on(eventName1, callback1);
+    events.on(eventName2, callback2, context);
+    events.off();
 
-it('한 이벤트에 등록된 모든 이벤트 리스너가 성공적으로 제거된다', () => {
-  const eventName = 'test';
-  const callback1 = () => {};
-  const callback2 = () => {};
-  const events = new Events();
+    expect(events.listeners).toEqual(initialListeners);
+  });
 
-  events.on(eventName, callback1);
-  events.on(eventName, callback2);
-  events.off(eventName);
+  it('한 이벤트에 대한 모든 이벤트 리스너를 제거한다', () => {
+    const events = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback = function () {};
+    const context = {};
 
-  expect(events.listeners[eventName]).toBeUndefined();
-});
+    events.on(eventName1, callback);
+    events.on(eventName1, callback, context);
+    events.on(eventName2, callback);
+    events.on(eventName2, callback, context);
+    events.off(eventName1);
 
-it('모든 이벤트와 이벤트 리스너를 전부 성공적으로 제거한다', () => {
-  const eventName1 = 'test1';
-  const eventName2 = 'test2';
-  const callback1 = () => {};
-  const callback2 = () => {};
-  const events = new Events();
-  const initialListeners = { ...events.listeners };
+    expect(Object.keys(events.listeners)).toContain(eventName2);
+    expect(events.listeners[eventName2].length).toBe(2);
+  });
 
-  events.on(eventName1, callback1);
-  events.on(eventName2, callback2);
-  events.off();
+  it('한 callback에 대한 모든 이벤트 리스너를 제거한다', () => {
+    const events = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback1 = function () {};
+    const callback2 = function () {};
+    const context = {};
 
-  expect(events.listeners).toEqual(initialListeners);
+    events.on(eventName1, callback1);
+    events.on(eventName1, callback1, context);
+    events.on(eventName1, callback2);
+    events.on(eventName1, callback2, context);
+    events.on(eventName2, callback1);
+    events.on(eventName2, callback1, context);
+    events.on(eventName2, callback2);
+    events.on(eventName2, callback2, context);
+    events.off(undefined, callback1);
+
+    expect(Object.keys(events.listeners)).toContain(eventName1);
+    expect(Object.keys(events.listeners)).toContain(eventName2);
+    expect(events.listeners[eventName1].length).toBe(2);
+    expect(events.listeners[eventName2].length).toBe(2);
+    expect(
+      events.listeners[eventName1].map(listener => listener.callback)
+    ).not.toContain(callback1);
+    expect(
+      events.listeners[eventName1].map(listener => listener.callback)
+    ).toContain(callback2);
+    expect(
+      events.listeners[eventName2].map(listener => listener.callback)
+    ).not.toContain(callback1);
+    expect(
+      events.listeners[eventName2].map(listener => listener.callback)
+    ).toContain(callback2);
+  });
+
+  it('한 context에 대한 모든 이벤트 리스너를 제거한다', () => {
+    const events = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback = function () {};
+    const context1 = {};
+    const context2 = {};
+
+    events.on(eventName1, callback);
+    events.on(eventName1, callback, context1);
+    events.on(eventName1, callback, context2);
+    events.on(eventName2, callback);
+    events.on(eventName2, callback, context1);
+    events.on(eventName2, callback, context2);
+    events.off(undefined, undefined, context1);
+
+    expect(Object.keys(events.listeners)).toContain(eventName1);
+    expect(Object.keys(events.listeners)).toContain(eventName2);
+    expect(events.listeners[eventName1].length).toBe(2);
+    expect(events.listeners[eventName2].length).toBe(2);
+    expect(
+      events.listeners[eventName1].map(listener => listener.context)
+    ).not.toContain(context1);
+    expect(
+      events.listeners[eventName1].map(listener => listener.context)
+    ).toContain(context2);
+    expect(
+      events.listeners[eventName2].map(listener => listener.context)
+    ).not.toContain(context1);
+    expect(
+      events.listeners[eventName2].map(listener => listener.context)
+    ).toContain(context2);
+  });
+
+  it('context에 상관없이 이벤트 리스너를 제거한다', () => {
+    const events = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback1 = function () {};
+    const callback2 = function () {};
+    const context = {};
+
+    events.on(eventName1, callback1);
+    events.on(eventName1, callback1, context);
+    events.on(eventName1, callback2);
+    events.on(eventName1, callback2, context);
+    events.on(eventName2, callback1);
+    events.on(eventName2, callback1, context);
+    events.on(eventName2, callback2);
+    events.on(eventName2, callback2, context);
+    events.off(eventName1, callback1);
+
+    expect(Object.keys(events.listeners)).toContain(eventName1);
+    expect(Object.keys(events.listeners)).toContain(eventName2);
+    expect(events.listeners[eventName1].length).toBe(2);
+    expect(events.listeners[eventName2].length).toBe(4);
+    expect(
+      events.listeners[eventName1].map(listener => listener.callback)
+    ).not.toContain(callback1);
+    expect(
+      events.listeners[eventName1].map(listener => listener.callback)
+    ).toContain(callback2);
+  });
+
+  it('callback에 상관없이 이벤트 리스너를 제거한다', () => {
+    const events = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback1 = function () {};
+    const callback2 = function () {};
+    const context1 = {};
+    const context2 = {};
+
+    events.on(eventName1, callback1);
+    events.on(eventName1, callback1, context1);
+    events.on(eventName1, callback1, context2);
+    events.on(eventName1, callback2);
+    events.on(eventName1, callback2, context1);
+    events.on(eventName1, callback2, context2);
+    events.on(eventName2, callback1);
+    events.on(eventName2, callback1, context1);
+    events.on(eventName2, callback1, context2);
+    events.on(eventName2, callback2);
+    events.on(eventName2, callback2, context1);
+    events.on(eventName2, callback2, context2);
+    events.off(eventName1, undefined, context1);
+
+    expect(Object.keys(events.listeners)).toContain(eventName1);
+    expect(Object.keys(events.listeners)).toContain(eventName2);
+    expect(events.listeners[eventName1].length).toBe(4);
+    expect(events.listeners[eventName2].length).toBe(6);
+    expect(
+      events.listeners[eventName1].map(listener => listener.context)
+    ).not.toContain(context1);
+    expect(
+      events.listeners[eventName1].map(listener => listener.context)
+    ).toContain(context2);
+  });
+
+  it('eventName에 상관없이 이벤트 리스너를 제거한다', () => {
+    const events = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback1 = function () {};
+    const callback2 = function () {};
+    const context1 = {};
+    const context2 = {};
+
+    events.on(eventName1, callback1);
+    events.on(eventName1, callback1, context1);
+    events.on(eventName1, callback1, context2);
+    events.on(eventName1, callback2);
+    events.on(eventName1, callback2, context1);
+    events.on(eventName1, callback2, context2);
+    events.on(eventName2, callback1);
+    events.on(eventName2, callback1, context1);
+    events.on(eventName2, callback1, context2);
+    events.on(eventName2, callback2);
+    events.on(eventName2, callback2, context1);
+    events.on(eventName2, callback2, context2);
+    events.off(undefined, callback1, context1);
+
+    expect(Object.keys(events.listeners)).toContain(eventName1);
+    expect(Object.keys(events.listeners)).toContain(eventName2);
+    expect(events.listeners[eventName1].length).toBe(5);
+    expect(events.listeners[eventName2].length).toBe(5);
+    expect(
+      events.listeners[eventName1].find(
+        listener =>
+          listener.callback === callback1 && listener.context === context1
+      )
+    ).toBeUndefined();
+    expect(
+      events.listeners[eventName2].find(
+        listener =>
+          listener.callback === callback1 && listener.context === context1
+      )
+    ).toBeUndefined();
+  });
+
+  it('이벤트 리스너가 성공적으로 제거된다', () => {
+    const events = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback1 = function () {};
+    const callback2 = function () {};
+    const context1 = {};
+    const context2 = {};
+
+    events.on(eventName1, callback1);
+    events.on(eventName1, callback1, context1);
+    events.on(eventName1, callback1, context2);
+    events.on(eventName1, callback2);
+    events.on(eventName1, callback2, context1);
+    events.on(eventName1, callback2, context2);
+    events.on(eventName2, callback1);
+    events.on(eventName2, callback1, context1);
+    events.on(eventName2, callback1, context2);
+    events.on(eventName2, callback2);
+    events.on(eventName2, callback2, context1);
+    events.on(eventName2, callback2, context2);
+    events.off(eventName1, callback1, context1);
+
+    expect(Object.keys(events.listeners)).toContain(eventName1);
+    expect(Object.keys(events.listeners)).toContain(eventName2);
+    expect(events.listeners[eventName1].length).toBe(5);
+    expect(events.listeners[eventName2].length).toBe(6);
+    expect(
+      events.listeners[eventName1].find(
+        listener =>
+          listener.callback === callback1 && listener.context === context1
+      )
+    ).toBeUndefined();
+    expect(
+      events.listeners[eventName2].find(
+        listener =>
+          listener.callback === callback1 && listener.context === context1
+      )
+    ).toBeDefined();
+  });
 });
 
 it('등록되지 않은 이벤트를 발생시키면 이벤트 리스너가 호출되지 않는다', () => {
@@ -248,4 +466,101 @@ it('컨텍스트를 설정해서 한 번만 호출되는 이벤트 리스너를 
 
   expect(context.age).toBe(age);
   expect(events.listeners[eventName]).toBeUndefined();
+});
+
+describe('listenTo', () => {
+  it('listenTo를 이용해 이벤트 리스너를 등록한다', () => {
+    const observer = new Events();
+    const subject = new Events();
+    const eventName = 'test';
+    const callback = jest.fn();
+
+    observer.listenTo(subject, eventName, callback);
+
+    subject.emit(eventName);
+
+    expect(callback).toHaveBeenCalledTimes(1);
+  });
+
+  it('이미 listen 중인 경우 중복으로 listeningTo 배열에 추가하지 않는다', () => {
+    const observer = new Events();
+    const subject = new Events();
+    const eventName = 'test';
+    const callback1 = jest.fn();
+    const callback2 = jest.fn();
+
+    observer.listenTo(subject, eventName, callback1);
+
+    subject.emit(eventName);
+
+    expect(callback1).toHaveBeenCalledTimes(1);
+
+    observer.listenTo(subject, eventName, callback2);
+
+    subject.emit(eventName);
+
+    expect(callback1).toHaveBeenCalledTimes(2);
+    expect(callback2).toHaveBeenCalledTimes(1);
+    expect(observer.listeningTo.length).toBe(1);
+  });
+});
+
+describe('stopListening', () => {
+  it('정해진 대상에 등록한 이벤트 리스너를 제거한다', () => {
+    const observer = new Events();
+    const subject1 = new Events();
+    const subject2 = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback1 = jest.fn();
+    const callback2 = jest.fn();
+
+    observer.listenTo(subject1, eventName1, callback1);
+    observer.listenTo(subject2, eventName2, callback2);
+    subject1.emit(eventName1);
+    subject2.emit(eventName2);
+
+    // 제대로 등록 됐는지 확인
+    expect(callback1).toHaveBeenCalledTimes(1);
+    expect(callback2).toHaveBeenCalledTimes(1);
+
+    observer.stopListening(subject1);
+    subject1.emit(eventName1);
+    subject2.emit(eventName2);
+
+    expect(callback1).toHaveBeenCalledTimes(1);
+    expect(callback2).toHaveBeenCalledTimes(2);
+    expect(observer.listeningTo.length).toBe(1);
+    expect(observer.listeningTo).not.toContain(subject1);
+    expect(observer.listeningTo).toContain(subject2);
+  });
+
+  it('자신이 등록한 이벤트 리스너를 모두 제거한다', () => {
+    const observer = new Events();
+    const subject1 = new Events();
+    const subject2 = new Events();
+    const eventName1 = 'test1';
+    const eventName2 = 'test2';
+    const callback1 = jest.fn();
+    const callback2 = jest.fn();
+
+    observer.listenTo(subject1, eventName1, callback1);
+    observer.listenTo(subject2, eventName2, callback2);
+    subject1.emit(eventName1);
+    subject2.emit(eventName2);
+
+    // 제대로 등록 됐는지 확인
+    expect(callback1).toHaveBeenCalledTimes(1);
+    expect(callback2).toHaveBeenCalledTimes(1);
+
+    observer.stopListening();
+    subject1.emit(eventName1);
+    subject2.emit(eventName2);
+
+    expect(callback1).toHaveBeenCalledTimes(1);
+    expect(callback2).toHaveBeenCalledTimes(1);
+    expect(observer.listeningTo).not.toContain(subject1);
+    expect(observer.listeningTo).not.toContain(subject2);
+    expect(observer.listeningTo.length).toBe(0);
+  });
 });

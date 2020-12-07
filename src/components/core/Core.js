@@ -8,8 +8,9 @@ import Controller from '../../plugins/controller';
 import loadSprite from '../../utils/load-sprite';
 import Events from '../../base/events';
 import Fullscreen from '../fullscreen';
+import ErrorScreen from '../../plugins/error-screen';
 
-const plugins = [Controller];
+const plugins = [Controller, ErrorScreen];
 
 /**
  * 비디오 플레이어의 핵심 클래스
@@ -90,6 +91,15 @@ export default class Core extends UIObject {
   updateSize() {
     this.el.style.width = this.config.width ? `${this.config.width}px` : '';
     this.el.style.height = this.config.height ? `${this.config.height}px` : '';
+  }
+
+  /**
+   * 비디오 플레이어를 리로드한다.
+   * 비디오 엘리먼트의 src를 변경하지 않고 다시 로드하고 disable된 플러그인들을 enable 상태로 만든다.
+   */
+  reload() {
+    this.video.reload();
+    this.plugins.forEach(plugin => plugin.enable());
   }
 
   /**

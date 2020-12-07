@@ -265,3 +265,17 @@ describe('fullscreen 관련', () => {
   //   })
   // })
 });
+
+it('리로드할 경우 video의 reload 함수를 호출하고 모든 플러그인을 enabled하게 만든다', () => {
+  HTMLMediaElement.prototype.load = () => {};
+  const core = new Core(config);
+  core.video.reload = jest.fn();
+  core.plugins.forEach(plugin => plugin.disable());
+
+  core.reload();
+
+  expect(core.video.reload).toHaveBeenCalledTimes(1);
+  expect(core.plugins.filter(plugin => plugin.enabled).length).toBe(
+    core.plugins.length
+  );
+});

@@ -257,6 +257,26 @@ it('비디오의 시간이 변경되면 현재 시간이 변경된다', () => {
   expect(currentTimeEl.textContent).toBe('00:35');
 });
 
+it('비디오에 에러가 발생하면 엘리먼트를 숨기고 등록한 이벤트 리스너를 제거한다', () => {
+  HTMLMediaElement.prototype.canPlayType = () => 'maybe';
+  const core = new Core(config);
+  const controller = core.plugins.find(plugin => plugin instanceof Controller);
+  controller.render();
+  const playToggleButtonEl = controller.el.querySelector(
+    '.better-player__toggle-button'
+  );
+
+  core.video.emit(Events.VIDEO_ERROR);
+  core.video.emit(Events.VIDEO_PLAY);
+
+  expect(controller.el.style.display).toBe('none');
+  expect(
+    playToggleButtonEl.classList.contains(
+      'better-player__toggle-button--pressed'
+    )
+  ).toBe(false);
+});
+
 it('seek bar를 드래그하면 위치에 따라 current time이 변경된다', () => {
   const core = new Core(config);
   core.video = new HTMLVideo(config);

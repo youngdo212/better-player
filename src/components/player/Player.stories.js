@@ -72,3 +72,43 @@ MutiplePlayer.args = {
   width: 830,
   height: 360,
 };
+
+/**
+ * 서버로 부터 비디오를 찾을 수 없는 경우 비디오 플레이어는 Error Screen을 띄운다
+ */
+export const NotFoundVideo = Template.bind({});
+NotFoundVideo.args = {
+  source: 'http://localhost/not-found/video.mp4',
+  width: 640,
+  height: 360,
+};
+
+/**
+ * i18의 일부 속성만 제공했을 경우
+ */
+export const InternationalizationException = ({
+  source,
+  width,
+  height,
+  notFoundVideo,
+}) => {
+  const parent = document.createElement('div');
+
+  new Player({
+    source,
+    parent,
+    width,
+    height,
+    i18n: {
+      notFoundVideo,
+    },
+  });
+
+  return parent;
+};
+InternationalizationException.args = {
+  source: 'http://localhost/not-found/video.mp4',
+  width: 640,
+  height: 360,
+  notFoundVideo: 'video is not found',
+};

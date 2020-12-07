@@ -52,15 +52,16 @@ export default class Controller extends UIPlugin {
    * 컴포넌트에 이벤트 리스너를 등록한다.
    */
   addEventListeners() {
-    this.video.on(Events.VIDEO_PLAY, this.updatePlayToggleButton, this);
-    this.video.on(Events.VIDEO_PAUSE, this.updatePlayToggleButton, this);
-    this.video.on(Events.VIDEO_TIMEUPDATE, this.onTimeupdate, this);
-    this.video.on(Events.VIDEO_DURATIONCHANGE, this.updateDuration, this);
-    this.video.on(Events.VIDEO_VOLUMECHANGE, this.onVolumeChange, this);
-    this.core.on(
+    this.listenTo(this.video, Events.VIDEO_PLAY, this.updatePlayToggleButton);
+    this.listenTo(this.video, Events.VIDEO_PAUSE, this.updatePlayToggleButton);
+    this.listenTo(this.video, Events.VIDEO_TIMEUPDATE, this.onTimeupdate);
+    this.listenTo(this.video, Events.VIDEO_DURATIONCHANGE, this.updateDuration);
+    this.listenTo(this.video, Events.VIDEO_VOLUMECHANGE, this.onVolumeChange);
+    this.listenTo(this.video, Events.VIDEO_ERROR, this.disable);
+    this.listenTo(
+      this.core,
       Events.CORE_FULLSCREENCHANGE,
-      this.updateFullscreenToggleButton,
-      this
+      this.updateFullscreenToggleButton
     );
   }
 
@@ -200,7 +201,7 @@ export default class Controller extends UIPlugin {
    * seek bar의 위치를 바탕으로 현재 시간을 변경한다
    */
   updateCurrentTime() {
-    const duration = this.video.getDuration();
+    const duration = this.video.getDuration() || 0;
     const currentTime = Number(this.$seekBar.value) * duration;
     this.$currentTime.textContent = formatTime(currentTime);
   }

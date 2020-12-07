@@ -123,3 +123,22 @@ export function addClass(element, className) {
 export function removeClass(element, className) {
   element.classList.remove(className);
 }
+
+/**
+ * DOM에서 제거하지 않고 엘리먼트를 숨긴다.
+ * 숨겨진 엘리먼트는 공간을 차지하지 않는다.
+ *
+ * @param {HTMLElement} element
+ */
+export function hideElement(element) {
+  element.style.display = 'none';
+}
+
+/**
+ * hideElement()를 통해 숨겨진 엘리먼트를 다시 등장시킨다.
+ *
+ * @param {HTMLElement} element
+ */
+export function showElement(element) {
+  element.style.display = '';
+}
