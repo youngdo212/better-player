@@ -37,19 +37,7 @@ export default class ErrorScreen extends UIPlugin {
    * 비디오 컴포넌트에 에러 이벤트 핸들러를 등록한다
    */
   addEventListeners() {
-    this.listenTo(this.video, Events.VIDEO_ERROR, this.onError);
-  }
-
-  /**
-   * 비디오에서 발생하는 에러 이벤트 핸들러
-   * 에러 스크린을 띄우고 자신을 제외한 모든 플러그인들은 기능하지 않도록 한다.
-   */
-  onError() {
-    this.show();
-    this.core.plugins.forEach(plugin => {
-      if (plugin === this) return;
-      plugin.disable();
-    });
+    this.listenTo(this.video, Events.VIDEO_ERROR, this.show);
   }
 
   /**

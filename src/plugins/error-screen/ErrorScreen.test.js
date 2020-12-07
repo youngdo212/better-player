@@ -46,22 +46,6 @@ it('플러그인의 초기 상태는 안보이는 상태다', () => {
   ).toBe(true);
 });
 
-it('비디오에 에러 이벤트가 발생할 경우 자신을 제외한 모든 플러그인을 disable 시키고 자신을 드러낸다', () => {
-  HTMLMediaElement.prototype.canPlayType = () => 'maybe';
-  const core = new Core(config);
-  const errorScreen = core.plugins.find(
-    plugin => plugin instanceof ErrorScreen
-  );
-
-  core.video.emit(Events.VIDEO_ERROR);
-
-  expect(core.plugins.filter(plugin => plugin.enabled).length).toBe(1);
-  expect(core.plugins.filter(plugin => plugin.enabled)[0]).toBe(errorScreen);
-  expect(errorScreen.el.classList).not.toContain(
-    'better-player__error-screen--hide'
-  );
-});
-
 it('에러 스크린을 드러낸다', () => {
   const core = new Core(config);
   const errorScreen = new ErrorScreen(core);
@@ -81,6 +65,20 @@ it('에러 스크린을 숨긴다', () => {
   errorScreen.hide();
 
   expect(errorScreen.el.classList).toContain(
+    'better-player__error-screen--hide'
+  );
+});
+
+it('비디오에 에러 이벤트가 발생할 경우 에러 스크린을 드러낸다', () => {
+  HTMLMediaElement.prototype.canPlayType = () => 'maybe';
+  const core = new Core(config);
+  const errorScreen = core.plugins.find(
+    plugin => plugin instanceof ErrorScreen
+  );
+
+  core.video.emit(Events.VIDEO_ERROR);
+
+  expect(errorScreen.el.classList).not.toContain(
     'better-player__error-screen--hide'
   );
 });

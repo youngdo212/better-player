@@ -57,6 +57,7 @@ export default class Controller extends UIPlugin {
     this.listenTo(this.video, Events.VIDEO_TIMEUPDATE, this.onTimeupdate);
     this.listenTo(this.video, Events.VIDEO_DURATIONCHANGE, this.updateDuration);
     this.listenTo(this.video, Events.VIDEO_VOLUMECHANGE, this.onVolumeChange);
+    this.listenTo(this.video, Events.VIDEO_ERROR, this.disable);
     this.listenTo(
       this.core,
       Events.CORE_FULLSCREENCHANGE,
