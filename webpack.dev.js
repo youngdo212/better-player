@@ -1,3 +1,4 @@
+const path = require('path');
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
 
@@ -9,7 +10,20 @@ module.exports = merge(common, {
       ...common.module.rules,
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              additionalData: '@import "variables";',
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, 'src')],
+              },
+            },
+          },
+        ],
       },
     ],
   },

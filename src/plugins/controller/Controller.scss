@@ -1,7 +1,7 @@
 %controller-button {
   box-sizing: border-box;
-  width: 32px;
-  height: 32px;
+  width: $controller-icon-size;
+  height: $controller-icon-size;
   padding: 6px;
   border-radius: 7px;
   cursor: pointer;
@@ -11,14 +11,14 @@
   }
 
   & .better-player__icon {
-    fill: #fff;
+    fill: $controller-color;
   }
 }
 
 %controller-time {
-  color: #fff;
-  margin-left: 5px;
-  font-size: 0.9rem;
+  color: $controller-color;
+  margin-right: $controller-spacing;
+  font-size: $controller-font-size;
 }
 
 %controller-bar {
@@ -35,7 +35,7 @@
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: #fff;
+    background: $controller-color;
     cursor: pointer;
     margin-top: -4px;
   }
@@ -44,7 +44,7 @@
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: #fff;
+    background: $controller-color;
     cursor: pointer;
   }
   
@@ -52,7 +52,7 @@
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: #fff;
+    background: $controller-color;
     cursor: pointer;
   }
 
@@ -102,7 +102,7 @@
   position: absolute;
   bottom: 0px;
   width: 100%;
-  background: linear-gradient(transparent, #000);
+  background: $controller-background;
 }
 
 .better-player__controller-top-panel{
@@ -131,6 +131,7 @@
 
 .better-player__play-toggle-button {
   @extend %controller-button;
+  margin-right: $controller-spacing;
 }
 
 .better-player__current-time {
@@ -150,12 +151,11 @@
 .better-player__mute-toggle-button {
   @extend %controller-button;
   padding: 7.5px;
-  margin-left: 5px;
+  margin-right: $controller-spacing;
 }
 
 .better-player__volume-bar {
   @extend %controller-bar;
-  margin-left: 5px;
   width: 100px;
 }
 

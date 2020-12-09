@@ -17,15 +17,14 @@
 }
 
 .better-player__error-screen-message {
-  color: #fff;
   padding: 20px;
   text-align: center;
 }
 
 .better-player__reload-button {
   box-sizing: border-box;
-  width: 36px;
-  height: 36px;
+  width: $error-screen-icon-size;
+  height: $error-screen-icon-size;
   padding: 8px;
   border-radius: 7px;
   cursor: pointer;
@@ -35,7 +34,7 @@
   }
 
   & .better-player__icon {
-    fill: #fff;
+    fill: $error-screen-icon-color;
     width: 100%;
     height: 100%;
   }

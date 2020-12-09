@@ -18,7 +18,20 @@ const prod = {
       ...common.module.rules,
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: 'css-loader' },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+              additionalData: '@import "variables";',
+              sassOptions: {
+                includePaths: [path.resolve(__dirname, 'src')],
+              },
+            },
+          },
+        ],
       },
     ],
   },
