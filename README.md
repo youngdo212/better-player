@@ -110,7 +110,7 @@ const player = new BetterPlayer.Player(options);
 
 **iconUrl: string**
 
-아이콘 svg sprite를 별도 제공하고 싶은 경우, sprite url을 직접 입력합니다. 자세한 내용은 [Customizing](#Customizing)을 참고 하세요.
+아이콘 svg sprite를 별도 제공하고 싶은 경우, sprite url을 직접 입력합니다. 자세한 내용은 [Customizing](#아이콘-별도로-제공하기)을 참고 하세요.
 
 ## API
 
@@ -312,6 +312,41 @@ player.on('play', event => {
 
 다양한 방식으로 비디오 플레이어의 스타일을 변경할 수 있습니다.
 
+### CSS 스타일링 하기
+
+기본으로 제공되는 UI 스타일을 CSS custom properties를 이용해서 변경할 수 있습니다. CSS custom properties에 대해 자세히 알고 싶다면 [다음](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)을 참고하세요.
+
+BetterPlayer에서 제공하는 CSS custom properties 목록은 다음과 같습니다.
+
+| 이름                                      | 설명                          | 기본값                             |
+| ----------------------------------------- | ----------------------------- | ---------------------------------- |
+| `--better-player-color-main`              | 비디오 플레이어의 메인 색상   | #fff                               |
+| `--better-player-font-size`               | 비디오 플레이어의 폰트 사이즈 | 16px                               |
+| `--better-player-font-color`              | 비디오 플레이어의 폰트 색상   | #fff                               |
+| `--better-player-controller-background`   | 컨트롤러의 배경 색상          | linear-gradient(transparent, #000) |
+| `--better-player-controller-spacing`      | 컨트롤러 유닛 간의 간격       | 5px                                |
+| `--better-player-controller-icon-size`    | 컨트롤러 아이콘 크기          | 32px                               |
+| `--better-player-controller-font-size`    | 컨트롤러 폰트 크기            | 15px                               |
+| `--better-player-controller-color`        | 컨트롤러 아이콘 및 폰트 색상  | #fff                               |
+| `--better-player-error-screen-icon-size`  | 에러 스크린의 아이콘 크기     | 36px                               |
+| `--better-player-error-screen-icon-color` | 에러 스크린의 아이콘 색상     | #fff                               |
+
+웹 페이지의 모든 플레이어에 적용하고 싶다면 다음과 같이 사용하세요.
+
+```css
+:root {
+  --better-player-color-main: #f0f;
+}
+```
+
+하나의 플레이어의 스타일을 변경하기 위해 다음과 같이 css selector를 이용할 수도 있습니다.
+
+```css
+.player {
+  --better-player-color-main: #f0f;
+}
+```
+
 ### 아이콘 별도로 제공하기
 
 BetterPlayer는 svg 아이콘을 사용하고 있습니다. 만약 자신만의 멋진 아이콘들이 svg 파일로 준비되어 있다면 옵션 객체의 `iconUrl` 속성을 이용해서 내 아이콘을 비디오 플레이어에 적용할 수 있습니다.
@@ -335,7 +370,7 @@ svg sprite가 준비됐다면 아래와 같이 svg url을 입력할 수 있습�
 
 ```jsx
 const player = new BetterPlayer.Player({
-	...,
-	iconUrl: 'path/to/svg-sprite.svg'
+  ...,
+  iconUrl: 'path/to/svg-sprite.svg'
 });
 ```
