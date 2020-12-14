@@ -142,3 +142,14 @@ export function hideElement(element) {
 export function showElement(element) {
   element.style.display = '';
 }
+
+/**
+ * selector를 이용해 엘리먼트를 찾아 반환한다.
+ *
+ * @param {HTMLElement} parent
+ * @param {string} selector
+ * @returns {any}
+ */
+export function qs(parent, selector) {
+  return parent.querySelector(selector);
+}

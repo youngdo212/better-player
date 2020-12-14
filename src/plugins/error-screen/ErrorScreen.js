@@ -25,7 +25,7 @@ export default class ErrorScreen extends UIPlugin {
 
   get events() {
     return {
-      'click .better-player__reload-button': 'reload',
+      'click [data-reload]': 'reload',
     };
   }
 

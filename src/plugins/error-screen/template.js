@@ -12,7 +12,7 @@ export default function template(config) {
       'notFoundVideo',
       config
     )}</div>
-    <div class="better-player__reload-button">
+    <div class="better-player__reload-button" data-reload>
       <svg class="better-player__icon">
         <use href="#better-player-reload"></use>
       </svg>

@@ -5,7 +5,7 @@ import UIPlugin from '../../base/ui-plugin';
 import {
   addClass,
   appendChild,
-  getElementByClassName,
+  qs,
   innerHTML,
   removeClass,
 } from '../../utils/element';
@@ -20,6 +20,23 @@ import formatTime from '../../utils/time';
  * @extends UIPlugin
  */
 export default class Controller extends UIPlugin {
+  /**
+   * 하위 엘리먼트를 찾는데 사용할 셀렉터의 집합
+   *
+   * @returns {object}
+   */
+  get selectors() {
+    return {
+      playToggleButton: '[data-play-toggle]',
+      muteToggleButton: '[data-mute-toggle]',
+      fullscreenToggleButton: '[data-fullscreen-toggle]',
+      seekBar: '[data-seek-bar]',
+      volumeBar: '[data-volume-bar]',
+      currentTime: '[data-current-time]',
+      duration: '[data-duration]',
+    };
+  }
+
   get attributes() {
     return {
       class: 'better-player__controller',
@@ -27,14 +44,22 @@ export default class Controller extends UIPlugin {
   }
 
   get events() {
+    const {
+      playToggleButton,
+      muteToggleButton,
+      fullscreenToggleButton,
+      seekBar,
+      volumeBar,
+    } = this.selectors;
+
     return {
-      'click .better-player__play-toggle-button': 'togglePlay',
-      'click .better-player__seek-bar': 'seek',
-      'click .better-player__mute-toggle-button': 'toggleMute',
-      'click .better-player__fullscreen-toggle-button': 'toggleFullscreen',
-      'mousedown .better-player__seek-bar': 'startSeekDrag',
-      'input .better-player__seek-bar': 'updateCurrentTime',
-      'input .better-player__volume-bar': 'setVolume',
+      [`click ${playToggleButton}`]: 'togglePlay',
+      [`click ${seekBar}`]: 'seek',
+      [`click ${muteToggleButton}`]: 'toggleMute',
+      [`click ${fullscreenToggleButton}`]: 'toggleFullscreen',
+      [`mousedown ${seekBar}`]: 'startSeekDrag',
+      [`input ${seekBar}`]: 'updateCurrentTime',
+      [`input ${volumeBar}`]: 'setVolume',
     };
   }
 
@@ -267,28 +292,23 @@ export default class Controller extends UIPlugin {
    * 생성된 하위 엘리먼트들을 캐싱한다
    */
   cacheElements() {
-    this.$playToggleButton = getElementByClassName(
-      this.el,
-      'better-player__play-toggle-button'
-    );
-    this.$seekBar = getElementByClassName(this.el, 'better-player__seek-bar');
-    this.$duration = getElementByClassName(this.el, 'better-player__duration');
-    this.$currentTime = getElementByClassName(
-      this.el,
-      'better-player__current-time'
-    );
-    this.$volumeBar = getElementByClassName(
-      this.el,
-      'better-player__volume-bar'
-    );
-    this.$muteToggleButton = getElementByClassName(
-      this.el,
-      'better-player__mute-toggle-button'
-    );
-    this.$fullscreenToggleButton = getElementByClassName(
-      this.el,
-      'better-player__fullscreen-toggle-button'
-    );
+    const {
+      playToggleButton,
+      muteToggleButton,
+      fullscreenToggleButton,
+      seekBar,
+      volumeBar,
+      currentTime,
+      duration,
+    } = this.selectors;
+
+    this.$playToggleButton = qs(this.el, playToggleButton);
+    this.$seekBar = qs(this.el, seekBar);
+    this.$duration = qs(this.el, duration);
+    this.$currentTime = qs(this.el, currentTime);
+    this.$volumeBar = qs(this.el, volumeBar);
+    this.$muteToggleButton = qs(this.el, muteToggleButton);
+    this.$fullscreenToggleButton = qs(this.el, fullscreenToggleButton);
   }
 
   /**
