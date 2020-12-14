@@ -5,6 +5,7 @@ import {
   createElement,
   removeElement,
   removeEventListener,
+  querySelector,
 } from '../../utils/element';
 import Events from '../events';
 
@@ -88,7 +89,7 @@ export default class UIObject extends Events {
 
         if (selector) {
           const wrapper = e => {
-            if (!this.el.querySelector(selector).contains(e.target)) return;
+            if (!querySelector(this.el, selector)?.contains(e.target)) return;
 
             listener.call(this, e);
           };

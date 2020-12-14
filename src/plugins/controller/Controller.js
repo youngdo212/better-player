@@ -5,9 +5,9 @@ import UIPlugin from '../../base/ui-plugin';
 import {
   addClass,
   appendChild,
-  getElementByClassName,
   innerHTML,
   removeClass,
+  querySelector,
 } from '../../utils/element';
 import template from './template';
 import Events from '../../base/events';
@@ -20,6 +20,23 @@ import formatTime from '../../utils/time';
  * @extends UIPlugin
  */
 export default class Controller extends UIPlugin {
+  /**
+   * 하위 엘리먼트를 찾는데 사용할 셀렉터의 집합
+   *
+   * @returns {object}
+   */
+  get selectors() {
+    return {
+      playToggleButton: '[data-play-toggle]',
+      muteToggleButton: '[data-mute-toggle]',
+      fullscreenToggleButton: '[data-fullscreen-toggle]',
+      seekBar: '[data-seek-bar]',
+      volumeBar: '[data-volume-bar]',
+      currentTime: '[data-current-time]',
+      duration: '[data-duration]',
+    };
+  }
+
   get attributes() {
     return {
       class: 'better-player__controller',
@@ -27,14 +44,22 @@ export default class Controller extends UIPlugin {
   }
 
   get events() {
+    const {
+      playToggleButton,
+      muteToggleButton,
+      fullscreenToggleButton,
+      seekBar,
+      volumeBar,
+    } = this.selectors;
+
     return {
-      'click .better-player__play-toggle-button': 'togglePlay',
-      'click .better-player__seek-bar': 'seek',
-      'click .better-player__mute-toggle-button': 'toggleMute',
-      'click .better-player__fullscreen-toggle-button': 'toggleFullscreen',
-      'mousedown .better-player__seek-bar': 'startSeekDrag',
-      'input .better-player__seek-bar': 'updateCurrentTime',
-      'input .better-player__volume-bar': 'setVolume',
+      [`click ${playToggleButton}`]: 'togglePlay',
+      [`click ${seekBar}`]: 'seek',
+      [`click ${muteToggleButton}`]: 'toggleMute',
+      [`click ${fullscreenToggleButton}`]: 'toggleFullscreen',
+      [`mousedown ${seekBar}`]: 'startSeekDrag',
+      [`input ${seekBar}`]: 'updateCurrentTime',
+      [`input ${volumeBar}`]: 'setVolume',
     };
   }
 
@@ -44,6 +69,7 @@ export default class Controller extends UIPlugin {
    */
   constructor(core) {
     super(core);
+    this.childElements = null; // 캐싱될 자식 엘리먼트 집합
     this.isDraggingSeekBar = false; // seek bar를 드래그 중인지 나타내는 값
     this.playOnSeeked = false; // seek 작업 수행 후 비디오를 플레이할 지를 나타내는 값
   }
@@ -102,7 +128,7 @@ export default class Controller extends UIPlugin {
    */
   seek() {
     const duration = this.video.getDuration();
-    const time = Number(this.$seekBar.value) * duration;
+    const time = Number(this.childElements.seekBar.value) * duration;
 
     this.video.seek(time);
     this.isDraggingSeekBar = false;
@@ -117,7 +143,7 @@ export default class Controller extends UIPlugin {
    * volume-bar를 바탕으로 비디오의 볼륨을 조절한다
    */
   setVolume() {
-    const volume = Number(this.$volumeBar.value);
+    const volume = Number(this.childElements.volumeBar.value);
     this.video.setVolume(volume);
   }
 
@@ -170,11 +196,14 @@ export default class Controller extends UIPlugin {
   updatePlayToggleButton() {
     if (this.video.isPaused()) {
       removeClass(
-        this.$playToggleButton,
+        this.childElements.playToggleButton,
         'better-player__toggle-button--pressed'
       );
     } else {
-      addClass(this.$playToggleButton, 'better-player__toggle-button--pressed');
+      addClass(
+        this.childElements.playToggleButton,
+        'better-player__toggle-button--pressed'
+      );
     }
   }
 
@@ -186,7 +215,7 @@ export default class Controller extends UIPlugin {
     const duration = this.video.getDuration();
     const currentTime = this.video.getCurrentTime();
     const value = currentTime / duration;
-    this.$seekBar.value = isNumber(value) ? value : 0;
+    this.childElements.seekBar.value = isNumber(value) ? value : 0;
   }
 
   /**
@@ -194,7 +223,7 @@ export default class Controller extends UIPlugin {
    */
   updateDuration() {
     const duration = this.video.getDuration() || 0;
-    this.$duration.textContent = formatTime(duration);
+    this.childElements.duration.textContent = formatTime(duration);
   }
 
   /**
@@ -202,8 +231,8 @@ export default class Controller extends UIPlugin {
    */
   updateCurrentTime() {
     const duration = this.video.getDuration() || 0;
-    const currentTime = Number(this.$seekBar.value) * duration;
-    this.$currentTime.textContent = formatTime(currentTime);
+    const currentTime = Number(this.childElements.seekBar.value) * duration;
+    this.childElements.currentTime.textContent = formatTime(currentTime);
   }
 
   /**
@@ -228,7 +257,7 @@ export default class Controller extends UIPlugin {
    */
   updateVolumeBar() {
     const volume = this.video.getVolume();
-    this.$volumeBar.value = volume;
+    this.childElements.volumeBar.value = volume;
   }
 
   /**
@@ -237,10 +266,13 @@ export default class Controller extends UIPlugin {
   updateMuteToggleButton() {
     const volume = this.video.getVolume();
     if (volume === 0) {
-      addClass(this.$muteToggleButton, 'better-player__toggle-button--pressed');
+      addClass(
+        this.childElements.muteToggleButton,
+        'better-player__toggle-button--pressed'
+      );
     } else {
       removeClass(
-        this.$muteToggleButton,
+        this.childElements.muteToggleButton,
         'better-player__toggle-button--pressed'
       );
     }
@@ -252,43 +284,15 @@ export default class Controller extends UIPlugin {
   updateFullscreenToggleButton() {
     if (this.core.isFullscreen()) {
       addClass(
-        this.$fullscreenToggleButton,
+        this.childElements.fullscreenToggleButton,
         'better-player__toggle-button--pressed'
       );
     } else {
       removeClass(
-        this.$fullscreenToggleButton,
+        this.childElements.fullscreenToggleButton,
         'better-player__toggle-button--pressed'
       );
     }
-  }
-
-  /**
-   * 생성된 하위 엘리먼트들을 캐싱한다
-   */
-  cacheElements() {
-    this.$playToggleButton = getElementByClassName(
-      this.el,
-      'better-player__play-toggle-button'
-    );
-    this.$seekBar = getElementByClassName(this.el, 'better-player__seek-bar');
-    this.$duration = getElementByClassName(this.el, 'better-player__duration');
-    this.$currentTime = getElementByClassName(
-      this.el,
-      'better-player__current-time'
-    );
-    this.$volumeBar = getElementByClassName(
-      this.el,
-      'better-player__volume-bar'
-    );
-    this.$muteToggleButton = getElementByClassName(
-      this.el,
-      'better-player__mute-toggle-button'
-    );
-    this.$fullscreenToggleButton = getElementByClassName(
-      this.el,
-      'better-player__fullscreen-toggle-button'
-    );
   }
 
   /**
@@ -301,7 +305,7 @@ export default class Controller extends UIPlugin {
     if (!this.video.canPlay) return;
 
     innerHTML(this.el, template());
-    this.cacheElements();
+    this.childElements = querySelector(this.el, this.selectors); // 자식 엘리먼트를 캐싱한다.
     appendChild(this.core.el, this.el);
     return this;
   }

@@ -9,6 +9,7 @@ import {
   removeEventListener,
   addClass,
   removeClass,
+  querySelector,
 } from './element';
 
 beforeEach(() => {
@@ -229,5 +230,37 @@ describe('removeClass', () => {
 
     expect(el.classList.length).toBe(1);
     expect(el.classList.contains('b-class')).toBe(true);
+  });
+});
+
+describe('querySelector', () => {
+  it('문자열을 이용해 매칭되는 한 엘리먼트를 반환한다', () => {
+    const target = document.createElement('div');
+    target.dataset.test = 'testId';
+    const selector = '[data-test="testId"]';
+
+    document.body.appendChild(target);
+
+    expect(querySelector(document.body, selector)).toBe(target);
+  });
+
+  it('객체를 이용해 매칭되는 엘리먼트의 집합을 반환한다', () => {
+    const target1 = document.createElement('div');
+    target1.dataset.test = 'testId';
+    const target2 = document.createElement('div');
+    target2.className = 'test-class';
+    const selectors = {
+      target1: '[data-test="testId"]',
+      target2: '.test-class',
+    };
+    const elements = {
+      target1,
+      target2,
+    };
+
+    document.body.appendChild(target1);
+    document.body.appendChild(target2);
+
+    expect(querySelector(document.body, selectors)).toEqual(elements);
   });
 });
