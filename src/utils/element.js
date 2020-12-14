@@ -1,5 +1,7 @@
 /** @module utils/element */
 
+import { isString } from './type';
+
 /**
  * 태그와 속성(attribute)를 이용해서 엘리먼트를 생성한다.
  *
@@ -146,10 +148,21 @@ export function showElement(element) {
 /**
  * selector를 이용해 엘리먼트를 찾아 반환한다.
  *
+ * @example
+ *
+ *
  * @param {HTMLElement} parent
- * @param {string} selector
+ * @param {string|object} selector 문자열 또는 {element: selector} 형식의 객체
  * @returns {any}
  */
-export function qs(parent, selector) {
-  return parent.querySelector(selector);
+export function querySelector(parent, selector) {
+  if (isString(selector)) return parent.querySelector(selector);
+
+  const elements = {};
+
+  Object.keys(selector).forEach(elementName => {
+    elements[elementName] = parent.querySelector(selector[elementName]);
+  });
+
+  return elements;
 }

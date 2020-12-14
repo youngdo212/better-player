@@ -73,7 +73,7 @@ it('비디오가 재생되면 playToggleButton의 클래스를 추가한다', ()
   core.video.emit(Events.VIDEO_PLAY);
 
   expect(
-    controller.$playToggleButton.classList.contains(
+    controller.childElements.playToggleButton.classList.contains(
       'better-player__toggle-button--pressed'
     )
   ).toBe(true);
@@ -91,7 +91,7 @@ it('비디오가 일시 정지되면 playToggleButton의 클래스를 삭제한�
 
   // 클래스가 추가됐는지 확인
   expect(
-    controller.$playToggleButton.classList.contains(
+    controller.childElements.playToggleButton.classList.contains(
       'better-player__toggle-button--pressed'
     )
   ).toBe(true);
@@ -101,7 +101,7 @@ it('비디오가 일시 정지되면 playToggleButton의 클래스를 삭제한�
   core.video.emit(Events.VIDEO_PAUSE);
 
   expect(
-    controller.$playToggleButton.classList.contains(
+    controller.childElements.playToggleButton.classList.contains(
       'better-player__toggle-button--pressed'
     )
   ).toBe(false);
@@ -431,7 +431,8 @@ it('비디오 플레이어를 전체 화면으로 전환한다', () => {
   core.requestFullscreen = jest.fn();
   const controller = new Controller(core);
   controller.render();
-  const fullscreenToggleButtonEl = controller.$fullscreenToggleButton;
+  const fullscreenToggleButtonEl =
+    controller.childElements.fullscreenToggleButton;
 
   fullscreenToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
 
@@ -445,7 +446,8 @@ it('비디오 플레이어의 전체 화면을 해제한다', () => {
   core.exitFullscreen = jest.fn();
   const controller = new Controller(core);
   controller.render();
-  const fullscreenToggleButtonEl = controller.$fullscreenToggleButton;
+  const fullscreenToggleButtonEl =
+    controller.childElements.fullscreenToggleButton;
 
   fullscreenToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
 
@@ -460,7 +462,7 @@ it('비디오 플레이어의 전체 화면을 해제한다', () => {
 //     core.isFullscreen = () => true;
 //     const controller = new Controller(core);
 //     controller.render();
-//     const fullscreenToggleButtonEl = controller.$fullscreenToggleButton;
+//     const fullscreenToggleButtonEl = controller.childElements.fullscreenToggleButton;
 
 //     core.emit(Events.CORE_FULLSCREENCHANGE);
 
@@ -477,7 +479,7 @@ it('비디오 플레이어의 전체 화면을 해제한다', () => {
 //     core.isFullscreen = () => false;
 //     const controller = new Controller(core);
 //     controller.render();
-//     const fullscreenToggleButtonEl = controller.$fullscreenToggleButton;
+//     const fullscreenToggleButtonEl = controller.childElements.fullscreenToggleButton;
 
 //     core.emit(Events.CORE_FULLSCREENCHANGE);
 
