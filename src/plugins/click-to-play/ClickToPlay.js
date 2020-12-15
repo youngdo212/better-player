@@ -9,14 +9,12 @@ import Plugin from '../../base/plugin';
  * @extends Plugin
  */
 export default class ClickToPlay extends Plugin {
-  constructor(core) {
-    super(core);
-  }
   /**
    * 비디오에 클릭 이벤트 리스너를 등록한다.
    */
   addEventListeners() {
     this.listenTo(this.video, Events.VIDEO_CLICK, this.onClick);
+    this.listenTo(this.video, Events.VIDEO_ERROR, this.disable);
   }
 
   /**
