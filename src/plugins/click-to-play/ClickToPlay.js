@@ -20,6 +20,7 @@ export default class ClickToPlay extends Plugin {
       this.disable();
     }
   }
+
   /**
    * 비디오에 클릭 이벤트 리스너를 등록한다.
    */
@@ -37,5 +38,13 @@ export default class ClickToPlay extends Plugin {
     } else {
       this.video.pause();
     }
+  }
+
+  /**
+   * clickToPlay 옵션이 꺼져있을 경우 enable할 수 없다.
+   */
+  enable() {
+    if (!this.core.config.clickToPlay) return;
+    super.enable();
   }
 }

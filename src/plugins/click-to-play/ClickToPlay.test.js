@@ -95,3 +95,28 @@ it('환경 설정의 clickToPlay가 false인 경우 비활성화한다', () => {
 
   onClickSpy.mockRestore();
 });
+
+it('환경 설정의 clickToPlay가 false인 경우 enable 메소드 호출이 무시된다', () => {
+  const onClickSpy = jest
+    .spyOn(ClickToPlay.prototype, 'onClick')
+    .mockImplementation(() => {});
+  const mockCore = {
+    video: new HTMLVideo(config),
+    config: { ...config, clickToPlay: false },
+  };
+  const clickToPlay = new ClickToPlay(mockCore);
+
+  // enable 전 테스트
+  mockCore.video.emit(Events.VIDEO_CLICK);
+
+  expect(onClickSpy).toHaveBeenCalledTimes(0);
+
+  // enable 후 테스트
+  clickToPlay.enable();
+
+  mockCore.video.emit(Events.VIDEO_CLICK);
+
+  expect(onClickSpy).toHaveBeenCalledTimes(0);
+
+  onClickSpy.mockRestore();
+});
