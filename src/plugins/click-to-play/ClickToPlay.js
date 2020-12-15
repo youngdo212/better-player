@@ -10,6 +10,17 @@ import Plugin from '../../base/plugin';
  */
 export default class ClickToPlay extends Plugin {
   /**
+   * 인스턴스를 생성하고 환경 설정에 clickToPlay 옵션이 false일 경우 비활성화한다.
+   *
+   * @param {module:components/core} core
+   */
+  constructor(core) {
+    super(core);
+    if (!core.config.clickToPlay) {
+      this.disable();
+    }
+  }
+  /**
    * 비디오에 클릭 이벤트 리스너를 등록한다.
    */
   addEventListeners() {

@@ -9,6 +9,7 @@ it('video 엘리먼트에 클릭이 발생할 경우 onClick 메소드가 호출
     .mockImplementation(() => {});
   const mockCore = {
     video: new HTMLVideo(config),
+    config,
   };
   const clickToPlay = new ClickToPlay(mockCore); // eslint-disable-line no-unused-vars
 
@@ -22,6 +23,7 @@ it('video 엘리먼트에 클릭이 발생할 경우 onClick 메소드가 호출
 it('정지 상태에서 onClick메소드가 호출될 경우 비디오 엘리먼트가 재생된다', () => {
   const mockCore = {
     video: new HTMLVideo(config),
+    config,
   };
   const playSpy = jest
     .spyOn(mockCore.video, 'play')
@@ -38,6 +40,7 @@ it('정지 상태에서 onClick메소드가 호출될 경우 비디오 엘리먼
 it('재생 상태에서 onClick메소드가 호출될 경우 비디오 엘리먼트가 일시 정지된다', () => {
   const mockCore = {
     video: new HTMLVideo(config),
+    config,
   };
   mockCore.video.isPaused = () => false;
   const pauseSpy = jest
@@ -58,6 +61,7 @@ it('비디오에 에러가 발생할 경우 플러그인을 끈다', () => {
     .mockImplementation(() => {});
   const mockCore = {
     video: new HTMLVideo(config),
+    config,
   };
   const clickToPlay = new ClickToPlay(mockCore); // eslint-disable-line no-unused-vars
 
@@ -71,6 +75,23 @@ it('비디오에 에러가 발생할 경우 플러그인을 끈다', () => {
   mockCore.video.emit(Events.VIDEO_CLICK);
 
   expect(onClickSpy).toHaveBeenCalledTimes(1);
+
+  onClickSpy.mockRestore();
+});
+
+it('환경 설정의 clickToPlay가 false인 경우 비활성화한다', () => {
+  const onClickSpy = jest
+    .spyOn(ClickToPlay.prototype, 'onClick')
+    .mockImplementation(() => {});
+  const mockCore = {
+    video: new HTMLVideo(config),
+    config: { ...config, clickToPlay: false },
+  };
+  const clickToPlay = new ClickToPlay(mockCore); // eslint-disable-line no-unused-vars
+
+  mockCore.video.emit(Events.VIDEO_CLICK);
+
+  expect(onClickSpy).toHaveBeenCalledTimes(0);
 
   onClickSpy.mockRestore();
 });

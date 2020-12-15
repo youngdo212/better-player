@@ -2,6 +2,7 @@ import cloneDeep from 'lodash/cloneDeep';
 
 const defaults = {
   source: { src: '' },
+  clickToPlay: true, // 비디오를 클릭해서 재생 가능하게 하는 기능
   i18n: {
     notSupportVideoFormat:
       '현재 브라우저에서 지원하지 않는 비디오 형식입니다. 다른 브라우저에서 시도하세요.',
