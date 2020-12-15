@@ -33,6 +33,7 @@ export default class HTMLVideo extends Video {
       seeking: 'onSeeking',
       seeked: 'onSeeked',
       error: 'onError',
+      click: 'onClick',
     };
   }
 
@@ -134,6 +135,15 @@ export default class HTMLVideo extends Video {
    */
   onError(event) {
     this.emit(Events.VIDEO_ERROR, event);
+  }
+
+  /**
+   * 비디오의 클릭 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onClick(event) {
+    this.emit(Events.VIDEO_CLICK, event);
   }
 
   /**

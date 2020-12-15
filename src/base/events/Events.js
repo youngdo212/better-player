@@ -197,6 +197,14 @@ Events.VIDEO_SEEKED = 'video:seeked';
 Events.VIDEO_ERROR = 'video:error';
 
 /**
+ * 비디오가 클릭되었을 때 발생하는 이벤트
+ *
+ * @event VIDEO_CLICK
+ * @param {Event} event
+ */
+Events.VIDEO_CLICK = 'video:click';
+
+/**
  * 비디오 플레이어의 전체 화면 여부가 변경되었을 때 발생.
  *
  * @event CORE_FULLSCREENCHANGE

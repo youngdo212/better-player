@@ -9,8 +9,9 @@ import loadSprite from '../../utils/load-sprite';
 import Events from '../../base/events';
 import Fullscreen from '../fullscreen';
 import ErrorScreen from '../../plugins/error-screen';
+import ClickToPlay from '../../plugins/click-to-play';
 
-const plugins = [Controller, ErrorScreen];
+const plugins = [Controller, ErrorScreen, ClickToPlay];
 
 /**
  * 비디오 플레이어의 핵심 클래스
@@ -110,7 +111,7 @@ export default class Core extends UIObject {
   render() {
     this.updateSize();
     appendChild(this.el, this.video.render().el);
-    this.plugins.forEach(plugin => plugin.render());
+    this.plugins.forEach(plugin => plugin.render?.());
     loadSprite(this.config.iconUrl);
 
     if (this.config.parentElement) {

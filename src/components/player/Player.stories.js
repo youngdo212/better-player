@@ -4,7 +4,7 @@ export default {
   title: 'Player',
 };
 
-const Template = ({ source, width, height }) => {
+const Template = ({ source, width, height, clickToPlay = true }) => {
   const parent = document.createElement('div');
 
   new Player({
@@ -12,6 +12,7 @@ const Template = ({ source, width, height }) => {
     parent,
     width,
     height,
+    clickToPlay,
   });
 
   return parent;
@@ -81,6 +82,7 @@ NotFoundVideo.args = {
   source: 'http://localhost/not-found/video.mp4',
   width: 640,
   height: 360,
+  clickToPlay: true,
 };
 
 /**
@@ -111,4 +113,28 @@ InternationalizationException.args = {
   width: 640,
   height: 360,
   notFoundVideo: 'video is not found',
+};
+
+/**
+ * 비디오 클릭으로 재생하는 기능을 끈다.
+ *
+ * @param {object} args
+ * @param {boolean} args.clickToPlay
+ */
+export const DisableClickToPlay = ({ clickToPlay }) => {
+  const parent = document.createElement('div');
+
+  new Player({
+    source:
+      'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+    width: 640,
+    height: 360,
+    parent,
+    clickToPlay,
+  });
+
+  return parent;
+};
+DisableClickToPlay.args = {
+  clickToPlay: false,
 };
