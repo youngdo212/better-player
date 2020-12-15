@@ -4,7 +4,7 @@ export default {
   title: 'Player',
 };
 
-const Template = ({ source, width, height }) => {
+const Template = ({ source, width, height, clickToPlay = true }) => {
   const parent = document.createElement('div');
 
   new Player({
@@ -12,6 +12,7 @@ const Template = ({ source, width, height }) => {
     parent,
     width,
     height,
+    clickToPlay,
   });
 
   return parent;
@@ -81,6 +82,7 @@ NotFoundVideo.args = {
   source: 'http://localhost/not-found/video.mp4',
   width: 640,
   height: 360,
+  clickToPlay: true,
 };
 
 /**
