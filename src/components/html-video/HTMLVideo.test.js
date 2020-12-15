@@ -76,6 +76,16 @@ describe('비디오 이벤트 발생 관련', () => {
 
     expect(callback).toHaveBeenCalled();
   });
+
+  it('비디오 엘리먼트의 click 이벤트가 발생하면 VIDEO_CLICK 이벤트가 발생한다', () => {
+    const video = new HTMLVideo(config);
+    const callback = jest.fn();
+
+    video.on(Events.VIDEO_CLICK, callback);
+    video.el.dispatchEvent(new Event('click'));
+
+    expect(callback).toHaveBeenCalled();
+  });
 });
 
 it('비디오 엘리먼트를 DOM에서 제거하고 src attribute를 초기화한다', () => {
