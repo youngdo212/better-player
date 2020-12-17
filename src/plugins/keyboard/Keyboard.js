@@ -11,6 +11,7 @@ import Plugin from '../../base/plugin';
 export default class Keyboard extends Plugin {
   /**
    * 인스턴스를 생성하고 keyAction 매핑 객체를 속성으로 추가한다.
+   * 키보드를 사용하지 않는 옵션을 줄 경우 disable을 한다.
    *
    * @param {module:components/core} core
    */
@@ -23,6 +24,7 @@ export default class Keyboard extends Plugin {
       [keyMap['down']]: this.pressDown.bind(this),
       [keyMap['space']]: this.pressSpaceBar.bind(this),
     };
+    if (!core.config.keyboard) this.disable();
   }
 
   /**
@@ -76,6 +78,14 @@ export default class Keyboard extends Plugin {
    */
   pressSpaceBar() {
     this.video.isPaused() ? this.video.play() : this.video.pause();
+  }
+
+  /**
+   * 키보드 플러그인을 킨다. 키보드를 사용하지 않는 설정인 경우 키지 않는다.
+   */
+  enable() {
+    if (!this.core.config.keyboard) return;
+    super.enable();
   }
 }
 

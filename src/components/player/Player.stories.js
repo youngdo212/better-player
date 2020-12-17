@@ -142,7 +142,7 @@ DisableClickToPlay.args = {
 /**
  * 키보드와 관련된 옵션 변경을 위한 스토리
  */
-export const KeyboardShortcut = ({ seekTime, volumeStep }) => {
+export const KeyboardShortcut = ({ seekTime, volumeStep, keyboard }) => {
   const parent = document.createElement('div');
 
   new Player({
@@ -153,6 +153,7 @@ export const KeyboardShortcut = ({ seekTime, volumeStep }) => {
     parent,
     seekTime,
     volumeStep,
+    keyboard,
   });
 
   return parent;
@@ -160,4 +161,5 @@ export const KeyboardShortcut = ({ seekTime, volumeStep }) => {
 KeyboardShortcut.args = {
   seekTime: 5,
   volumeStep: 0.1,
+  keyboard: true,
 };

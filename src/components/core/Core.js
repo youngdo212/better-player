@@ -45,6 +45,8 @@ export default class Core extends UIObject {
    * @param {number=} config.width
    * @param {number=} config.height
    * @param {string} config.iconUrl
+   * @param {boolean} config.clickToPlay
+   * @param {boolean} config.keyboard
    */
   constructor(config) {
     super();

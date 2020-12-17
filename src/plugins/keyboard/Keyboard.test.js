@@ -121,3 +121,32 @@ it('비디오에서 에러 이벤트가 발생하면 disable이 호출된다', (
 
   disableSpy.mockRestore();
 });
+
+it('config에 keyboard값이 false이면 disable이 호출된다', () => {
+  const disableSpy = jest
+    .spyOn(Keyboard.prototype, 'disable')
+    .mockImplementation(() => {});
+  // eslint-disable-next-line no-unused-vars
+  const core = new Core({
+    ...config,
+    keyboard: false,
+  });
+
+  expect(disableSpy).toHaveBeenCalledTimes(1);
+
+  disableSpy.mockRestore();
+});
+
+it('config에 keyboard값이 false이면 enable이 동작하지 않는다', () => {
+  const core = new Core({
+    ...config,
+    keyboard: false,
+  });
+  const keyboardPlugin = new Keyboard(core);
+
+  expect(keyboardPlugin.enabled).toBe(false);
+
+  keyboardPlugin.enable();
+
+  expect(keyboardPlugin.enabled).toBe(false);
+});

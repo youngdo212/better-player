@@ -108,6 +108,10 @@ const player = new BetterPlayer.Player(options);
 
 비디오 클릭으로 영상을 재생합니다. 기본값은 true이며 이 기능을 사용하고 싶지 않을 경우 false를 입력하세요.
 
+**keyboard: boolean**
+
+키보드 단축키를 사용할 지 결정합니다. 기본 값은 true입니다
+
 **seekTime: number**
 
 되감기나 앞으로감기 시 이동할 초 단위의 값. 기본값은 5 입니다.
