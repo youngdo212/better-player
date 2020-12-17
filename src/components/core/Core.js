@@ -10,8 +10,9 @@ import Events from '../../base/events';
 import Fullscreen from '../fullscreen';
 import ErrorScreen from '../../plugins/error-screen';
 import ClickToPlay from '../../plugins/click-to-play';
+import Keyboard from '../../plugins/keyboard';
 
-const plugins = [Controller, ErrorScreen, ClickToPlay];
+const plugins = [Controller, ErrorScreen, ClickToPlay, Keyboard];
 
 /**
  * 비디오 플레이어의 핵심 클래스
@@ -24,6 +25,13 @@ export default class Core extends UIObject {
   get attributes() {
     return {
       class: 'better-player',
+      tabindex: '-1',
+    };
+  }
+
+  get events() {
+    return {
+      keydown: 'onKeydown',
     };
   }
 
@@ -56,11 +64,21 @@ export default class Core extends UIObject {
   }
 
   /**
+   * 전체화면 변경 이벤트를 발생시킨다.
    *
    * @param {Event} event
    */
   onFullscreenChange(event) {
     this.emit(Events.CORE_FULLSCREENCHANGE, event);
+  }
+
+  /**
+   * 키보드 누름 이벤트를 발생시킨다.
+   *
+   * @param {Event} event
+   */
+  onKeydown(event) {
+    this.emit(Events.CORE_KEYDOWN, event);
   }
 
   /**

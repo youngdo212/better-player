@@ -146,6 +146,15 @@ it('비디오의 현재 시간을 음수로 변경하면 영상의 처음으로 
   expect(video.getCurrentTime()).toBe(0);
 });
 
+it('비디오의 현재 시간은 총 길이보다 크게 설정하면 총 길이로 설정된다', () => {
+  const video = new HTMLVideo(config);
+  video.getDuration = () => 200;
+
+  video.seek(1000);
+
+  expect(video.el.currentTime).toBe(200);
+});
+
 it('비디오 엘리먼트의 durationchange 이벤트가 발생하면 VIDEO_DURATIONCHANGE 이벤트가 발생한다', () => {
   const video = new HTMLVideo(config);
   const callback = jest.fn();
@@ -162,6 +171,22 @@ it('비디오의 볼륨을 조절한다', () => {
   video.setVolume(0.7);
 
   expect(video.getVolume()).toBe(0.7);
+});
+
+it('비디오의 볼륨을 음수로 설정하면 0으로 설정된다', () => {
+  const video = new HTMLVideo(config);
+
+  video.setVolume(-1);
+
+  expect(video.getVolume()).toBe(0);
+});
+
+it('비디오의 볼륨을 1보다 큰 값으로 설정하면 1로 설정된다', () => {
+  const video = new HTMLVideo(config);
+
+  video.setVolume(2);
+
+  expect(video.getVolume()).toBe(1);
 });
 
 it('비디오 엘리먼트의 volumechange 이벤트가 발생하면 VIDEO_VOLUMECHANGE 이벤트가 발생한다', () => {

@@ -279,3 +279,14 @@ it('리로드할 경우 video의 reload 함수를 호출하고 모든 플러그�
     core.plugins.length
   );
 });
+
+it('엘리먼트에 keydown 이벤트가 발생할 경우 CORE_KEYDOWN 이벤트를 적절한 인자와 함께 발생시킨다', () => {
+  const callback = jest.fn();
+  const core = new Core(config);
+  core.on(Events.CORE_KEYDOWN, callback);
+
+  core.el.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true }));
+
+  expect(callback).toHaveBeenCalledTimes(1);
+  expect(callback.mock.calls[0][0]).toBeDefined();
+});
