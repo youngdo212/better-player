@@ -202,6 +202,7 @@ export default class HTMLVideo extends Video {
    */
   seek(time) {
     if (time < 0) time = 0;
+    if (time > this.getDuration()) time = this.getDuration();
     this.el.currentTime = time;
   }
 
@@ -210,6 +211,8 @@ export default class HTMLVideo extends Video {
    * @param {number} volume
    */
   setVolume(volume) {
+    if (volume < 0) volume = 0;
+    if (volume > 1) volume = 1;
     this.lastVolume = volume;
     this.el.volume = volume;
   }

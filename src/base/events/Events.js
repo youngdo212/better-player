@@ -213,6 +213,14 @@ Events.VIDEO_CLICK = 'video:click';
 Events.CORE_FULLSCREENCHANGE = 'core:fullsceenchange';
 
 /**
+ * 비디오 플레이어에서 키보드가 눌렸을 때 발생
+ *
+ * @event CORE_KEYDOWN
+ * @param {Event} event
+ */
+Events.CORE_KEYDOWN = 'core:keydown';
+
+/**
  * 페이지의 전체 화면 여부가 변경되었을 때 발생.
  *
  * @event FULLSCREEN_CHANGE

@@ -108,6 +108,18 @@ const player = new BetterPlayer.Player(options);
 
 비디오 클릭으로 영상을 재생합니다. 기본값은 true이며 이 기능을 사용하고 싶지 않을 경우 false를 입력하세요.
 
+**keyboard: boolean**
+
+키보드 단축키를 사용할 지 결정합니다. 기본 값은 true입니다
+
+**seekTime: number**
+
+되감기나 앞으로감기 시 이동할 초 단위의 값. 기본값은 5 입니다.
+
+**volumeStep: number**
+
+키보드 단축키로 볼륨을 조절할 시 이동할 볼륨 단계. 0 이상 1 이하의 값이며, 기본 값은 0.1 입니다.
+
 **i18n: object**
 
 텍스트의 국제화와 지역화를 위해 사용되는 객체입니다. 자세한 속성 값은 [defaults.js](https://github.com/youngdo212/better-player/blob/develop/src/config/defaults.js)를 참고하세요.

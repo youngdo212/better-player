@@ -138,3 +138,28 @@ export const DisableClickToPlay = ({ clickToPlay }) => {
 DisableClickToPlay.args = {
   clickToPlay: false,
 };
+
+/**
+ * 키보드와 관련된 옵션 변경을 위한 스토리
+ */
+export const KeyboardShortcut = ({ seekTime, volumeStep, keyboard }) => {
+  const parent = document.createElement('div');
+
+  new Player({
+    source:
+      'https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-576p.mp4',
+    width: 640,
+    height: 360,
+    parent,
+    seekTime,
+    volumeStep,
+    keyboard,
+  });
+
+  return parent;
+};
+KeyboardShortcut.args = {
+  seekTime: 5,
+  volumeStep: 0.1,
+  keyboard: true,
+};
