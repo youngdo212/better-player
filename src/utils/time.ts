@@ -8,7 +8,9 @@ const TIME_UNIT = 60;
  * @param {number} time
  * @returns {number}
  */
-export const getSeconds = time => Math.floor(time % TIME_UNIT);
+export function getSeconds(time: number): number {
+  return Math.floor(time % TIME_UNIT);
+}
 
 /**
  * 정수 형태의 분을 반환한다. 반환되는 분은 60 미만이다.
@@ -16,7 +18,9 @@ export const getSeconds = time => Math.floor(time % TIME_UNIT);
  * @param {number} time
  * @returns {number}
  */
-export const getMinutes = time => Math.floor((time / TIME_UNIT) % TIME_UNIT);
+export function getMinutes(time: number): number {
+  return Math.floor((time / TIME_UNIT) % TIME_UNIT);
+}
 
 /**
  * 정수 형태의 시간을 반환한다.
@@ -24,7 +28,9 @@ export const getMinutes = time => Math.floor((time / TIME_UNIT) % TIME_UNIT);
  * @param {number} time
  * @returns {number}
  */
-export const getHours = time => Math.floor(time / TIME_UNIT / TIME_UNIT);
+export function getHours(time: number): number {
+  return Math.floor(time / TIME_UNIT / TIME_UNIT);
+}
 
 /**
  * 최소 두 자리의 문자열이 되도록 0을 붙인다
@@ -42,7 +48,7 @@ export const getHours = time => Math.floor(time / TIME_UNIT / TIME_UNIT);
  * @param {number} number
  * @returns {string}
  */
-function padZero(number) {
+function padZero(number: number): string {
   return number.toString().padStart(2, '0');
 }
 
@@ -65,7 +71,7 @@ function padZero(number) {
  * @param {number} time
  * @returns {string}
  */
-export default function formatTime(time) {
+export default function formatTime(time: number): string {
   const hours = getHours(time);
   const minutes = getMinutes(time);
   const seconds = getSeconds(time);
