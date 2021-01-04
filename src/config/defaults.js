@@ -1,7 +1,7 @@
 import cloneDeep from 'lodash/cloneDeep';
 
 const defaults = {
-  source: { src: '' },
+  source: '',
   clickToPlay: true, // 비디오를 클릭해서 재생 가능하게 하는 기능
   keyboard: true,
   seekTime: 5, // 앞으로 가기나 뒤로 가기 시 이동할 초 단위

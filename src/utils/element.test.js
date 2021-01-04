@@ -10,6 +10,7 @@ import {
   addClass,
   removeClass,
   querySelector,
+  getElementsBySelectorMap,
 } from './element';
 
 beforeEach(() => {
@@ -243,7 +244,9 @@ describe('querySelector', () => {
 
     expect(querySelector(document.body, selector)).toBe(target);
   });
+});
 
+describe('getElementsBySeletorMap', () => {
   it('객체를 이용해 매칭되는 엘리먼트의 집합을 반환한다', () => {
     const target1 = document.createElement('div');
     target1.dataset.test = 'testId';
@@ -261,6 +264,8 @@ describe('querySelector', () => {
     document.body.appendChild(target1);
     document.body.appendChild(target2);
 
-    expect(querySelector(document.body, selectors)).toEqual(elements);
+    expect(getElementsBySelectorMap(document.body, selectors)).toEqual(
+      elements
+    );
   });
 });

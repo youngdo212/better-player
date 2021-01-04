@@ -1,7 +1,5 @@
 /** @module utils/element */
 
-import { isString } from './type';
-
 /**
  * 태그와 속성(attribute)를 이용해서 엘리먼트를 생성한다.
  *
@@ -148,20 +146,30 @@ export function showElement(element) {
 /**
  * selector를 이용해 엘리먼트를 찾아 반환한다.
  *
- * @example
- *
- *
  * @param {HTMLElement} parent
- * @param {string|object} selector 문자열 또는 {element: selector} 형식의 객체
+ * @param {string} selector 문자열
  * @returns {any}
  */
 export function querySelector(parent, selector) {
-  if (isString(selector)) return parent.querySelector(selector);
+  return parent.querySelector(selector);
+}
 
+/**
+ * selector 맵핑 객체를 이용해 엘리먼트를 찾는다.
+ *
+ * @example
+ * getElementsBySelectorMap(parent, {myButton: '.my-button'})
+ * // returns {myButton: HTMLElement};
+ *
+ * @param {HTMLElement} parent
+ * @param {object} selectorMap {element: selector} 형식의 객체
+ * @return {object} {element: HTMLElement} 형식의 객체
+ */
+export function getElementsBySelectorMap(parent, selectorMap) {
   const elements = {};
 
-  Object.keys(selector).forEach(elementName => {
-    elements[elementName] = parent.querySelector(selector[elementName]);
+  Object.keys(selectorMap).forEach(elementName => {
+    elements[elementName] = querySelector(parent, selectorMap[elementName]);
   });
 
   return elements;
