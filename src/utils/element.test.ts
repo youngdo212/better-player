@@ -53,8 +53,8 @@ describe('removeElement', () => {
       </div>
     `;
 
-    const parent = document.getElementById('parent');
-    const target = document.getElementById('target');
+    const parent = document.getElementById('parent') as HTMLElement;
+    const target = document.getElementById('target') as HTMLElement;
 
     // target 엘리먼트가 parent의 자식으로 생성되었는지 확인
     expect(target.parentNode).toBe(parent);
@@ -265,7 +265,7 @@ describe('getElementsBySeletorMap', () => {
     document.body.appendChild(target2);
 
     expect(getElementsBySelectorMap(document.body, selectors)).toEqual(
-      elements
+      elements,
     );
   });
 });
