@@ -10,10 +10,13 @@ it('body의 첫 번째 자식 엘리먼트로 svg sprite를 추가한다', () =>
 
   loadSprite('better-player.svg');
 
-  expect(body.firstElementChild.className).toBe(
-    'better-player__svg-sprite-wrapper'
+  const spriteWrapperElement = body.firstElementChild as HTMLElement;
+  const spriteElement = spriteWrapperElement.firstElementChild as SVGElement;
+
+  expect(spriteWrapperElement.className).toBe(
+    'better-player__svg-sprite-wrapper',
   );
-  expect(body.firstElementChild.firstElementChild.tagName).toBe('svg');
+  expect(spriteElement.tagName).toBe('svg');
 });
 
 it('두 번 이상 호출해도 svg sprite를 하나만 추가한다', () => {
@@ -25,6 +28,6 @@ it('두 번 이상 호출해도 svg sprite를 하나만 추가한다', () => {
   loadSprite('better-player.svg');
 
   expect(
-    body.querySelectorAll('.better-player__svg-sprite-wrapper').length
+    body.querySelectorAll('.better-player__svg-sprite-wrapper').length,
   ).toBe(1);
 });
