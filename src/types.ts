@@ -13,6 +13,9 @@ export interface I18N {
   notFoundVideo: string;
 }
 
+/**
+ * 타입 T의 K 속성의 타입을 Partial 타입으로 변경한다.
+ */
 export type PartialProperty<T, K extends keyof T> = {
   [P in keyof T]: P extends K ? Partial<T[P]> : T[P];
 };
