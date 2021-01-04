@@ -7,11 +7,10 @@ import {
   appendChild,
   innerHTML,
   removeClass,
-  querySelector,
+  getElementsBySelectorMap,
 } from '../../utils/element';
 import template from './template';
 import Events from '../../base/events';
-import { isNumber } from '../../utils/type';
 import formatTime from '../../utils/time';
 
 /**
@@ -215,7 +214,7 @@ export default class Controller extends UIPlugin {
     const duration = this.video.getDuration();
     const currentTime = this.video.getCurrentTime();
     const value = currentTime / duration;
-    this.childElements.seekBar.value = isNumber(value) ? value : 0;
+    this.childElements.seekBar.value = isNaN(value) ? 0 : value;
   }
 
   /**
@@ -305,7 +304,7 @@ export default class Controller extends UIPlugin {
     if (!this.video.canPlay) return;
 
     innerHTML(this.el, template());
-    this.childElements = querySelector(this.el, this.selectors); // 자식 엘리먼트를 캐싱한다.
+    this.childElements = getElementsBySelectorMap(this.el, this.selectors); // 자식 엘리먼트를 캐싱한다.
     appendChild(this.core.el, this.el);
     return this;
   }
