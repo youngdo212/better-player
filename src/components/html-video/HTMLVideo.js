@@ -45,14 +45,11 @@ export default class HTMLVideo extends Video {
    * 인스턴스를 생성하고 비디오 엘리먼트에 속성을 추가한다.
    *
    * @param {object} config
-   * @param {object} config.source
-   * @param {string} config.source.src
-   * @param {string=} config.source.type
+   * @param {string} config.source
    */
   constructor(config) {
     super(config);
-    this.el.src = config.source.src;
-    this.el.type = config.source.type || '';
+    this.el.src = config.source;
     this.lastVolume = this.el.volume; // 음소거를 해제했을 때 이전 볼륨으로 되돌리기 위한 속성
   }
 
@@ -254,16 +251,10 @@ export default class HTMLVideo extends Video {
   /**
    * 리소스가 이 인스턴스에서 재생 가능한 포맷인지 검사한다.
    *
-   * @param {object} source
-   * @param {string} source.src
-   * @param {string=} source.type
+   * @param {string} source
    */
-  static canPlayType({ src, type }) {
-    let mimeType = type;
-
-    if (!mimeType) {
-      mimeType = mime.getType(src) || '';
-    }
+  static canPlayType(source) {
+    let mimeType = mime.getType(source) || '';
 
     return canPlayVideoType(mimeType);
   }

@@ -3,7 +3,6 @@
 import Events from '../../base/events';
 import defaultConfig from '../../config/defaults';
 import { getElementById } from '../../utils/element';
-import { isObject } from '../../utils/type';
 import Core from '../core';
 
 /**
@@ -20,7 +19,6 @@ export default class Player extends Events {
 
     // 환경 설정
     this.config = { ...defaultConfig, ...options };
-    this.config.source = this.normalizeSource(this.config);
     this.config.parentElement = this.getParentElement(this.config);
 
     // 비디오 플레이어 엘리먼트 생성 및 이벤트 리스너 추가
@@ -29,22 +27,6 @@ export default class Player extends Events {
 
     // DOM에 엘리먼트 추가
     this.core.render();
-  }
-
-  /**
-   * source를 규정된 객체 형식으로 변환합니다
-   *
-   * @param {object} config
-   * @param {object|string|undefined} config.source
-   * @returns {{src, type?}}
-   */
-  normalizeSource({ source }) {
-    if (isObject(source)) {
-      source.src = source.src || '';
-      return source;
-    }
-
-    return { src: source || '' };
   }
 
   /**

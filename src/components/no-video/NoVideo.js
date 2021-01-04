@@ -40,7 +40,7 @@ export default class NoVideo extends Video {
   /**
    * 재생 가능한 비디오 소스인지를 확인합니다.
    * NoVideo의 경우 어떤 비디오 소스인지 관심 없으므로 항상 true를 반환합니다.
-   * @param {object=} source
+   * @param {string=} source
    * @returns {true}
    */
   // eslint-disable-next-line no-unused-vars
