@@ -4,9 +4,6 @@ const TIME_UNIT = 60;
 
 /**
  * 정수 형태의 초를 반환한다. 반환되는 초는 60 미만이다.
- *
- * @param {number} time
- * @returns {number}
  */
 export function getSeconds(time: number): number {
   return Math.floor(time % TIME_UNIT);
@@ -14,9 +11,6 @@ export function getSeconds(time: number): number {
 
 /**
  * 정수 형태의 분을 반환한다. 반환되는 분은 60 미만이다.
- *
- * @param {number} time
- * @returns {number}
  */
 export function getMinutes(time: number): number {
   return Math.floor((time / TIME_UNIT) % TIME_UNIT);
@@ -24,9 +18,6 @@ export function getMinutes(time: number): number {
 
 /**
  * 정수 형태의 시간을 반환한다.
- *
- * @param {number} time
- * @returns {number}
  */
 export function getHours(time: number): number {
   return Math.floor(time / TIME_UNIT / TIME_UNIT);
@@ -44,9 +35,6 @@ export function getHours(time: number): number {
  *
  * padZero(123)
  * // '123'
- *
- * @param {number} number
- * @returns {string}
  */
 function padZero(number: number): string {
   return number.toString().padStart(2, '0');
@@ -67,9 +55,6 @@ function padZero(number: number): string {
  *
  * formatTime(360000)
  * // 100:00:00
- *
- * @param {number} time
- * @returns {string}
  */
 export default function formatTime(time: number): string {
   const hours = getHours(time);
