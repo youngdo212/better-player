@@ -18,7 +18,7 @@ export default abstract class Plugin extends Events {
   /**
    * 플러그인의 활성화 여부
    */
-  public enabled: boolean;
+  private _enabled: boolean;
 
   /**
    * 모든 플러그인은 내부에서 core를 갖는다.
@@ -35,12 +35,19 @@ export default abstract class Plugin extends Events {
   }
 
   /**
+   * 비디오 플레이어 활성화 여부
+   */
+  get enabled(): boolean {
+    return this._enabled;
+  }
+
+  /**
    * core를 설정하고 이벤트 리스너를 등록한다.
    */
   constructor(core: Core) {
     super();
     this._core = core;
-    this.enabled = true;
+    this._enabled = true;
     this.addEventListeners();
   }
 
@@ -55,9 +62,9 @@ export default abstract class Plugin extends Events {
    * 이 함수는 disable 이후에 다시 플러그인을 작동시킬 때만 사용해야 한다.
    */
   enable(): void {
-    if (this.enabled) return;
+    if (this._enabled) return;
     this.addEventListeners();
-    this.enabled = true;
+    this._enabled = true;
   }
 
   /**
@@ -65,7 +72,7 @@ export default abstract class Plugin extends Events {
    */
   disable(): void {
     this.stopListening();
-    this.enabled = false;
+    this._enabled = false;
   }
 
   /**
