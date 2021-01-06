@@ -40,7 +40,7 @@ export default class Core extends UIObject {
    *
    * @param {object} config
    * @param {HTMLElement=} config.parentElement
-   * @param {object} config.source
+   * @param {string} config.source
    * @param {object} config.i18n
    * @param {number=} config.width
    * @param {number=} config.height

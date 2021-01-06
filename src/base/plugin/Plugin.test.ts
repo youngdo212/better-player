@@ -3,22 +3,40 @@ import Plugin from './Plugin';
 import config from '../../config/defaults';
 
 it('core속성을 가진다', () => {
+  class TestPlugin extends Plugin {
+    addEventListeners() {
+      // do nothing.
+    }
+  }
+
   const core = new Core(config);
-  const plugin = new Plugin(core);
+  const plugin = new TestPlugin(core);
 
   expect(plugin.core).toBe(core);
 });
 
 it('video속성을 가진다', () => {
+  class TestPlugin extends Plugin {
+    addEventListeners() {
+      // do nothing.
+    }
+  }
+
   const core = new Core(config);
-  const plugin = new Plugin(core);
+  const plugin = new TestPlugin(core);
 
   expect(plugin.video).toBe(core.video);
 });
 
 it('enabled 속성을 가지며 기본 값은 true이다', () => {
+  class TestPlugin extends Plugin {
+    addEventListeners() {
+      // do nothing.
+    }
+  }
+
   const core = new Core(config);
-  const plugin = new Plugin(core);
+  const plugin = new TestPlugin(core);
 
   expect(plugin.enabled).toBe(true);
 });
@@ -35,7 +53,7 @@ it('인스턴스를 생성하면 이벤트 리스너를 추가한다', () => {
   const eventName = 'test';
   const callback = jest.fn();
   const core = new Core(config);
-  const myPlugin = new MyPlugin(core); // eslint-disable-line no-unused-vars
+  new MyPlugin(core); // eslint-disable-line no-unused-vars
 
   core.emit(eventName);
 
