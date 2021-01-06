@@ -5,7 +5,8 @@ beforeEach(() => {
 });
 
 it('div 엘리먼트가 디폴트로 만들어진다', () => {
-  const div = new UIObject();
+  class TestUIObject extends UIObject {}
+  const div = new TestUIObject();
   expect(div.el.tagName).toBe('DIV');
 });
 
@@ -33,6 +34,7 @@ it('attributes를 오버라이딩해서 태그에 속성을 추가할 수 있다
 
 it('events를 오버라이딩하여 이벤트 리스너를 추가할 수 있다', () => {
   class Button extends UIObject {
+    public clicked = false;
     get events() {
       return {
         click: 'onClick',
@@ -50,15 +52,17 @@ it('events를 오버라이딩하여 이벤트 리스너를 추가할 수 있다'
   expect(button.clicked).toBe(true);
 });
 
-it('events에 설정된 메소드 중 존재하지 않는 메소드는 제외하고 등록된다', () => {
+it('events를 오버라이딩 하여 여러개의 이벤트 리스너를 추가할 수 있다', () => {
   class Button extends UIObject {
+    public clicked = false;
+    public mouseovered = false;
     get events() {
       return {
         click: 'onClick',
         mouseover: 'onMouseover',
       };
     }
-    handleClick() {
+    onClick() {
       this.clicked = true;
     }
     onMouseover() {
@@ -72,18 +76,37 @@ it('events에 설정된 메소드 중 존재하지 않는 메소드는 제외하
   button.el.dispatchEvent(clickEvent);
   button.el.dispatchEvent(mouseoverEvent);
 
-  expect(button.clicked).toBeUndefined();
+  expect(button.clicked).toBe(true);
   expect(button.mouseovered).toBe(true);
 });
 
+it('events에 존재하지 않는 메소드를 사용하면 에러를 발생시킨다', () => {
+  class Button extends UIObject {
+    public clicked = false;
+    get events() {
+      return {
+        click: 'onClick',
+      };
+    }
+    handleClick() {
+      this.clicked = true;
+    }
+  }
+  expect(() => {
+    new Button();
+  }).toThrow();
+});
+
 it('render 메소드 호출 시 자기 자신을 반환한다', () => {
-  const test = new UIObject();
+  class TestUIObject extends UIObject {}
+  const test = new TestUIObject();
 
   expect(test.render()).toBe(test);
 });
 
 it('엘리먼트에 등록한 이벤트 리스너를 전부 제거한다', () => {
   class Button extends UIObject {
+    public count: number;
     constructor() {
       super();
       this.count = 0;
@@ -187,10 +210,10 @@ it('events 객체에 selector를 이용해 이벤트 리스너를 등록한다',
   expect(callback1).not.toHaveBeenCalled();
   expect(callback2).not.toHaveBeenCalled();
 
-  firstEl.dispatchEvent(new Event('click', { bubbles: true }));
+  firstEl?.dispatchEvent(new Event('click', { bubbles: true }));
   expect(callback1).toHaveBeenCalled();
 
-  secondEl.dispatchEvent(new Event('click', { bubbles: true }));
+  secondEl?.dispatchEvent(new Event('click', { bubbles: true }));
   expect(callback2).toHaveBeenCalled();
 });
 
@@ -222,8 +245,8 @@ it('events 객체에 selector를 이용해 등록한 이벤트 리스너를 제�
   wrapper.destroy();
 
   wrapper.el.dispatchEvent(new Event('click', { bubbles: true }));
-  secondEl.dispatchEvent(new Event('click', { bubbles: true }));
-  firstEl.dispatchEvent(new Event('click', { bubbles: true }));
+  secondEl?.dispatchEvent(new Event('click', { bubbles: true }));
+  firstEl?.dispatchEvent(new Event('click', { bubbles: true }));
 
   expect(callback1).not.toHaveBeenCalled();
   expect(callback2).not.toHaveBeenCalled();
