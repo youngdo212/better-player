@@ -1,8 +1,6 @@
 /** @module utils/element */
 
-interface Attributes {
-  [key: string]: string;
-}
+import type { Attributes } from '../types';
 
 interface SelectorMap {
   [key: string]: string;
@@ -23,6 +21,10 @@ export function createElement<K extends keyof HTMLElementTagNameMap>(
   tagName?: K,
   attributes?: Attributes,
 ): HTMLElementTagNameMap[K];
+export function createElement(
+  tagName?: string,
+  attributes?: Attributes,
+): HTMLElement;
 export function createElement(
   tagName = 'div',
   attributes: Attributes = {},
@@ -48,13 +50,10 @@ export function removeElement(element: HTMLElement): void {
 /**
  * 엘리먼트에 이벤트 리스너를 추가한다
  */
-export function addEventListener<
-  T extends HTMLElement,
-  K extends keyof HTMLElementEventMap
->(
+export function addEventListener<T extends HTMLElement>(
   element: T,
-  eventName: K,
-  listener: (e: HTMLElementEventMap[K]) => void,
+  eventName: string,
+  listener: (e: Event) => void,
   options?: AddEventListenerOptions,
 ): T {
   element.addEventListener(eventName, listener, options);
@@ -64,13 +63,10 @@ export function addEventListener<
 /**
  * 엘리먼트에 등록된 이벤트 리스너를 제거한다
  */
-export function removeEventListener<
-  T extends HTMLElement,
-  K extends keyof HTMLElementEventMap
->(
+export function removeEventListener<T extends HTMLElement>(
   element: T,
-  eventName: K,
-  listener: (e: HTMLElementEventMap[K]) => void,
+  eventName: string,
+  listener: (e: Event) => void,
   options?: AddEventListenerOptions,
 ): T {
   element.removeEventListener(eventName, listener, options);
