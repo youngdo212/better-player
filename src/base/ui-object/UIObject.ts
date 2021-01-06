@@ -108,7 +108,7 @@ export default abstract class UIObject extends Events {
 
         if (selector) {
           const wrapper = (e: Event) => {
-            if (e.target instanceof HTMLElement) {
+            if (e.target instanceof Node) {
               if (!querySelector(this.el, selector)?.contains(e.target)) return;
               listener.call(this, e);
             }
