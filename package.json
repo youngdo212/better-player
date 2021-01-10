@@ -31,6 +31,7 @@
     "@storybook/addon-essentials": "^6.1.0",
     "@storybook/addon-links": "^6.1.0",
     "@storybook/html": "^6.1.0",
+    "@types/fscreen": "^1.0.1",
     "@types/jest": "^26.0.15",
     "@types/lodash": "^4.14.167",
     "@typescript-eslint/eslint-plugin": "^4.11.1",
