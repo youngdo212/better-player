@@ -1,5 +1,6 @@
 /** @module components/html-video */
 
+import type { Attributes, Config, EventHandlerNameMap } from '../../types';
 import './HTMLVideo.scss';
 import Events from '../../base/events';
 import Video from '../../base/video';
@@ -12,17 +13,15 @@ import { canPlayVideoType } from '../../utils/element';
  * @extends Video
  */
 export default class HTMLVideo extends Video {
-  get tagName() {
-    return 'video';
-  }
+  private lastVolume: number;
 
-  get attributes() {
+  get attributes(): Attributes {
     return {
       class: 'better-player__html-video',
     };
   }
 
-  get events() {
+  get events(): EventHandlerNameMap {
     return {
       play: 'onPlay',
       pause: 'onPause',
@@ -37,17 +36,10 @@ export default class HTMLVideo extends Video {
     };
   }
 
-  get canPlay() {
-    return true;
-  }
-
   /**
    * 인스턴스를 생성하고 비디오 엘리먼트에 속성을 추가한다.
-   *
-   * @param {object} config
-   * @param {string} config.source
    */
-  constructor(config) {
+  constructor(config: Config) {
     super(config);
     this.el.src = config.source;
     this.lastVolume = this.el.volume; // 음소거를 해제했을 때 이전 볼륨으로 되돌리기 위한 속성
@@ -55,149 +47,128 @@ export default class HTMLVideo extends Video {
 
   /**
    * 재생 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onPlay(event) {
+  onPlay(event: Event): void {
     this.emit(Events.VIDEO_PLAY, event);
   }
 
   /**
    * 일시 정지 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onPause(event) {
+  onPause(event: Event): void {
     this.emit(Events.VIDEO_PAUSE, event);
   }
 
   /**
    * 시간 변경 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onTimeupdate(event) {
+  onTimeupdate(event: Event): void {
     this.emit(Events.VIDEO_TIMEUPDATE, event);
   }
 
   /**
    * 영상의 총 길이 변경 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onDurationchange(event) {
+  onDurationchange(event: Event): void {
     this.emit(Events.VIDEO_DURATIONCHANGE, event);
   }
 
   /**
    * 영상의 볼륨 변경 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onVolumechange(event) {
+  onVolumechange(event: Event): void {
     this.emit(Events.VIDEO_VOLUMECHANGE, event);
   }
 
   /**
    * 영상 끝 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onEnded(event) {
+  onEnded(event: Event): void {
     this.emit(Events.VIDEO_ENDED, event);
   }
 
   /**
    * 영상 탐색 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onSeeking(event) {
+  onSeeking(event: Event): void {
     this.emit(Events.VIDEO_SEEKING, event);
   }
 
   /**
    * 영상 탐색 완료 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onSeeked(event) {
+  onSeeked(event: Event): void {
     this.emit(Events.VIDEO_SEEKED, event);
   }
 
   /**
    * 비디오의 에러 이벤트를 발생시킨다
-   *
-   * @param {Event} event
    */
-  onError(event) {
+  onError(event: Event): void {
     this.emit(Events.VIDEO_ERROR, event);
   }
 
   /**
    * 비디오의 클릭 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onClick(event) {
+  onClick(event: Event): void {
     this.emit(Events.VIDEO_CLICK, event);
   }
 
   /**
    * 비디오의 정지 여부를 반환한다.
-   *
-   * @returns {boolean}
    */
-  isPaused() {
+  isPaused(): boolean {
     return this.el.paused;
   }
 
   /**
    * 비디오의 총 길이를 반환한다.
    *
-   * @returns {number}
+   * @returns live stream이거나 아직 duration을 알 수 없는 경우 NaN을 반환한다
    */
-  getDuration() {
+  getDuration(): number {
     return this.el.duration;
   }
 
   /**
    * 비디오의 현재 시간을 반환한다.
    *
-   * @returns {number}
+   * @return 초 단위
    */
-  getCurrentTime() {
+  getCurrentTime(): number {
     return this.el.currentTime;
   }
 
   /**
    * 비디오의 볼륨을 반환한다.
    *
-   * @returns {number}
+   * @returns 0 이상 1 이하의 값
    */
-  getVolume() {
+  getVolume(): number {
     return this.el.volume;
   }
 
   /**
    * 비디오 엘리먼트를 재생한다
    */
-  play() {
+  play(): void {
     this.el.play();
   }
 
   /**
    * 비디오 엘리먼트를 일시 정지한다.
    */
-  pause() {
+  pause(): void {
     this.el.pause();
   }
 
   /**
    * 비디오를 탐색한다.
-   * @param {number} time
+   *
+   * @param time 초 단위의 부동수소점 시간
    */
-  seek(time) {
+  seek(time: number): void {
     if (time < 0) time = 0;
     if (time > this.getDuration()) time = this.getDuration();
     this.el.currentTime = time;
@@ -205,9 +176,10 @@ export default class HTMLVideo extends Video {
 
   /**
    * 볼륨을 조절한다.
-   * @param {number} volume
+   *
+   * @param volume 0 이상 1 이하의 값
    */
-  setVolume(volume) {
+  setVolume(volume: number): void {
     if (volume < 0) volume = 0;
     if (volume > 1) volume = 1;
     this.lastVolume = volume;
@@ -217,31 +189,29 @@ export default class HTMLVideo extends Video {
   /**
    * 비디오를 음소거한다.
    */
-  mute() {
+  mute(): void {
     this.el.volume = 0;
   }
 
   /**
    * 비디오 음소거를 해제하면서 음소거하기 전 볼륨으로 되돌린다.
    */
-  unmute() {
+  unmute(): void {
     this.el.volume = this.lastVolume || 1;
   }
 
   /**
    * 비디오를 다시 로드한다.
    */
-  reload() {
+  reload(): void {
     this.el.load();
   }
 
   /**
    * DOM에서 엘리먼트를 제거하고 이벤트 리스너를 전부 삭제한다.
    * 또한 비디오 엘리먼트 src 속성을 초기화한다.
-   *
-   * @returns {HTMLVideo}
    */
-  destroy() {
+  destroy(): HTMLVideo {
     super.destroy();
     this.el.removeAttribute('src');
     this.el.load(); // 진행중인 비디오 리소스의 다운로드를 중지한 후 초기화한 src를 재적용
@@ -251,10 +221,10 @@ export default class HTMLVideo extends Video {
   /**
    * 리소스가 이 인스턴스에서 재생 가능한 포맷인지 검사한다.
    *
-   * @param {string} source
+   * @param source 확장자를 포함하는 비디오 url
    */
-  static canPlayType(source) {
-    let mimeType = mime.getType(source) || '';
+  static canPlayType(source: string): boolean {
+    const mimeType = mime.getType(source) || '';
 
     return canPlayVideoType(mimeType);
   }

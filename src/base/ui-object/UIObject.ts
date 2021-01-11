@@ -1,6 +1,11 @@
 /** @module base/ui-object */
 
-import type { Attributes, MethodNames } from '../../types';
+import type {
+  Attributes,
+  MethodNames,
+  EventHandlerNameMap,
+  EventHandlerMap,
+} from '../../types';
 import {
   addEventListener,
   createElement,
@@ -10,46 +15,22 @@ import {
 } from '../../utils/element';
 import Events from '../events';
 
-// TODO: value에 해당되는 메소드의 이름의 타입을 string보다 더 strict하게 만들기
-/**
- * key(이벤트 이름과 셀렉터의 조합): value(메소드의 이름) 형태의 객체
- *
- * @example
- * {'click': 'onClick'}
- * {'click .some-class': 'someMethodName'}
- */
-interface EventHandlerNameMap {
-  [eventNameWithSelector: string]: string;
-}
-
-/**
- * key(이벤트 이름과 셀렉터의 조합): value(함수) 형태의 객체
- */
-interface EventHandlerMap {
-  [eventNameWithSelector: string]: (e: Event) => void;
-}
-
 /**
  * UI를 가지는 객체의 base 클래스
  * @extends Events
  */
-export default abstract class UIObject extends Events {
+export default abstract class UIObject<
+  T extends keyof HTMLElementTagNameMap
+> extends Events {
   /**
    * UI에 대응되는 DOM 엘리먼트
    */
-  public readonly el: HTMLElement;
+  public readonly el: HTMLElementTagNameMap[T];
 
   /**
    * 실제로 el에 등록할 함수가 이벤트 이름에 매핑되어 있는 객체
    */
   private _events: EventHandlerMap;
-
-  /**
-   * 생성되는 엘리먼트(el)의 태그 이름
-   */
-  get tagName(): string {
-    return 'div';
-  }
 
   /**
    * 생성되는 엘리먼트(el)가 가지는 속성
@@ -86,9 +67,9 @@ export default abstract class UIObject extends Events {
   /**
    * UI에 대응되는 DOM 엘리먼트를 생성하고 이벤트 핸들러를 추가한다.
    */
-  constructor() {
+  constructor(tagName: T) {
     super();
-    this.el = createElement(this.tagName, this.attributes);
+    this.el = createElement(tagName, this.attributes);
     this._events = this.normalizeEvents(this.events);
     this.delegateEvents();
   }
@@ -147,7 +128,7 @@ export default abstract class UIObject extends Events {
   /**
    * 자식 엘리먼트를 생성하고 실제 DOM에 엘리먼트(el)을 추가한다
    */
-  render(): UIObject {
+  render(): UIObject<T> {
     return this;
   }
 
@@ -155,7 +136,7 @@ export default abstract class UIObject extends Events {
    * 엘리먼트(el)에 등록된 모든 이벤트 핸들러를 제거하고
    * DOM에서 엘리먼트(el)를 삭제한다
    */
-  destroy(): UIObject {
+  destroy(): UIObject<T> {
     this.undelegateEvents();
     removeElement(this.el);
     this.off();

@@ -86,7 +86,7 @@ export default class Controller extends UIPlugin {
     this.listenTo(
       this.core,
       Events.CORE_FULLSCREENCHANGE,
-      this.updateFullscreenToggleButton
+      this.updateFullscreenToggleButton,
     );
   }
 
@@ -196,12 +196,12 @@ export default class Controller extends UIPlugin {
     if (this.video.isPaused()) {
       removeClass(
         this.childElements.playToggleButton,
-        'better-player__toggle-button--pressed'
+        'better-player__toggle-button--pressed',
       );
     } else {
       addClass(
         this.childElements.playToggleButton,
-        'better-player__toggle-button--pressed'
+        'better-player__toggle-button--pressed',
       );
     }
   }
@@ -267,12 +267,12 @@ export default class Controller extends UIPlugin {
     if (volume === 0) {
       addClass(
         this.childElements.muteToggleButton,
-        'better-player__toggle-button--pressed'
+        'better-player__toggle-button--pressed',
       );
     } else {
       removeClass(
         this.childElements.muteToggleButton,
-        'better-player__toggle-button--pressed'
+        'better-player__toggle-button--pressed',
       );
     }
   }
@@ -284,12 +284,12 @@ export default class Controller extends UIPlugin {
     if (this.core.isFullscreen()) {
       addClass(
         this.childElements.fullscreenToggleButton,
-        'better-player__toggle-button--pressed'
+        'better-player__toggle-button--pressed',
       );
     } else {
       removeClass(
         this.childElements.fullscreenToggleButton,
-        'better-player__toggle-button--pressed'
+        'better-player__toggle-button--pressed',
       );
     }
   }
@@ -300,9 +300,6 @@ export default class Controller extends UIPlugin {
    * @returns {Controller}
    */
   render() {
-    // 비디오 엘리먼트의 비디오가 재생 가능한 상태가 아닐 경우(NoVideo 경우 등) 자신을 렌더링하지 않는다.
-    if (!this.video.canPlay) return;
-
     innerHTML(this.el, template());
     this.childElements = getElementsBySelectorMap(this.el, this.selectors); // 자식 엘리먼트를 캐싱한다.
     appendChild(this.core.el, this.el);

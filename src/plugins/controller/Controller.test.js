@@ -1,18 +1,8 @@
 import Controller from './Controller';
 import HTMLVideo from '../../components/html-video';
-import NoVideo from '../../components/no-video';
 import Core from '../../components/core';
 import config from '../../config/defaults';
 import Events from '../../base/events';
-
-it('비디오가 재생 불가능할 경우 렌더링되지 않는다', () => {
-  const core = new Core(config);
-  core.video = new NoVideo(config);
-  const controller = new Controller(core);
-  controller.render();
-
-  expect(core.el.firstElementChild).toBe(null);
-});
 
 it('비디오가 재생 가능할 경우 렌더링된다', () => {
   const core = new Core(config);
@@ -39,7 +29,7 @@ it('비디오를 재생시킨다', () => {
   const controller = new Controller(core);
   controller.render();
   const playToggleButtonEl = controller.el.querySelector(
-    '.better-player__play-toggle-button'
+    '.better-player__play-toggle-button',
   );
 
   playToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
@@ -55,7 +45,7 @@ it('비디오를 일시 정지시킨다', () => {
   const controller = new Controller(core);
   controller.render();
   const playToggleButtonEl = controller.el.querySelector(
-    '.better-player__play-toggle-button'
+    '.better-player__play-toggle-button',
   );
 
   playToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
@@ -74,8 +64,8 @@ it('비디오가 재생되면 playToggleButton의 클래스를 추가한다', ()
 
   expect(
     controller.childElements.playToggleButton.classList.contains(
-      'better-player__toggle-button--pressed'
-    )
+      'better-player__toggle-button--pressed',
+    ),
   ).toBe(true);
 });
 
@@ -92,8 +82,8 @@ it('비디오가 일시 정지되면 playToggleButton의 클래스를 삭제한�
   // 클래스가 추가됐는지 확인
   expect(
     controller.childElements.playToggleButton.classList.contains(
-      'better-player__toggle-button--pressed'
-    )
+      'better-player__toggle-button--pressed',
+    ),
   ).toBe(true);
 
   // 비디오 플레이어를 일시 정지하여 테스트
@@ -102,8 +92,8 @@ it('비디오가 일시 정지되면 playToggleButton의 클래스를 삭제한�
 
   expect(
     controller.childElements.playToggleButton.classList.contains(
-      'better-player__toggle-button--pressed'
-    )
+      'better-player__toggle-button--pressed',
+    ),
   ).toBe(false);
 });
 
@@ -249,7 +239,7 @@ it('비디오의 시간이 변경되면 현재 시간이 변경된다', () => {
   const controller = new Controller(core);
   controller.render();
   const currentTimeEl = controller.el.querySelector(
-    '.better-player__current-time'
+    '.better-player__current-time',
   );
 
   core.video.emit(Events.VIDEO_TIMEUPDATE);
@@ -263,7 +253,7 @@ it('비디오에 에러가 발생하면 엘리먼트를 숨기고 등록한 이�
   const controller = core.plugins.find(plugin => plugin instanceof Controller);
   controller.render();
   const playToggleButtonEl = controller.el.querySelector(
-    '.better-player__toggle-button'
+    '.better-player__toggle-button',
   );
 
   core.video.emit(Events.VIDEO_ERROR);
@@ -272,8 +262,8 @@ it('비디오에 에러가 발생하면 엘리먼트를 숨기고 등록한 이�
   expect(controller.el.style.display).toBe('none');
   expect(
     playToggleButtonEl.classList.contains(
-      'better-player__toggle-button--pressed'
-    )
+      'better-player__toggle-button--pressed',
+    ),
   ).toBe(false);
 });
 
@@ -284,7 +274,7 @@ it('seek bar를 드래그하면 위치에 따라 current time이 변경된다', 
   const controller = new Controller(core);
   controller.render();
   const currentTimeEl = controller.el.querySelector(
-    '.better-player__current-time'
+    '.better-player__current-time',
   );
   const seekBarEl = controller.el.querySelector('.better-player__seek-bar');
 
@@ -327,15 +317,15 @@ it('비디오의 볼륨이 0이 되면 음소거 토글 버튼이 업데이트 �
   const controller = new Controller(core);
   controller.render();
   const muteToggleButtonEl = controller.el.querySelector(
-    '.better-player__mute-toggle-button'
+    '.better-player__mute-toggle-button',
   );
 
   core.video.el.dispatchEvent(new Event('volumechange', { bubbles: true }));
 
   expect(
     muteToggleButtonEl.classList.contains(
-      'better-player__toggle-button--pressed'
-    )
+      'better-player__toggle-button--pressed',
+    ),
   ).toBe(true);
 });
 
@@ -346,15 +336,15 @@ it('비디오의 볼륨이 0이 아니게 되면 음소거 토글 버튼이 업�
   const controller = new Controller(core);
   controller.render();
   const muteToggleButtonEl = controller.el.querySelector(
-    '.better-player__mute-toggle-button'
+    '.better-player__mute-toggle-button',
   );
 
   core.video.el.dispatchEvent(new Event('volumechange', { bubbles: true }));
 
   expect(
     muteToggleButtonEl.classList.contains(
-      'better-player__toggle-button--pressed'
-    )
+      'better-player__toggle-button--pressed',
+    ),
   ).toBe(true);
 
   core.video.getVolume = () => 1;
@@ -362,8 +352,8 @@ it('비디오의 볼륨이 0이 아니게 되면 음소거 토글 버튼이 업�
 
   expect(
     muteToggleButtonEl.classList.contains(
-      'better-player__toggle-button--pressed'
-    )
+      'better-player__toggle-button--pressed',
+    ),
   ).toBe(false);
 });
 
@@ -373,7 +363,7 @@ it('음소거 토글 버튼을 눌러 음소거를 한다', () => {
   const controller = new Controller(core);
   controller.render();
   const muteToggleButtonEl = controller.el.querySelector(
-    '.better-player__mute-toggle-button'
+    '.better-player__mute-toggle-button',
   );
 
   muteToggleButtonEl.dispatchEvent(new Event('click', { bubbles: true }));
@@ -387,7 +377,7 @@ it('음소거 토글 버튼을 눌러 음소거를 해제한다', () => {
   const controller = new Controller(core);
   controller.render();
   const muteToggleButtonEl = controller.el.querySelector(
-    '.better-player__mute-toggle-button'
+    '.better-player__mute-toggle-button',
   );
 
   // 음소거
@@ -407,7 +397,7 @@ it('음소거 토글 버튼을 눌러 음소거를 해제할 경우 이전 볼�
   const controller = new Controller(core);
   controller.render();
   const muteToggleButtonEl = controller.el.querySelector(
-    '.better-player__mute-toggle-button'
+    '.better-player__mute-toggle-button',
   );
   const volumeBarEl = controller.el.querySelector('.better-player__volume-bar');
   volumeBarEl.value = 0.7;

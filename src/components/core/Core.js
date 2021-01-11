@@ -49,7 +49,7 @@ export default class Core extends UIObject {
    * @param {boolean} config.keyboard
    */
   constructor(config) {
-    super();
+    super('div');
     this.config = config;
     this.videoFactory = new VideoFactory(this.config);
     this.video = this.videoFactory.create();
