@@ -6,6 +6,7 @@ export interface Attributes {
 }
 
 export interface Config {
+  parentElement: HTMLElement | null;
   source: string;
   clickToPlay: boolean;
   keyboard: boolean;
@@ -13,6 +14,8 @@ export interface Config {
   volumeStep: number;
   i18n: I18N;
   iconUrl: string;
+  width?: number;
+  height?: number;
 }
 
 export interface I18N {
