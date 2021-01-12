@@ -8,6 +8,7 @@ beforeEach(() => {
 
 it('비디오 엘리먼트를 생성한다', () => {
   const video = new HTMLVideo({
+    ...config,
     source: 'http://localhost/test.mp4',
   });
 
@@ -94,6 +95,7 @@ it('비디오 엘리먼트를 DOM에서 제거하고 src attribute를 초기화�
 
   const wrapper = document.createElement('div');
   const video = new HTMLVideo({
+    ...config,
     source: 'http://localhost/test.mp4',
   });
 

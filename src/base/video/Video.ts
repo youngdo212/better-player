@@ -7,7 +7,7 @@ import type { Config } from '../../types';
  * 비디오 플레이어가 컨트롤할 비디오 클래스
  * @extends UIObject
  */
-export default abstract class Video extends UIObject {
+export default abstract class Video extends UIObject<'video'> {
   /**
    * 비디오 플레이어 환경설정 객체
    */
@@ -21,18 +21,10 @@ export default abstract class Video extends UIObject {
   }
 
   /**
-   * 재생 가능한 상태인지를 나타낸다.
-   * 이 속성을 이용해 플러그인들이 자신의 렌더링 여부를 결정한다(e.g. Controller).
-   */
-  get canPlay(): boolean {
-    return false;
-  }
-
-  /**
    * 환경 설정을 저장하고 인스턴스를 생성한다.
    */
   constructor(config: Config) {
-    super();
+    super('video');
     this._config = config;
   }
 

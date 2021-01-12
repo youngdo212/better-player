@@ -6,6 +6,7 @@ export interface Attributes {
 }
 
 export interface Config {
+  parentElement: HTMLElement | null;
   source: string;
   clickToPlay: boolean;
   keyboard: boolean;
@@ -13,11 +14,34 @@ export interface Config {
   volumeStep: number;
   i18n: I18N;
   iconUrl: string;
+  width?: number;
+  height?: number;
+  parentId?: string;
+  parent?: HTMLElement;
 }
 
 export interface I18N {
   notSupportVideoFormat: string;
   notFoundVideo: string;
+}
+
+// TODO: value에 해당되는 메소드의 이름의 타입을 string보다 더 strict하게 만들기
+/**
+ * key(이벤트 이름과 셀렉터의 조합): value(메소드의 이름) 형태의 객체
+ *
+ * @example
+ * {'click': 'onClick'}
+ * {'click .some-class': 'someMethodName'}
+ */
+export interface EventHandlerNameMap {
+  [eventNameWithSelector: string]: string;
+}
+
+/**
+ * key(이벤트 이름과 셀렉터의 조합): value(함수) 형태의 객체
+ */
+export interface EventHandlerMap {
+  [eventNameWithSelector: string]: (e: Event) => void;
 }
 
 /*****************

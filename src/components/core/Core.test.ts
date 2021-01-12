@@ -53,7 +53,9 @@ it('자신 및 하위 엘리먼트를 DOM에서 제거한다', () => {
 
 it('자신 및 하위 엘리먼트의 이벤트 리스너를 전부 제거한다', () => {
   HTMLMediaElement.prototype.canPlayType = () => 'maybe';
-  HTMLMediaElement.prototype.load = () => {};
+  HTMLMediaElement.prototype.load = () => {
+    // do nothing
+  };
 
   const core = new Core(config);
   const coreListener = jest.fn();
@@ -116,7 +118,9 @@ it('svg sprite가 추가된다', () => {
 
   core.render();
 
-  expect(document.body.firstElementChild.firstElementChild.tagName).toBe('svg');
+  expect(document.body.firstElementChild?.firstElementChild?.tagName).toBe(
+    'svg',
+  );
 });
 
 // jest에서 fullscreen api를 사용하는 것이 매우 제한적이기 때문에 테스트 케이스도 제한된다
@@ -267,7 +271,9 @@ describe('fullscreen 관련', () => {
 });
 
 it('리로드할 경우 video의 reload 함수를 호출하고 모든 플러그인을 enabled하게 만든다', () => {
-  HTMLMediaElement.prototype.load = () => {};
+  HTMLMediaElement.prototype.load = () => {
+    // do nothing
+  };
   const core = new Core(config);
   core.video.reload = jest.fn();
   core.plugins.forEach(plugin => plugin.disable());
@@ -276,7 +282,7 @@ it('리로드할 경우 video의 reload 함수를 호출하고 모든 플러그�
 
   expect(core.video.reload).toHaveBeenCalledTimes(1);
   expect(core.plugins.filter(plugin => plugin.enabled).length).toBe(
-    core.plugins.length
+    core.plugins.length,
   );
 });
 

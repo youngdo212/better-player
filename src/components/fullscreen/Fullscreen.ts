@@ -12,11 +12,17 @@ import fscreen from 'fscreen';
  */
 export default class Fullscreen extends Events {
   /**
+   * this 바인딩 된 fullscreenchange 이벤트 핸들러
+   */
+  private boundFullscreenChangeHandler: (e: Event | undefined) => void;
+
+  /**
    * 전체 화면 된 엘리먼트를 반환한다.
    */
-  get element() {
+  get element(): Element | undefined {
     return fscreen.fullscreenElement;
   }
+
   /**
    * 인스턴스를 생성한다.
    */
@@ -26,23 +32,21 @@ export default class Fullscreen extends Events {
       this.emit(Events.FULLSCREEN_CHANGE, event);
     fscreen.addEventListener(
       'fullscreenchange',
-      this.boundFullscreenChangeHandler
+      this.boundFullscreenChangeHandler,
     );
   }
 
   /**
    * 엘리먼트를 전체화면으로 전환한다.
-   *
-   * @param {Element} element
    */
-  request(element) {
+  request(element: Element): void {
     fscreen.requestFullscreen(element);
   }
 
   /**
    * 전체 화면에서 나온다.
    */
-  exit() {
+  exit(): void {
     fscreen.exitFullscreen();
   }
 
@@ -50,11 +54,11 @@ export default class Fullscreen extends Events {
    * 인스턴스에 등록된 이벤트 핸들러를 전부 제거하고
    * document에 등록한 fullscreenchange 이벤트 핸들러도 제거한다.
    */
-  destroy() {
+  destroy(): void {
     this.off();
     fscreen.removeEventListener(
       'fullscreenchange',
-      this.boundFullscreenChangeHandler
+      this.boundFullscreenChangeHandler,
     );
   }
 }

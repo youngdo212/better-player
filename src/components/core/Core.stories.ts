@@ -5,10 +5,21 @@ export default {
   title: 'Core',
 };
 
-const Template = ({ videoUrl, width, height }) => {
+interface CoreStoryArgs {
+  videoUrl: string;
+  width?: number;
+  height?: number;
+}
+
+interface CoreStory {
+  (args: CoreStoryArgs): HTMLElement;
+  args?: CoreStoryArgs;
+}
+
+const Template: CoreStory = ({ videoUrl, width, height }) => {
   const core = new Core({
     ...config,
-    source: { src: videoUrl },
+    source: videoUrl,
     width,
     height,
   });

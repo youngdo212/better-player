@@ -168,7 +168,9 @@ it('비디오 플레이어의 isPaused() 메소드는 기본으로 true다', () 
 });
 
 it('비디오 플레이어를 DOM에서 제거한다', () => {
-  HTMLMediaElement.prototype.load = () => {};
+  HTMLMediaElement.prototype.load = () => {
+    // do nothing
+  };
 
   const body = document.body;
   const parent = document.createElement('div');
@@ -188,7 +190,9 @@ it('비디오 플레이어를 DOM에서 제거한다', () => {
 
 it('비디오 플레이어에 등록된 커스텀 이벤트 리스너가 삭제된다', () => {
   HTMLMediaElement.prototype.canPlayType = () => 'maybe';
-  HTMLMediaElement.prototype.load = () => {};
+  HTMLMediaElement.prototype.load = () => {
+    // do nothing
+  };
 
   const player = new Player();
   const callback = jest.fn();
@@ -358,7 +362,9 @@ it('unmute 메소드로 음소거를 해제한다', () => {
 it('전체화면으로 전환한다', () => {
   const player = new Player();
   const core = player.core;
-  jest.spyOn(core, 'requestFullscreen').mockImplementation(() => {});
+  jest.spyOn(core, 'requestFullscreen').mockImplementation(() => {
+    // do nothing
+  });
 
   player.requestFullscreen();
 
@@ -368,7 +374,9 @@ it('전체화면으로 전환한다', () => {
 it('전체화면을 해제한다', () => {
   const player = new Player();
   const core = player.core;
-  jest.spyOn(core, 'exitFullscreen').mockImplementation(() => {});
+  jest.spyOn(core, 'exitFullscreen').mockImplementation(() => {
+    // do nothing
+  });
 
   player.exitFullscreen();
 

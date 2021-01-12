@@ -2,6 +2,7 @@ import type { Config } from '../types';
 import cloneDeep from 'lodash/cloneDeep';
 
 const defaults: Config = {
+  parentElement: null,
   source: '',
   clickToPlay: true, // 비디오를 클릭해서 재생 가능하게 하는 기능
   keyboard: true,

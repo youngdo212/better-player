@@ -10,7 +10,7 @@ import Video from '../video';
  *
  * @extends UIObject
  */
-export default abstract class UIPlugin extends UIObject {
+export default abstract class UIPlugin extends UIObject<'div'> {
   /**
    * 비디오 플레이어 코어
    */
@@ -46,7 +46,7 @@ export default abstract class UIPlugin extends UIObject {
    * core를 설정하고 이벤트 리스너를 등록한다.
    */
   constructor(core: Core) {
-    super();
+    super('div');
     this._core = core;
     this._enabled = true;
     this.addEventListeners();
