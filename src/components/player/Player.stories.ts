@@ -4,7 +4,24 @@ export default {
   title: 'Player',
 };
 
-const Template = ({ source, width, height, clickToPlay = true }) => {
+interface PlayerStoryArgs {
+  source?: string;
+  width?: number;
+  height?: number;
+  clickToPlay?: boolean;
+}
+
+interface PlayerStory {
+  (args: PlayerStoryArgs): HTMLElement;
+  args?: PlayerStoryArgs;
+}
+
+const Template: PlayerStory = ({
+  source,
+  width,
+  height,
+  clickToPlay = true,
+}) => {
   const parent = document.createElement('div');
 
   new Player({
@@ -40,23 +57,31 @@ WithSize.args = {
   height: 360,
 };
 
-export const MutiplePlayer = ({ sourceA, sourceB, width, height }) => {
+export const MutiplePlayer = ({
+  sourceA,
+  sourceB,
+  width,
+  height,
+}: {
+  sourceA: string;
+  sourceB: string;
+  width: number;
+  height: number;
+}): HTMLElement => {
   const wrapper = document.createElement('div');
   const parentA = document.createElement('div');
   const parentB = document.createElement('div');
   wrapper.appendChild(parentA);
   wrapper.appendChild(parentB);
 
-  // eslint-disable-next-line no-unused-vars
-  const playerA = new Player({
+  new Player({
     source: sourceA,
     parent: parentA,
     width,
     height,
   });
 
-  // eslint-disable-next-line no-unused-vars
-  const playerB = new Player({
+  new Player({
     source: sourceB,
     parent: parentB,
     width,
@@ -93,7 +118,12 @@ export const InternationalizationException = ({
   width,
   height,
   notFoundVideo,
-}) => {
+}: {
+  source: string;
+  width: number;
+  height: number;
+  notFoundVideo: string;
+}): HTMLElement => {
   const parent = document.createElement('div');
 
   new Player({
@@ -121,7 +151,11 @@ InternationalizationException.args = {
  * @param {object} args
  * @param {boolean} args.clickToPlay
  */
-export const DisableClickToPlay = ({ clickToPlay }) => {
+export const DisableClickToPlay = ({
+  clickToPlay,
+}: {
+  clickToPlay: boolean;
+}): HTMLElement => {
   const parent = document.createElement('div');
 
   new Player({
@@ -142,7 +176,15 @@ DisableClickToPlay.args = {
 /**
  * 키보드와 관련된 옵션 변경을 위한 스토리
  */
-export const KeyboardShortcut = ({ seekTime, volumeStep, keyboard }) => {
+export const KeyboardShortcut = ({
+  seekTime,
+  volumeStep,
+  keyboard,
+}: {
+  seekTime: number;
+  volumeStep: number;
+  keyboard: boolean;
+}): HTMLElement => {
   const parent = document.createElement('div');
 
   new Player({

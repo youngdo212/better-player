@@ -1,5 +1,6 @@
 /** @module components/player */
 
+import type { Config } from '../../types';
 import Events from '../../base/events';
 import defaultConfig from '../../config/defaults';
 import { getElementById } from '../../utils/element';
@@ -10,9 +11,11 @@ import Core from '../core';
  * @extends Events
  */
 export default class Player extends Events {
+  readonly config: Config;
+  readonly core: Core;
+
   /**
    * 환경 설정 및 core를 생성하고 관련 이벤트 리스너를 등록합니다.
-   * @param {object=} options
    */
   constructor(options = {}) {
     super();
@@ -31,11 +34,8 @@ export default class Player extends Events {
 
   /**
    * 비디오 엘리먼트가 추가될 부모 엘리먼트를 반환합니다.
-   *
-   * @param {object} config
-   * @returns {HTMLElement | null}
    */
-  getParentElement(config) {
+  private getParentElement(config: Config): HTMLElement | null {
     let parentElement = null;
 
     if (config.parentId) {
@@ -50,12 +50,12 @@ export default class Player extends Events {
   /**
    * 이벤트 리스너를 전부 등록합니다
    */
-  addEventListeners() {
+  private addEventListeners(): void {
     this.core.video.on(Events.VIDEO_PLAY, this.onPlay.bind(this));
     this.core.video.on(Events.VIDEO_PAUSE, this.onPause.bind(this));
     this.core.video.on(
       Events.VIDEO_VOLUMECHANGE,
-      this.onVolumechange.bind(this)
+      this.onVolumechange.bind(this),
     );
     this.core.video.on(Events.VIDEO_TIMEUPDATE, this.onTimeupdate.bind(this));
     this.core.video.on(Events.VIDEO_ENDED, this.onEnded.bind(this));
@@ -63,79 +63,63 @@ export default class Player extends Events {
     this.core.video.on(Events.VIDEO_SEEKED, this.onSeeked.bind(this));
     this.core.on(
       Events.CORE_FULLSCREENCHANGE,
-      this.onFullscreenchange.bind(this)
+      this.onFullscreenchange.bind(this),
     );
   }
 
   /**
    * 재생 이벤트를 발생시킨다
-   *
-   * @param {Event} event
    */
-  onPlay(event) {
+  private onPlay(event: Event): void {
     this.emit(Events.PLAYER_PLAY, event);
   }
 
   /**
    * 일시 정지 이벤트를 발생시킨다
-   *
-   * @param {Event} event
    */
-  onPause(event) {
+  private onPause(event: Event): void {
     this.emit(Events.PLAYER_PAUSE, event);
   }
 
   /**
    * 비디오의 볼륨 변경 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onVolumechange(event) {
+  private onVolumechange(event: Event): void {
     this.emit(Events.PLAYER_VOLUMECHANGE, event);
   }
 
   /**
    * 비디오 현재 시간 변경 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onTimeupdate(event) {
+  private onTimeupdate(event: Event): void {
     this.emit(Events.PLAYER_TIMEUPDATE, event);
   }
 
   /**
    * 비디오 끝 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onEnded(event) {
+  private onEnded(event: Event): void {
     this.emit(Events.PLAYER_ENDED, event);
   }
 
   /**
    * 비디오 탐색 시작 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onSeeking(event) {
+  private onSeeking(event: Event): void {
     this.emit(Events.PLAYER_SEEKING, event);
   }
 
   /**
    * 비디오 탐색 완료 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onSeeked(event) {
+  private onSeeked(event: Event): void {
     this.emit(Events.PLAYER_SEEKED, event);
   }
 
   /**
    * 전체화면 이벤트를 발생시킨다.
-   *
-   * @param {Event} event
    */
-  onFullscreenchange(event) {
+  private onFullscreenchange(event: Event): void {
     this.core.isFullscreen()
       ? this.emit(Events.PLAYER_REQUESTFULLSCREEN, event)
       : this.emit(Events.PLAYER_EXITFULLSCREEN, event);
@@ -143,93 +127,88 @@ export default class Player extends Events {
 
   /**
    * 비디오 플레이어의 재생 여부를 반환한다.
-   * @returns {boolean}
    */
-  isPaused() {
+  isPaused(): boolean {
     return this.core.video.isPaused();
   }
 
   /**
    * 비디오의 현재 시간을 반환한다.
    *
-   * @returns {number} 부동소수점을 가진 초 단위의 숫자
+   * @returns 부동소수점을 가진 초 단위의 숫자
    */
-  getCurrentTime() {
+  getCurrentTime(): number {
     return this.core.video.getCurrentTime();
   }
 
   /**
    * 비디오의 총 길이를 반환합니다.
    *
-   * @returns {number} 부동소수점을 가진 초 단위의 숫자
+   * @returns 부동소수점을 가진 초 단위의 숫자. 알 수 없는 경우 NaN을 반환한다.
    */
-  getDuration() {
+  getDuration(): number {
     return this.core.video.getDuration();
   }
 
   /**
    * 비디오의 볼륨을 반환한다.
    *
-   * @returns {number} 0 이상 1 이하의 값
+   * @returns 0 이상 1 이하의 값
    */
-  getVolume() {
+  getVolume(): number {
     return this.core.video.getVolume();
   }
 
   /**
    * 음소거 여부를 반환한다.
-   *
-   * @returns {boolean}
    */
-  isMuted() {
+  isMuted(): boolean {
     return this.core.video.getVolume() === 0;
   }
 
   /**
    * 비디오 플레이어의 전체 화면 여부를 반환한다.
-   *
-   * @returns {boolean}
    */
-  isFullscreen() {
+  isFullscreen(): boolean {
     return this.core.isFullscreen();
   }
 
   /**
    * 비디오 플레이어를 재생한다.
    */
-  play() {
+  play(): void {
     this.core.video.play();
   }
 
   /**
    * 비디오 플레이어를 일시 정지한다.
    */
-  pause() {
+  pause(): void {
     this.core.video.pause();
   }
 
   /**
    * 초 단위의 숫자로 비디오를 탐색한다.
    *
-   * @param {number} time
+   * @param time 초 단위의 부동소수점 숫자
    */
-  seek(time) {
+  seek(time: number): void {
     this.core.video.seek(time);
   }
 
   /**
    * 비디오의 볼륨을 변경한다.
    *
-   * @param {number} volume 0 이상 1 이하의 숫자
+   * @param volume 0 이상 1 이하의 숫자
    */
-  setVolume(volume) {
+  setVolume(volume: number): void {
     this.core.video.setVolume(volume);
   }
 
   /**
    * 비디오를 음소거한다.
    */
-  mute() {
+  mute(): void {
     this.core.video.mute();
   }
 
@@ -237,30 +216,28 @@ export default class Player extends Events {
    * 비디오 음소거를 해제한다.
    * 음소거를 해제할 경우 음소거하기 전 볼륨으로 되돌린다
    */
-  unmute() {
+  unmute(): void {
     this.core.video.unmute();
   }
 
   /**
    * 비디오 플레이어를 전체화면으로 전환한다.
    */
-  requestFullscreen() {
+  requestFullscreen(): void {
     this.core.requestFullscreen();
   }
 
   /**
    * 비디오 플레이어 전체화면을 해제한다.
    */
-  exitFullscreen() {
+  exitFullscreen(): void {
     this.core.exitFullscreen();
   }
 
   /**
    * 등록된 이벤트 리스너를 전부 삭제하고 DOM에서 비디오 플레이어를 제거한다.
-   *
-   * @returns {Player}
    */
-  destroy() {
+  destroy(): Player {
     this.off();
     this.core.destroy();
     return this;

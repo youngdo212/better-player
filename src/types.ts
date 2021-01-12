@@ -16,6 +16,8 @@ export interface Config {
   iconUrl: string;
   width?: number;
   height?: number;
+  parentId?: string;
+  parent?: HTMLElement;
 }
 
 export interface I18N {
