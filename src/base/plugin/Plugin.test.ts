@@ -4,7 +4,7 @@ import config from '../../config/defaults';
 
 it('core속성을 가진다', () => {
   class TestPlugin extends Plugin {
-    addEventListeners() {
+    protected addEventListeners() {
       // do nothing.
     }
   }
@@ -17,7 +17,7 @@ it('core속성을 가진다', () => {
 
 it('video속성을 가진다', () => {
   class TestPlugin extends Plugin {
-    addEventListeners() {
+    protected addEventListeners() {
       // do nothing.
     }
   }
@@ -30,7 +30,7 @@ it('video속성을 가진다', () => {
 
 it('enabled 속성을 가지며 기본 값은 true이다', () => {
   class TestPlugin extends Plugin {
-    addEventListeners() {
+    protected addEventListeners() {
       // do nothing.
     }
   }
@@ -43,7 +43,7 @@ it('enabled 속성을 가지며 기본 값은 true이다', () => {
 
 it('인스턴스를 생성하면 이벤트 리스너를 추가한다', () => {
   class MyPlugin extends Plugin {
-    addEventListeners() {
+    protected addEventListeners() {
       this.listenTo(this.core, eventName, this.handleEvent);
     }
     handleEvent() {
@@ -62,7 +62,7 @@ it('인스턴스를 생성하면 이벤트 리스너를 추가한다', () => {
 
 it('disable을 통해 플러그인을 사용하지 못하게 만든다', () => {
   class MyPlugin extends Plugin {
-    addEventListeners() {
+    protected addEventListeners() {
       this.listenTo(this.core, eventName, this.handleEvent);
     }
     handleEvent() {
@@ -82,7 +82,7 @@ it('disable을 통해 플러그인을 사용하지 못하게 만든다', () => {
 
 it('enable을 통해 플러그인을 다시 사용가능하게 만든다', () => {
   class MyPlugin extends Plugin {
-    addEventListeners() {
+    protected addEventListeners() {
       this.listenTo(this.core, eventName, this.handleEvent);
     }
     handleEvent() {
@@ -107,7 +107,7 @@ it('enable을 통해 플러그인을 다시 사용가능하게 만든다', () =>
 
 it('플러그인을 파괴한다', () => {
   class MyPlugin extends Plugin {
-    addEventListeners() {
+    protected addEventListeners() {
       this.listenTo(this.core, eventName1, this.handleEvent);
     }
     handleEvent() {

@@ -55,13 +55,13 @@ export default abstract class Plugin extends Events {
    * Core에 이벤트 리스너를 등록한다.
    * NOTE: disable/enable을 제대로 작동시키기 위해서 반드시 this.listenTo 메소드를 이용해 이벤트 리스너를 등록해야한다.
    */
-  abstract addEventListeners(): void;
+  protected abstract addEventListeners(): void;
 
   /**
    * 플러그인을 작동시킨다.
    * 이 함수는 disable 이후에 다시 플러그인을 작동시킬 때만 사용해야 한다.
    */
-  enable(): void {
+  public enable(): void {
     if (this._enabled) return;
     this.addEventListeners();
     this._enabled = true;
@@ -70,7 +70,7 @@ export default abstract class Plugin extends Events {
   /**
    * 플러그인을 작동하지 않도록 한다.
    */
-  disable(): void {
+  public disable(): void {
     this.stopListening();
     this._enabled = false;
   }
@@ -78,7 +78,7 @@ export default abstract class Plugin extends Events {
   /**
    * 플러그인을 파괴하여 등록된 이벤트 리스너를 전부 제거한다.
    */
-  destroy(): Plugin {
+  public destroy(): Plugin {
     this.off();
     this.stopListening();
     return this;
