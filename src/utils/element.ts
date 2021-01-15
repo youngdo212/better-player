@@ -6,10 +6,6 @@ interface SelectorMap {
   [key: string]: string;
 }
 
-interface HTMLElementMap {
-  [key: string]: HTMLElement | null;
-}
-
 /**
  * 태그와 속성(attribute)를 이용해서 엘리먼트를 생성한다.
  *
@@ -153,6 +149,7 @@ export function querySelector(
   return parent.querySelector(selector);
 }
 
+// TODO: as 사용 제거하는 방법은?
 /**
  * selector 맵핑 객체를 이용해 엘리먼트를 찾는다.
  *
@@ -160,15 +157,15 @@ export function querySelector(
  * getElementsBySelectorMap(parent, {myButton: '.my-button'})
  * // returns {myButton: HTMLElement};
  */
-export function getElementsBySelectorMap(
+export function getElementsBySelectorMap<T extends SelectorMap>(
   parent: HTMLElement,
-  selectorMap: SelectorMap,
-): HTMLElementMap {
-  const elements: HTMLElementMap = {};
+  selectorMap: T,
+): Record<keyof T, HTMLElement | null> {
+  const elements = {} as Record<keyof T, HTMLElement | null>;
 
-  Object.keys(selectorMap).forEach(elementName => {
+  for (const elementName in selectorMap) {
     elements[elementName] = querySelector(parent, selectorMap[elementName]);
-  });
+  }
 
   return elements;
 }

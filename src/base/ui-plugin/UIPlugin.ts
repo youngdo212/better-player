@@ -24,21 +24,21 @@ export default abstract class UIPlugin extends UIObject<'div'> {
   /**
    * 모든 UI 플러그인은 내부에서 core를 갖는다.
    */
-  get core(): Core {
+  public get core(): Core {
     return this._core;
   }
 
   /**
    * core를 통해서 video에 접근할 수 있다.
    */
-  get video(): Video {
+  public get video(): Video {
     return this._core.video;
   }
 
   /**
    * 플러그인 활성화 여부
    */
-  get enabled(): boolean {
+  public get enabled(): boolean {
     return this._enabled;
   }
 
@@ -56,13 +56,13 @@ export default abstract class UIPlugin extends UIObject<'div'> {
    * Core에 이벤트 리스너를 등록한다.
    * NOTE: disable/enable을 제대로 작동시키기 위해서 반드시 this.listenTo 메소드를 이용해 이벤트 리스너를 등록해야한다.
    */
-  abstract addEventListeners(): void;
+  protected abstract addEventListeners(): void;
 
   /**
    * 플러그인을 작동시킨다.
    * 이 함수는 disable 이후에 다시 플러그인을 작동시킬 때만 사용해야 한다.
    */
-  enable(): void {
+  public enable(): void {
     if (this._enabled) return;
     this.addEventListeners();
     showElement(this.el);
@@ -72,7 +72,7 @@ export default abstract class UIPlugin extends UIObject<'div'> {
   /**
    * 플러그인을 작동하지 않도록 한다.
    */
-  disable(): void {
+  public disable(): void {
     this.stopListening();
     hideElement(this.el);
     this._enabled = false;
@@ -83,7 +83,7 @@ export default abstract class UIPlugin extends UIObject<'div'> {
    *
    * @returns {UIPlugin}
    */
-  render(): UIPlugin {
+  public render(): UIPlugin {
     return this;
   }
 }
