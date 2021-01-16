@@ -1,4 +1,4 @@
-export default function template() {
+export default function template(): string {
   return `
     <div class="better-player__controller-top-panel">
       <input type="range" class="better-player__seek-bar" min="0" max="1" value="0" step="any" data-seek-bar>
