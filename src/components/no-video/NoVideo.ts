@@ -1,10 +1,11 @@
 /** @module components/no-video */
 
-import type { Attributes, Config } from '../../types';
+import type { Attributes, Config, VideoError } from '../../types';
 import './NoVideo.scss';
 import Video from '../../base/video';
 import { defer } from '../../utils/function';
 import Events from '../../base/events';
+import i18n from '../../utils/i18n';
 
 /**
  * 지원하지 않는 비디오 포맷을 리소스로 사용하거나 리소스를 아예 제공하지
@@ -29,8 +30,8 @@ export default class NoVideo extends Video {
    */
   private throwError(): void {
     defer(() => {
-      const error = {
-        message: this.config.i18n.notSupportVideoFormat,
+      const error: VideoError = {
+        message: i18n.get('notSupportVideoFormat', this.config),
       };
       this.emit(Events.VIDEO_ERROR, error);
     });

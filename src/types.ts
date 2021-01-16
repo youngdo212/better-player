@@ -25,6 +25,13 @@ export interface I18N {
   notFoundVideo: string;
 }
 
+/**
+ * Video 클래스에서 발생하는 에러 객체
+ */
+export interface VideoError {
+  message: string;
+}
+
 // TODO: value에 해당되는 메소드의 이름의 타입을 string보다 더 strict하게 만들기
 /**
  * key(이벤트 이름과 셀렉터의 조합): value(메소드의 이름) 형태의 객체

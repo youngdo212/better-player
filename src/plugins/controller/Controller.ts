@@ -14,6 +14,7 @@ import {
 import template from './template';
 import Events from '../../base/events';
 import formatTime from '../../utils/time';
+import { assertIsDefined } from '../../utils/assert';
 
 interface ChildElementNameMap {
   playToggleButton: HTMLElement;
@@ -147,7 +148,7 @@ export default class Controller extends UIPlugin {
    * 비디오 시간을 seek bar를 바탕으로 변경한다.
    */
   private seek(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
 
     const duration = this.video.getDuration();
     const time = Number(this.childElements.seekBar.value) * duration;
@@ -165,7 +166,7 @@ export default class Controller extends UIPlugin {
    * volume-bar를 바탕으로 비디오의 볼륨을 조절한다
    */
   private setVolume(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
 
     const volume = Number(this.childElements.volumeBar.value);
     this.video.setVolume(volume);
@@ -218,7 +219,7 @@ export default class Controller extends UIPlugin {
    * 비디오의 재생 여부에 따라서 토글 버튼의 아이콘을 변경한다.
    */
   private updatePlayToggleButton(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
 
     if (this.video.isPaused()) {
       removeClass(
@@ -237,7 +238,7 @@ export default class Controller extends UIPlugin {
    * 비디오의 현재 시간에 따라서 seek bar의 value를 변경한다.
    */
   private updateSeekBar(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
     if (this.isDraggingSeekBar) return; // seek bar를 드래그 중인 경우 업데이트하지 않는다.
 
     const duration = this.video.getDuration();
@@ -252,7 +253,7 @@ export default class Controller extends UIPlugin {
    * 영상의 총 길이를 업데이트한다.
    */
   private updateDuration(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
 
     const duration = this.video.getDuration() || 0;
     this.childElements.duration.textContent = formatTime(duration);
@@ -262,7 +263,7 @@ export default class Controller extends UIPlugin {
    * seek bar의 위치를 바탕으로 현재 시간을 변경한다
    */
   private updateCurrentTime(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
 
     const duration = this.video.getDuration() || 0;
     const currentTime = Number(this.childElements.seekBar.value) * duration;
@@ -290,7 +291,7 @@ export default class Controller extends UIPlugin {
    * volume bar를 비디오의 볼륨을 바탕으로 변경한다.
    */
   private updateVolumeBar(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
 
     const volume = this.video.getVolume();
     this.childElements.volumeBar.value = volume.toString();
@@ -300,7 +301,7 @@ export default class Controller extends UIPlugin {
    * 비디오의 볼륨이 0이면 음소거 버튼으로, 그렇지 않은 경우 비음소거 버튼으로 변경한다.
    */
   private updateMuteToggleButton(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
 
     const volume = this.video.getVolume();
     if (volume === 0) {
@@ -320,7 +321,7 @@ export default class Controller extends UIPlugin {
    * 전체화면인 경우 전체 화면 탈출 버튼으로, 그렇지 않은 경우 전체 화면 버튼으로 변경한다.
    */
   private updateFullscreenToggleButton(): void {
-    assertIsChildElementsDefined(this.childElements);
+    assertIsDefined(this.childElements, 'childElement');
 
     if (this.core.isFullscreen()) {
       addClass(
@@ -354,19 +355,6 @@ export default class Controller extends UIPlugin {
     this.cacheChildElements();
     appendChild(this.core.el, this.el);
     return this;
-  }
-}
-
-/**
- * childElements가 존재하는지 확인한다
- */
-function assertIsChildElementsDefined<T>(
-  childElements: T,
-): asserts childElements is NonNullable<T> {
-  if (childElements === undefined || childElements === null) {
-    throw new Error(
-      `expected controller.childElements to be defined, but received ${childElements}`,
-    );
   }
 }
 

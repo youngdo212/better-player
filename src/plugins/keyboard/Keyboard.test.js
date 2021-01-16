@@ -6,7 +6,9 @@ import Keyboard from './Keyboard';
 it('코어에 CORE_KEYDOWN 이벤트가 발생하면 onKeydown 메소드가 호출된다', () => {
   const onKeydownSpy = jest
     .spyOn(Keyboard.prototype, 'onKeydown')
-    .mockImplementation(() => {});
+    .mockImplementation(() => {
+      // do nothing
+    });
   const core = new Core(config);
 
   core.emit(Events.CORE_KEYDOWN, new KeyboardEvent('keydown'));
@@ -77,7 +79,9 @@ it('아래쪽 방향키 버튼 이벤트가 발생하면 비디오의 볼륨을 
 it('일시 정지 중 스페이스바 버튼 이벤트가 발생하면 비디오를 재생 시킨다', () => {
   const core = new Core(config);
   const video = core.video;
-  const playSpy = jest.spyOn(video, 'play').mockImplementation(() => {});
+  const playSpy = jest.spyOn(video, 'play').mockImplementation(() => {
+    // do nothing
+  });
   const keyboardPlugin = new Keyboard(core);
 
   keyboardPlugin.onKeydown(new KeyboardEvent('keydown', { key: ' ' }));
@@ -91,7 +95,9 @@ it('재생 중 스페이스바 버튼 이벤트가 발생하면 비디오를 일
   const core = new Core(config);
   const video = core.video;
   video.isPaused = () => false;
-  const pauseSpy = jest.spyOn(video, 'pause').mockImplementation(() => {});
+  const pauseSpy = jest.spyOn(video, 'pause').mockImplementation(() => {
+    // do nothing
+  });
   const keyboardPlugin = new Keyboard(core);
 
   keyboardPlugin.onKeydown(new KeyboardEvent('keydown', { key: ' ' }));
@@ -111,11 +117,14 @@ it('등록되지 않은 키보드 이벤트가 발생하는 경우 에러가 발
 it('비디오에서 에러 이벤트가 발생하면 disable이 호출된다', () => {
   const disableSpy = jest
     .spyOn(Keyboard.prototype, 'disable')
-    .mockImplementation(() => {});
+    .mockImplementation(() => {
+      // do nothing
+    });
   const core = new Core(config);
   const video = core.video;
+  core.render();
 
-  video.emit(Events.VIDEO_ERROR);
+  video.emit(Events.VIDEO_ERROR, { message: 'test' });
 
   expect(disableSpy).toHaveBeenCalledTimes(1);
 
@@ -125,9 +134,10 @@ it('비디오에서 에러 이벤트가 발생하면 disable이 호출된다', (
 it('config에 keyboard값이 false이면 disable이 호출된다', () => {
   const disableSpy = jest
     .spyOn(Keyboard.prototype, 'disable')
-    .mockImplementation(() => {});
-  // eslint-disable-next-line no-unused-vars
-  const core = new Core({
+    .mockImplementation(() => {
+      // do nothing
+    });
+  new Core({
     ...config,
     keyboard: false,
   });

@@ -1,11 +1,17 @@
 /** @module components/html-video */
 
-import type { Attributes, Config, EventHandlerNameMap } from '../../types';
+import type {
+  Attributes,
+  Config,
+  EventHandlerNameMap,
+  VideoError,
+} from '../../types';
 import './HTMLVideo.scss';
 import Events from '../../base/events';
 import Video from '../../base/video';
 import mime from 'mime/lite';
 import { canPlayVideoType } from '../../utils/element';
+import i18n from '../../utils/i18n';
 
 /**
  * HTML 비디오 엘리먼트를 나타내는 클래스
@@ -104,8 +110,11 @@ export default class HTMLVideo extends Video {
   /**
    * 비디오의 에러 이벤트를 발생시킨다
    */
-  onError(event: Event): void {
-    this.emit(Events.VIDEO_ERROR, event);
+  onError(): void {
+    const error: VideoError = {
+      message: i18n.get('notFoundVideo', this.config),
+    };
+    this.emit(Events.VIDEO_ERROR, error);
   }
 
   /**
