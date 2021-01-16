@@ -73,3 +73,8 @@ export type MethodNames<T> = {
     ? K
     : never;
 }[keyof T];
+
+/**
+ * 인터페이스 또는 enum을 받아 모든 속성의 타입을 나열한다.
+ */
+export type Values<T> = { [K in keyof T]: T[K] }[keyof T];
